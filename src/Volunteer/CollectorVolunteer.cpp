@@ -1,4 +1,4 @@
-#include "../include/Volunteer.h"  
+#include "../../include/Volunteer.h"  
 
 CollectorVolunteer::CollectorVolunteer(int id, std::string name, int coolDown)
     : Volunteer(id, name), coolDown(coolDown), timeLeft(0) {}
