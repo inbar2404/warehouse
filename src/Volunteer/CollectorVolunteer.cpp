@@ -1,11 +1,8 @@
 #include "../../include/Volunteer.h"  
 
-CollectorVolunteer::CollectorVolunteer(int id, std::string name, int coolDown)
-    : Volunteer(id, name), coolDown(coolDown), timeLeft(0) {}
 
-CollectorVolunteer* CollectorVolunteer::clone() const {
-    return new CollectorVolunteer(*this);
-}
+CollectorVolunteer::CollectorVolunteer(int id, string name, int coolDown)
+    : Volunteer(id, name), coolDown(coolDown), timeLeft(0) {}
 
 int CollectorVolunteer::getCoolDown() const {
     return coolDown;
@@ -22,4 +19,4 @@ bool CollectorVolunteer::decreaseCoolDown() {
     return (timeLeft == 0);
 }
 
-// TODO: Impliment the next functions: step, hasOrdersLeft, canTakeOrder, acceptOrder, ToString
+// TODO: Impliment the next functions: clone, step, hasOrdersLeft, canTakeOrder, acceptOrder, ToString
