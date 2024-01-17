@@ -22,5 +22,3 @@ int Volunteer::getCompletedOrderId() const {
 bool Volunteer::isBusy() const {
     return (activeOrderId != NO_ORDER);
 }
-
-// TODO: Missing five implemantations of the virtual functions
