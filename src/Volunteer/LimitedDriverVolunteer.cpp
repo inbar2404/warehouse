@@ -2,9 +2,8 @@
 using namespace std;
 
 
-// TODO: Make sure "ordersLeft" is implimented well
 LimitedDriverVolunteer::LimitedDriverVolunteer(int id, const string &name, int maxDistance, int distancePerStep,int maxOrders)
-    : DriverVolunteer(id, name, maxDistance, distancePerStep), maxOrders(maxOrders), ordersLeft(0) {};
+    : DriverVolunteer(id, name, maxDistance, distancePerStep), maxOrders(maxOrders), ordersLeft(maxOrders) {};
 
 LimitedDriverVolunteer* LimitedDriverVolunteer::clone() const {
     return new LimitedDriverVolunteer(*this);
@@ -19,8 +18,7 @@ int LimitedDriverVolunteer::getNumOrdersLeft() const {
 };
 
 bool LimitedDriverVolunteer::hasOrdersLeft() const {
-    // TODO: Make sure thats what was requested
-    return ordersLeft < maxOrders;
+    return ordersLeft > 0;
 };
 
 bool LimitedDriverVolunteer::canTakeOrder(const Order &order) const {
