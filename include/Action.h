@@ -46,12 +46,12 @@ class SimulateStep : public BaseAction {
         const int numOfSteps;
 };
 
-class Order : public BaseAction {
+class AddOrder : public BaseAction {
     public:
-        Order(int id);
+        AddOrder(int id);
         void act(WareHouse &wareHouse) override;
-        Order *clone() const override;
         string toString() const override;
+        AddOrder *clone() const override;
     private:
         const int customerId;
 };
@@ -117,6 +117,7 @@ class Close : public BaseAction {
     public:
         Close();
         void act(WareHouse &wareHouse) override;
+        Close *clone() const override;
         string toString() const override;
     private:
 };
