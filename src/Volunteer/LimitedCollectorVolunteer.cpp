@@ -1,5 +1,5 @@
 #include "../../include/Volunteer.h"  
-
+using namespace std;
 
 // TODO: Make sure "ordersLeft" is implimented well
 LimitedCollectorVolunteer::LimitedCollectorVolunteer(int id, string name, int coolDown ,int maxOrders)
@@ -33,6 +33,8 @@ int LimitedCollectorVolunteer::getNumOrdersLeft() const {
 }
 
 string LimitedCollectorVolunteer::toString() const {
-    // TODO: Understand what type of discription do they want - then impliment
-    return ""; // TODO: Remove this line according to the above comment
+    // Using the string from the base class
+    string baseString = CollectorVolunteer::toString();
+    // TODO: Make sure that they wanted the maxOrders parameter here
+    return baseString + " " + to_string(maxOrders);
 }

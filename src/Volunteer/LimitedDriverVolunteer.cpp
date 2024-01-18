@@ -1,4 +1,5 @@
 #include "../../include/Volunteer.h"  
+using namespace std;
 
 
 // TODO: Make sure "ordersLeft" is implimented well
@@ -32,6 +33,7 @@ void LimitedDriverVolunteer::acceptOrder(const Order &order) {
 }
 
 string LimitedDriverVolunteer::toString() const {
-    // TODO: Understand what type of discription do they want - then impliment
-    return ""; // TODO: Remove this line according to the above comment
+    // Using the string from the base class
+    string baseString = DriverVolunteer::toString();
+    return baseString + " " + to_string(maxOrders);
 }

@@ -1,4 +1,5 @@
 #include "../../include/Volunteer.h"  
+using namespace std;
 
 // TODO: Make sure that init with o the distance left parameter is okay
 DriverVolunteer::DriverVolunteer(int id, string name, int maxDistance, int distancePerStep)
@@ -43,6 +44,5 @@ void DriverVolunteer::step() {
 }
 
 string DriverVolunteer::toString() const {
-    // TODO: Understand what type of discription do they want - then impliment
-    return ""; // TODO: Remove this line according to the above comment
+    return "volunteer " + getName() + " driver " + to_string(maxDistance) + " " + to_string(distancePerStep);
 }

@@ -41,6 +41,5 @@ void CollectorVolunteer::acceptOrder(const Order &order) {
 }
 
 string CollectorVolunteer::toString() const {
-    // TODO: Understand what type of discription do they want - then impliment
-    return ""; // TODO: Remove this line according to the above comment
+    return "volunteer " + getName() + " collector";
 }
