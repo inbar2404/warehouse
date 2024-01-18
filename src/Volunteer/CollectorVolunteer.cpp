@@ -32,8 +32,8 @@ bool CollectorVolunteer::hasOrdersLeft() const {
 };
 
 bool CollectorVolunteer::canTakeOrder(const Order &order) const {
-    // TODO: In order to impliment the function I need to find out first how to know if the volunteer can take the order
-    return true; // TODO: Remove this line according to the above comment
+    // TODO: Make sure with someone that's what they mean - if not: change in all other volunteer classes
+    return activeOrderId == NO_ORDER;
 };
 
 void CollectorVolunteer::acceptOrder(const Order &order) {

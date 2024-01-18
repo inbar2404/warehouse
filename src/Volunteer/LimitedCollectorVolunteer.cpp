@@ -14,8 +14,7 @@ bool LimitedCollectorVolunteer::hasOrdersLeft() const {
 };
 
 bool LimitedCollectorVolunteer::canTakeOrder(const Order &order) const {
-    // TODO: Find out what exactly they wanted in this question, then - update the line beneath
-    return true;
+    return hasOrdersLeft() && CollectorVolunteer::canTakeOrder(order);
 };
 
 void LimitedCollectorVolunteer::acceptOrder(const Order &order) {

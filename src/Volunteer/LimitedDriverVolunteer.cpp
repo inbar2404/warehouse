@@ -22,8 +22,7 @@ bool LimitedDriverVolunteer::hasOrdersLeft() const {
 };
 
 bool LimitedDriverVolunteer::canTakeOrder(const Order &order) const {
-    // TODO: Find out what exactly they wanted in this question, then - update the line beneath
-    return true;
+    return hasOrdersLeft() && DriverVolunteer::canTakeOrder(order);
 };
 
 void LimitedDriverVolunteer::acceptOrder(const Order &order) {

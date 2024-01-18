@@ -31,8 +31,7 @@ bool DriverVolunteer::hasOrdersLeft() const {
 };
 
 bool DriverVolunteer::canTakeOrder(const Order &order) const {
-    // TODO: In order to impliment the function I need to find out first how to know if the volunteer can take the order
-    return true; // TODO: Remove this line according to the above comment
+    return activeOrderId == NO_ORDER;
 };
 
 void DriverVolunteer::acceptOrder(const Order &order) {
