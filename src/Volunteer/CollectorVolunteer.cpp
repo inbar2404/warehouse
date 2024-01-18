@@ -5,7 +5,6 @@ CollectorVolunteer::CollectorVolunteer(int id, string name, int coolDown)
     : Volunteer(id, name), coolDown(coolDown), timeLeft(0) {}
 
 CollectorVolunteer* CollectorVolunteer::clone() const {
-    // TODO: Make sure my implimentation is okay
     return new CollectorVolunteer(*this);
 }
 

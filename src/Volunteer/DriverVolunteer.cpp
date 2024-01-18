@@ -5,7 +5,6 @@ DriverVolunteer::DriverVolunteer(int id, string name, int maxDistance, int dista
     : Volunteer(id, name), maxDistance(maxDistance), distancePerStep(distancePerStep), distanceLeft(0) {}
 
 DriverVolunteer* DriverVolunteer::clone() const {
-    // TODO: Make sure my implimentation is okay
     return new DriverVolunteer(*this);
 }
 

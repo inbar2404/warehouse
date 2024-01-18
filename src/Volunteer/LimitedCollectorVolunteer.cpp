@@ -1,8 +1,9 @@
 #include "../../include/Volunteer.h"  
 
 
+// TODO: Make sure "ordersLeft" is implimented well
 LimitedCollectorVolunteer::LimitedCollectorVolunteer(int id, string name, int coolDown ,int maxOrders)
-    : CollectorVolunteer(id, name, coolDown), maxOrders(maxOrders){}
+    : CollectorVolunteer(id, name, coolDown), maxOrders(maxOrders), ordersLeft(0) {}
 
 LimitedCollectorVolunteer* LimitedCollectorVolunteer::clone() const {
     // TODO: Make sure my implimentation is okay
@@ -10,6 +11,7 @@ LimitedCollectorVolunteer* LimitedCollectorVolunteer::clone() const {
 }
 
 bool LimitedCollectorVolunteer::hasOrdersLeft() const {
+    // TODO: Make sure thats what was requested
     return ordersLeft < maxOrders;
 }
 
