@@ -1,15 +1,20 @@
 #include "../../include/Volunteer.h"  
 
 
+// TODO: Make sure with someone that my timeLeft init was their meaning - or 0?
 CollectorVolunteer::CollectorVolunteer(int id, string name, int coolDown)
-    : Volunteer(id, name), coolDown(coolDown), timeLeft(0) {};
+    : Volunteer(id, name), coolDown(coolDown), timeLeft(coolDown) {};
 
 CollectorVolunteer* CollectorVolunteer::clone() const {
     return new CollectorVolunteer(*this);
 };
 
-void step() {
-    // TODO: Impliment the function
+void CollectorVolunteer::step() {
+    // In case order is finished - update the completeOrderId parameter
+    if (timeLeft == 0){
+        completedOrderId = activeOrderId;
+        activeOrderId = NO_ORDER;
+    }
 };
 
 int CollectorVolunteer::getCoolDown() const {
@@ -38,7 +43,7 @@ bool CollectorVolunteer::canTakeOrder(const Order &order) const {
 
 void CollectorVolunteer::acceptOrder(const Order &order) {
     activeOrderId = order.getId();
-    timeLeft = 0; // TODO: Understand what is the correct value that new to be set + should I update another parameter?
+    timeLeft = coolDown; // TODO: Make sure with someone that's was what they ment
 };
 
 string CollectorVolunteer::toString() const {

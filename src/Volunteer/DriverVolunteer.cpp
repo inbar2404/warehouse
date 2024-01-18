@@ -40,7 +40,11 @@ void DriverVolunteer::acceptOrder(const Order &order) {
 };
 
 void DriverVolunteer::step() {
-    // TODO: Impliment the function
+    // In case order is finished - update the completeOrderId parameter
+    if (distanceLeft == 0){
+        completedOrderId = activeOrderId;
+        activeOrderId = NO_ORDER;
+    }
 };
 
 string DriverVolunteer::toString() const {
