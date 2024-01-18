@@ -84,7 +84,7 @@ class DriverVolunteer: public Volunteer {
         bool decreaseDistanceLeft(); //Decrease distanceLeft by distancePerStep,return true if distanceLeft<=0,false otherwise
         bool hasOrdersLeft() const override;
         bool canTakeOrder(const Order &order) const override; // Signal if the volunteer is not busy and the order is within the maxDistance
-        void acceptOrder(const Order &order) override; // Reset distanceLeft to maxDistance
+        void acceptOrder(const Order &order) override; // Assign distanceLeft to order's distance
         void step() override; // Decrease distanceLeft by distancePerStep
         string toString() const override;
 
@@ -102,8 +102,8 @@ class LimitedDriverVolunteer: public DriverVolunteer {
         int getMaxOrders() const;
         int getNumOrdersLeft() const;
         bool hasOrdersLeft() const override;
-        bool canTakeOrder(const Order &order) const override; // Signal if the volunteer is not busy, the order is within the maxDistance and have orders left
-        void acceptOrder(const Order &order) override; // Reset distanceLeft to maxDistance and decrease ordersLeft
+        bool canTakeOrder(const Order &order) const override; // Signal if the volunteer is not busy, the order is within the maxDistance.
+        void acceptOrder(const Order &order) override; // Assign distanceLeft to order's distance and decrease ordersLeft
         string toString() const override;
 
     private:
