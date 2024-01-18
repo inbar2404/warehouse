@@ -37,7 +37,8 @@ bool CollectorVolunteer::canTakeOrder(const Order &order) const {
 };
 
 void CollectorVolunteer::acceptOrder(const Order &order) {
-    // TODO: Prepare for new order(Reset activeOrderId,TimeLeft,DistanceLeft,OrdersLeft depends on the volunteer type)
+    activeOrderId = order.getId();
+    timeLeft = 0; // TODO: Understand what is the correct value that new to be set + should I update another parameter?
 };
 
 string CollectorVolunteer::toString() const {

@@ -21,7 +21,10 @@ bool LimitedCollectorVolunteer::canTakeOrder(const Order &order) const {
 };
 
 void LimitedCollectorVolunteer::acceptOrder(const Order &order) {
-    // TODO: Prepare for new order(Reset activeOrderId,TimeLeft,DistanceLeft,OrdersLeft depends on the volunteer type)   
+    // Call the base class method in order to reset shared parameters
+    CollectorVolunteer::acceptOrder(order);
+    // Remove by one the amount of orders that the current volunteer can take
+    ordersLeft -= 1;
 };
 
 int LimitedCollectorVolunteer::getMaxOrders() const {

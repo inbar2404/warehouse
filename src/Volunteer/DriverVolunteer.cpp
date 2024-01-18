@@ -36,7 +36,8 @@ bool DriverVolunteer::canTakeOrder(const Order &order) const {
 };
 
 void DriverVolunteer::acceptOrder(const Order &order) {
-    // TODO: Prepare for new order(Reset activeOrderId,TimeLeft,DistanceLeft,OrdersLeft depends on the volunteer type)
+    activeOrderId = order.getId();
+    distanceLeft = order.getDistance();
 };
 
 void DriverVolunteer::step() {
