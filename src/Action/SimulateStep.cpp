@@ -4,17 +4,31 @@ using namespace std;
 
 
 SimulateStep::SimulateStep(int numOfSteps) : numOfSteps(numOfSteps) {};
-
+    
+// TODO: Make sure funtion as excpected
 void SimulateStep::act(WareHouse &wareHouse) {
-    // TODO: Make sure funtion as excpected
     // We first handle orders in process, then the pendings (otherwise peding will pass 2 steps at once) 
-    // TODO: For each order add driverID & orderStatus (Also while driving is inProcess)
     vector<Order*> inProcessOrders = wareHouse.getFinishCollectOrders();
-    // TODO: For each order add collecterID & orderStatus and move to inProcess 
+    for (auto &order : inProcessOrders)
+    {
+        order->setDriverId(0); // TODO: Update with correct driverID
+        order->setStatus(OrderStatus::DELIVERING);
+    } 
+    
     vector<Order*> pendingOrders = wareHouse.getPendingOrders();
+    for (auto &order : pendingOrders)
+    {
+        order->setCollectorId(0); // TODO: Update with correct collectorID
+        order->setStatus(OrderStatus::COLLECTING);
+        // TODO: Move orders' inProcess list (wareHouse parameter) - Make sure for driver nothing need to be changed
+    }
+    
     vector<Volunteer*> volunteersInAction = wareHouse.getvolunteersInAction();
-    // TODO: For each volunteer in action -> make a step (rather is a collector or driver)
-    // TODO: If volunteer finish his process -> move to complete (also for collector? understand and update first comment)
+    for (auto &volunteer : volunteersInAction)
+    {
+        volunteer->step();
+        // TODO: If volunteer finish his process -> move to complete (also for collector? understand and update first comment)
+    }
     wareHouse.removeLimitedVolunteersReachingMax();
 };
 

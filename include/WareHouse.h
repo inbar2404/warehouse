@@ -5,10 +5,10 @@ using namespace std;
 
 #include "Order.h"
 #include "Customer.h"
+#include "Volunteer.h"
 
 class BaseAction;
 class Volunteer;
-class CollectorVolunteer;
 
 // Warehouse responsible for Volunteers, Customers Actions, and Orders.
 
@@ -27,9 +27,9 @@ class WareHouse {
         void close();
         void open();
         vector<Order*> &getPendingOrders() const;
-        vector<Order*> &getFinishCollectOrders() const;
-        vector<Volunteer*> &getvolunteersInAction() const;
-        void removeLimitedVolunteersReachingMax() const;
+        vector<Order*> &getFinishCollectOrders() const; // Return volunteers from type collector that finis all steps
+        vector<Volunteer*> &getvolunteersInAction() const; // Return volunteers have order in process
+        void removeLimitedVolunteersReachingMax() const; // Remove if reaching max and has no active action
 
     private:
         bool isOpen;
