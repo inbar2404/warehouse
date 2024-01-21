@@ -8,6 +8,7 @@ using namespace std;
 
 class BaseAction;
 class Volunteer;
+class CollectorVolunteer;
 
 // Warehouse responsible for Volunteers, Customers Actions, and Orders.
 
@@ -25,6 +26,10 @@ class WareHouse {
         const vector<BaseAction*> &getActions() const;
         void close();
         void open();
+        vector<Order*> &getPendingOrders() const;
+        vector<Order*> &getFinishCollectOrders() const;
+        vector<Volunteer*> &getvolunteersInAction() const;
+        void removeLimitedVolunteersReachingMax() const;
 
     private:
         bool isOpen;

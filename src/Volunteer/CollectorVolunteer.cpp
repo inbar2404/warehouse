@@ -10,6 +10,7 @@ CollectorVolunteer* CollectorVolunteer::clone() const {
 };
 
 void CollectorVolunteer::step() {
+    decreaseCoolDown();
     // In case order is finished - update the completeOrderId parameter
     if (timeLeft == 0){
         completedOrderId = activeOrderId;
@@ -25,6 +26,7 @@ int CollectorVolunteer::getTimeLeft() const {
     return timeLeft;
 };
 
+// TODO: Find out - shouldn't it be decreaseTimeLeft
 bool CollectorVolunteer::decreaseCoolDown() {
     if (timeLeft > 0) {
         timeLeft--;
