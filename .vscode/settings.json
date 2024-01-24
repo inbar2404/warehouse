@@ -1,5 +1,6 @@
 {
     "files.associations": {
+<<<<<<< HEAD
         "tuple": "cpp",
         "*.tcc": "cpp",
         "deque": "cpp",
@@ -7,4 +8,9 @@
         "unordered_map": "cpp",
         "vector": "cpp"
     }
+=======
+        "tuple": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
+>>>>>>> e9450a4 (.)
 }

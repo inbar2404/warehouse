@@ -1,5 +1,6 @@
 #include "../../include/Order.h" 
 
+
 Order::Order(int id, int customerId, int distance) 
  : id(id), customerId(customerId), distance(distance) {};
 
