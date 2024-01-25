@@ -17,7 +17,7 @@ void WareHouse::addOrder(Order* order) {};
 void WareHouse::addAction(BaseAction* action) {};
 
 Customer& WareHouse::getCustomer(int customerId) const {
-    for (auto &customer : customers)
+    for (Customer* customer : customers)
     {
         if (customer->getId() == customerId) {
             return *customer;
@@ -27,7 +27,7 @@ Customer& WareHouse::getCustomer(int customerId) const {
 };
 
 Volunteer& WareHouse::getVolunteer(int volunteerId) const {
-    for (auto &volunteer : volunteers)
+    for (Volunteer* volunteer : volunteers)
     {
         if (volunteer->getId() == volunteerId) {
             return *volunteer;
@@ -43,7 +43,7 @@ Order& WareHouse::getOrder(int orderId) const {
     orders.insert(orders.end(), inProcessOrders.begin(), inProcessOrders.end());
     orders.insert(orders.end(), completedOrders.begin(), completedOrders.end());
 
-    for (auto &order : orders)
+    for (Order* &order : orders)
     {
         if (order->getId() == orderId) {
             return *order;
@@ -73,7 +73,7 @@ const vector<Order*>& WareHouse::getPendingOrders() const {
 
 vector<Order*>& WareHouse::getFinishCollectOrders() const {
     vector<Order*> requetedOrders;
-    for (auto &order : inProcessOrders)
+    for (Order* order : inProcessOrders)
     {
         int collectorId = order->getCollectorId();
         Volunteer* collector = &getVolunteer(collectorId);
@@ -86,7 +86,7 @@ vector<Order*>& WareHouse::getFinishCollectOrders() const {
 
 vector<Volunteer*>& WareHouse::getvolunteersInAction() const {
     vector<Volunteer*> requetedVolunteers;
-    for (auto &volunteer : volunteers)
+    for (Volunteer* volunteer : volunteers)
     {
         // TODO: Find out if thats the accurate required check -> I think it should be with isBusy (check examples in gitHub)
         if (volunteer->getActiveOrderId() != NO_ORDER && volunteer->getActiveOrderId() != volunteer->getCompletedOrderId()){

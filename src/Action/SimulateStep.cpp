@@ -11,7 +11,7 @@ void SimulateStep::act(WareHouse &wareHouse) {
     for (int currentStep = 0; currentStep < numOfSteps; ++currentStep) {
         // We first handle orders in process, then the pendings (otherwise peding will pass 2 steps at once) 
         vector<Order*> inProcessOrders = wareHouse.getFinishCollectOrders();
-        for (auto &order : inProcessOrders) // TODO: Find out if my implementation with auto is ok
+        for (Order* &order : inProcessOrders) 
         {
             DriverVolunteer driver = wareHouse.getAvailableDriver();
             driver.acceptOrder(*order);
@@ -21,7 +21,7 @@ void SimulateStep::act(WareHouse &wareHouse) {
         } 
         
         vector<Order*> pendingOrders = wareHouse.getPendingOrders();
-        for (auto &order : pendingOrders)
+        for (Order* &order : pendingOrders)
         {
             CollectorVolunteer collector = wareHouse.getAvailableCollector();
             collector.acceptOrder(*order);
@@ -31,7 +31,7 @@ void SimulateStep::act(WareHouse &wareHouse) {
         }
         
         vector<Volunteer*> volunteersInAction = wareHouse.getvolunteersInAction();
-        for (auto &volunteer : volunteersInAction)
+        for (Volunteer* &volunteer : volunteersInAction)
         {
             volunteer->step();
             // TODO: If volunteer finish his process -> move to complete (also for collector? understand and update first comment)
