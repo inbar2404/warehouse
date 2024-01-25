@@ -25,8 +25,29 @@ void WareHouse::open() {};
 
 vector<Order*>& WareHouse::getPendingOrders() const {};
 
-vector<Order*>& WareHouse::getFinishCollectOrders() const {};
+vector<Order*>& WareHouse::getFinishCollectOrders() const {
+    vector<Order*> requetedOrders;
+    for (auto &order : inProcessOrders)
+    {
+        int collectorId = order->getCollectorId();
+        Volunteer* collector = &getVolunteer(collectorId);
+        if (collector->getCompletedOrderId() == order->getId()){
+            requetedOrders.push_back(order);
+        }
+    }
+    return requetedOrders;
+};
 
-vector<Volunteer*>& WareHouse::getvolunteersInAction() const {};
+vector<Volunteer*>& WareHouse::getvolunteersInAction() const {
+    vector<Volunteer*> requetedVolunteers;
+    for (auto &volunteer : volunteers)
+    {
+        // TODO: Find out if thats the accurate required check
+        if (volunteer->getActiveOrderId() != NO_ORDER && volunteer->getActiveOrderId() != volunteer->getCompletedOrderId()){
+            requetedVolunteers.push_back(volunteer);
+        }
+    }
+    return requetedVolunteers;
+};
 
 void WareHouse::removeLimitedVolunteersReachingMax() const {};
