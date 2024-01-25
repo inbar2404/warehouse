@@ -1,14 +1,19 @@
 #include "../include/WareHouse.h" 
+#include <iostream>
+using namespace std;
 
+// TODO: Dont forget to find out what is the rule of 5 and do rellvant implemantations
+WareHouse::WareHouse(const string &configFilePath) {
+    // TODO: Read data from the config file and init objects by the given data
+};
 
-// TODO: Implement all methods in file
-
-WareHouse::WareHouse(const string &configFilePath) {};
-
+// TODO: Implement
 void WareHouse::start() {};
 
+// TODO: Implement
 void WareHouse::addOrder(Order* order) {};
 
+// TODO: Implement
 void WareHouse::addAction(BaseAction* action) {};
 
 Customer& WareHouse::getCustomer(int customerId) const {
@@ -47,13 +52,22 @@ Order& WareHouse::getOrder(int orderId) const {
     // TODO: Find out if I've to return a flag if no volunteer found
 };
 
-const vector<BaseAction*>& WareHouse::getActions() const {};
+const vector<BaseAction*>& WareHouse::getActions() const {
+    return actionsLog;
+};
 
-void WareHouse::close() {};
+void WareHouse::close() {
+    // TODO: Find out - is that all what needed in this function?
+    isOpen = false;
+};
 
-void WareHouse::open() {};
+void WareHouse::open() {
+    // TODO: Find out - is that all what needed in this function?
+    isOpen = true;
+    cout << "Warehouse is open!" << endl;
+};
 
-vector<Order*>& WareHouse::getPendingOrders() {
+const vector<Order*>& WareHouse::getPendingOrders() const {
     return pendingOrders;
 };
 
@@ -74,7 +88,7 @@ vector<Volunteer*>& WareHouse::getvolunteersInAction() const {
     vector<Volunteer*> requetedVolunteers;
     for (auto &volunteer : volunteers)
     {
-        // TODO: Find out if thats the accurate required check
+        // TODO: Find out if thats the accurate required check -> I think it should be with isBusy (check examples in gitHub)
         if (volunteer->getActiveOrderId() != NO_ORDER && volunteer->getActiveOrderId() != volunteer->getCompletedOrderId()){
             requetedVolunteers.push_back(volunteer);
         }
@@ -82,4 +96,11 @@ vector<Volunteer*>& WareHouse::getvolunteersInAction() const {
     return requetedVolunteers;
 };
 
+// TODO: Implement
 void WareHouse::removeLimitedVolunteersReachingMax() const {};
+
+// TODO: Implement
+CollectorVolunteer WareHouse::getAvailableCollector() const {};
+
+// TODO: Implement
+DriverVolunteer WareHouse::getAvailableDriver() const {};

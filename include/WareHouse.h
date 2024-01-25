@@ -26,10 +26,12 @@ class WareHouse {
         const vector<BaseAction*> &getActions() const;
         void close();
         void open();
-        vector<Order*> &getPendingOrders(); // TODO: Find out it is ok the signature without const
+        const vector<Order*> &getPendingOrders() const;
         vector<Order*> &getFinishCollectOrders() const; // Return volunteers from type collector that finis all steps
         vector<Volunteer*> &getvolunteersInAction() const; // Return volunteers have order in process
         void removeLimitedVolunteersReachingMax() const; // Remove if reaching max and has no active action
+        CollectorVolunteer getAvailableCollector() const; // Return available collector to take an order
+        DriverVolunteer getAvailableDriver() const; // Return available driver to take an order
 
     private:
         bool isOpen;
