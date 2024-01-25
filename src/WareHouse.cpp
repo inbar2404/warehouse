@@ -10,11 +10,27 @@ WareHouse::WareHouse(const string &configFilePath) {
 // TODO: Implement
 void WareHouse::start() {};
 
-// TODO: Implement
-void WareHouse::addOrder(Order* order) {};
+void WareHouse::addOrder(Order* order) {
+    // Check the order status and add the order to the correct vector
+    switch (order->getStatus()) {
+        case OrderStatus::PENDING:
+            pendingOrders.push_back(order);
+            break;
+        case OrderStatus::COLLECTING:
+        case OrderStatus::DELIVERING:
+            inProcessOrders.push_back(order);
+            break;
+        case OrderStatus::COMPLETED:
+            completedOrders.push_back(order);
+            break;
+        default: // Handle other statuses if needed
+            break;
+    }
+};
 
-// TODO: Implement
-void WareHouse::addAction(BaseAction* action) {};
+void WareHouse::addAction(BaseAction* action) {
+    actionsLog.push_back(action);
+};
 
 Customer& WareHouse::getCustomer(int customerId) const {
     for (Customer* customer : customers)
@@ -23,7 +39,8 @@ Customer& WareHouse::getCustomer(int customerId) const {
             return *customer;
         }
     }
-    // TODO: Find out if I've to return a flag if no customer found
+    // If customer not found, return a default customer.
+    return *defaultCustomer;
 };
 
 Volunteer& WareHouse::getVolunteer(int volunteerId) const {
@@ -33,7 +50,8 @@ Volunteer& WareHouse::getVolunteer(int volunteerId) const {
             return *volunteer;
         }
     }
-    // TODO: Find out if I've to return a flag if no volunteer found
+    // If volunteer not found, return a default Volunteer.
+    return *defaultVolunteer;
 };
 
 Order& WareHouse::getOrder(int orderId) const {
@@ -49,7 +67,9 @@ Order& WareHouse::getOrder(int orderId) const {
             return *order;
         }
     }
-    // TODO: Find out if I've to return a flag if no volunteer found
+    
+    // If order not found, return a default order.
+    return *defaultOrder;
 };
 
 const vector<BaseAction*>& WareHouse::getActions() const {
@@ -57,12 +77,10 @@ const vector<BaseAction*>& WareHouse::getActions() const {
 };
 
 void WareHouse::close() {
-    // TODO: Find out - is that all what needed in this function?
     isOpen = false;
 };
 
 void WareHouse::open() {
-    // TODO: Find out - is that all what needed in this function?
     isOpen = true;
     cout << "Warehouse is open!" << endl;
 };

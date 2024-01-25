@@ -12,7 +12,6 @@ class Volunteer;
 
 // Warehouse responsible for Volunteers, Customers Actions, and Orders.
 
-
 class WareHouse {
 
     public:
@@ -43,4 +42,7 @@ class WareHouse {
         vector<Customer*> customers;
         int customerCounter; //For assigning unique customer IDs
         int volunteerCounter; //For assigning unique volunteer IDs
+        Customer *defaultCustomer; // default null customer
+        Volunteer *defaultVolunteer; // default null volunteer
+        Order *defaultOrder; // default null order
 };
