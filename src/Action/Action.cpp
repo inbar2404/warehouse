@@ -17,6 +17,5 @@ void BaseAction::error(string errorMsg) {
 };
 
 string BaseAction::getErrorMsg() const {
-    // TODO: Find out if here I should add to the template the "ERROR:"
     return errorMsg;
 };

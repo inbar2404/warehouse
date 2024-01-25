@@ -1,7 +1,7 @@
 #include "../../include/Volunteer.h"  
 using namespace std;
 
-// TODO: Make sure that init with o the distance left parameter is okay
+
 DriverVolunteer::DriverVolunteer(int id, string name, int maxDistance, int distancePerStep)
     : Volunteer(id, name), maxDistance(maxDistance), distancePerStep(distancePerStep), distanceLeft(0) {};
 
