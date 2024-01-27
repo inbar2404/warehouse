@@ -31,6 +31,7 @@ class Order {
         int getDriverId() const;
         OrderStatus getStatus() const;
         const string toString() const;
+        Order *clone() const; // Copy constructor
 
     private:
         const int id;

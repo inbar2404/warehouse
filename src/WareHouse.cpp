@@ -2,26 +2,167 @@
 #include <iostream>
 using namespace std;
 #include <algorithm> // for std::remove
+#include "../include/Action.h"
 
 
 WareHouse::WareHouse(const string &configFilePath) {
     // TODO: Read data from the config file and init objects by the given data
 };
 
-// TODO: Implement
-WareHouse::WareHouse(const WareHouse &other) {};
+WareHouse::WareHouse(const WareHouse &other)
+    : isOpen(other.isOpen), customerCounter(other.customerCounter),
+      volunteerCounter(other.volunteerCounter), defaultCustomer(nullptr),
+      defaultVolunteer(nullptr), defaultOrder(nullptr) {
 
-// TODO: Implement
-WareHouse::WareHouse(WareHouse&& other) {};
+    for (const Customer* customer : other.customers) {
+        customers.push_back(customer->clone());
+    }
+
+    for (const Volunteer* volunteer : other.volunteers) {
+        volunteers.push_back(volunteer->clone());
+    }
+
+    for (const Order* order : other.pendingOrders) {
+        pendingOrders.push_back(order->clone());
+    }
+
+    for (const Order* order : other.inProcessOrders) {
+        inProcessOrders.push_back(order->clone());
+    }
+
+    for (const Order* order : other.completedOrders) {
+        completedOrders.push_back(order->clone());
+    }
+
+    for (const BaseAction* action : other.actionsLog) {
+        actionsLog.push_back(action->clone());
+    }
+
+    if (other.defaultCustomer) {
+        defaultCustomer = other.defaultCustomer->clone();
+    }
+
+    if (other.defaultVolunteer) {
+        defaultVolunteer = other.defaultVolunteer->clone();
+    }
+
+    if (other.defaultOrder) {
+        defaultOrder = other.defaultOrder->clone();
+    }
+};
+
+// TODO: Check this method with another resource
+WareHouse::WareHouse(WareHouse&& other) {
+    pendingOrders = std::move(other.pendingOrders);
+    inProcessOrders = std::move(other.inProcessOrders);
+    completedOrders = std::move(other.completedOrders);
+    customers = std::move(other.customers);
+    volunteers = std::move(other.volunteers);
+    actionsLog = std::move(other.actionsLog);
+
+    defaultCustomer = other.defaultCustomer;
+    other.defaultCustomer = nullptr;
+
+    defaultVolunteer = other.defaultVolunteer;
+    other.defaultVolunteer = nullptr;
+
+    defaultOrder = other.defaultOrder;
+    other.defaultOrder = nullptr;
+
+    isOpen = other.isOpen;
+    customerCounter = other.customerCounter;
+    volunteerCounter = other.volunteerCounter;
+
+    other.pendingOrders.clear();
+    other.inProcessOrders.clear();
+    other.completedOrders.clear();
+    other.customers.clear();
+    other.volunteers.clear();
+};
         
-// TODO: Implement
-WareHouse& WareHouse::operator=(const WareHouse &other) {};
+// TODO: Compare with another resource if a delete is required
+WareHouse& WareHouse::operator=(const WareHouse &other) {
+    if (this != &other) { 
+        pendingOrders = other.pendingOrders;
+        inProcessOrders = other.inProcessOrders;
+        completedOrders = other.completedOrders;
+        customers = other.customers;
+        volunteers = other.volunteers;
+        actionsLog = other.actionsLog;
 
-// TODO: Implement
-WareHouse& WareHouse::operator=(WareHouse&& other) {};
+        defaultCustomer = other.defaultCustomer->clone();
+        defaultVolunteer = other.defaultVolunteer->clone();
+        defaultOrder = other.defaultOrder->clone();
 
-// TODO: Implement
-WareHouse::~WareHouse() {};
+        isOpen = other.isOpen;
+        customerCounter = other.customerCounter;
+        volunteerCounter = other.volunteerCounter;
+    }
+
+    return *this;
+};
+
+WareHouse& WareHouse::operator=(WareHouse&& other) {
+    if (this != &other) { 
+        pendingOrders = std::move(other.pendingOrders);
+        inProcessOrders = std::move(other.inProcessOrders);
+        completedOrders = std::move(other.completedOrders);
+        customers = std::move(other.customers);
+        volunteers = std::move(other.volunteers);
+        actionsLog = std::move(other.actionsLog);
+
+        defaultCustomer = other.defaultCustomer;
+        defaultVolunteer = other.defaultVolunteer;
+        defaultOrder = other.defaultOrder;
+
+        // TODO: Compare this half function with another resource
+        other.defaultCustomer = nullptr;
+        other.defaultVolunteer = nullptr;
+        other.defaultOrder = nullptr;
+
+        isOpen = other.isOpen;
+        customerCounter = other.customerCounter;
+        volunteerCounter = other.volunteerCounter;
+
+        other.isOpen = false;
+        other.customerCounter = 0;
+        other.volunteerCounter = 0;
+    }
+
+    return *this;
+};
+
+WareHouse::~WareHouse() {   
+    for (Order* order : pendingOrders) {
+        delete order;
+    }
+    for (Order* order : inProcessOrders) {
+        delete order;
+    }
+    for (Order* order : completedOrders) {
+        delete order;
+    }
+    for (Customer* customer : customers) {
+        delete customer;
+    }
+    for (Volunteer* volunteer : volunteers) {
+        delete volunteer;
+    }
+    for(BaseAction* action: actionsLog) {
+        delete action;
+    }
+
+    delete defaultCustomer;
+    delete defaultVolunteer;
+    delete defaultOrder;
+
+    pendingOrders.clear();
+    inProcessOrders.clear();
+    completedOrders.clear();
+    customers.clear();
+    volunteers.clear();
+    actionsLog.clear();
+};
 
 // TODO: Implement
 void WareHouse::start() {};

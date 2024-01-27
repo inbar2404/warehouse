@@ -43,3 +43,6 @@ const string Order::toString() const {
 
 };
 
+Order* Order::clone() const {
+    return new Order(*this);
+};
