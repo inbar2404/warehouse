@@ -392,8 +392,9 @@ const vector<Order*>& WareHouse::getPendingOrders() const {
     return pendingOrders;
 };
 
-vector<Order*>& WareHouse::getFinishCollectOrders() const {
+vector<Order*> WareHouse::getFinishCollectOrders() const {
     vector<Order*> requetedOrders;
+    
     for (Order* order : inProcessOrders)
     {
         int collectorId = order->getCollectorId();
@@ -402,19 +403,8 @@ vector<Order*>& WareHouse::getFinishCollectOrders() const {
             requetedOrders.push_back(order);
         }
     }
-    return requetedOrders;
-};
 
-vector<Volunteer*>& WareHouse::getvolunteersInAction() const {
-    vector<Volunteer*> requetedVolunteers;
-    for (Volunteer* volunteer : volunteers)
-    {
-        // TODO: Find out if thats the accurate required check -> I think it should be with isBusy (check examples in gitHub)
-        if (volunteer->getActiveOrderId() != NO_ORDER && volunteer->getActiveOrderId() != volunteer->getCompletedOrderId()){
-            requetedVolunteers.push_back(volunteer);
-        }
-    }
-    return requetedVolunteers;
+    return requetedOrders;
 };
 
 // TODO: Think about better implementation for this function 

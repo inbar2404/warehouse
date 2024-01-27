@@ -37,8 +37,7 @@ class WareHouse {
         void open();
         const vector<Volunteer*> &getVolunteers() const;
         const vector<Order*> &getPendingOrders() const;
-        vector<Order*> &getFinishCollectOrders() const; // Return volunteers from type collector that finis all steps
-        vector<Volunteer*> &getvolunteersInAction() const; // Return volunteers have order in process
+        vector<Order*> getFinishCollectOrders() const; // Return volunteers from type collector that finis all steps
         void removeLimitedVolunteersReachingMax(); // Remove if reaching max and has no active action
         void removeFromList(Order* order, string listName);
 

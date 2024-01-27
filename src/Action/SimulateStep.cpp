@@ -48,7 +48,15 @@ void SimulateStep::act(WareHouse &wareHouse) {
             wareHouse.addOrder(order);
         }
         
-        vector<Volunteer*> volunteersInAction = wareHouse.getvolunteersInAction();
+        vector<Volunteer*> volunteersInAction;
+        for (Volunteer* volunteer : wareHouse.getVolunteers())
+        {
+            // TODO: Find out if thats the accurate required check -> I think it should be with isBusy (check examples in gitHub)
+            if (volunteer->getActiveOrderId() != NO_ORDER && volunteer->getActiveOrderId() != volunteer->getCompletedOrderId()){
+                volunteersInAction.push_back(volunteer);
+            }
+        }
+
         for (Volunteer* &volunteer : volunteersInAction)
         {
             volunteer->step();
