@@ -40,8 +40,9 @@ OrderStatus Order::getStatus() const {
     return status;
 };
 
+// ROTEM
 const string Order::toString() const {
-
+    return "";
 };
 
 Order* Order::clone() const {

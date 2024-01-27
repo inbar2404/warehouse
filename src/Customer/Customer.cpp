@@ -19,10 +19,9 @@ int Customer::getMaxOrders() const {
     return maxOrders;
 };
 
-// ROTEM
-// int Customer::getNumOrders() const {
-//     return ordersId.size()
-// };
+int Customer::getNumOrders() const {
+    return ordersId.size();
+};
 
 bool Customer::canMakeOrder() const {
     if (maxOrders > ordersId.size()){
