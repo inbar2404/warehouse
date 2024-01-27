@@ -1,22 +1,28 @@
-# TODO: Check what written here
-CXX = g++
-CXXFLAGS = -g -Wall -Weffc++ -std=c++11
-SRCDIR = ./src
-BINDIR = ./bin
-INCLUDEDIR = -I./include
+# TODO: Take a look in the file
+CC = g++
+CFLAGS = -g -Wall -Weffc++ -std=c++11
+INC = -Iinclude
 
-SRC_FILES = $(wildcard $(SRCDIR)/*.cpp)
-OBJ_FILES = $(patsubst $(SRCDIR)/%.cpp,$(BINDIR)/%.o,$(SRC_FILES))
+# List of source files
+SOURCES = src/main.cpp src/WareHouse.cpp
 
-EXECUTABLE = warehouse
+# List of object files
+OBJECTS = obj/main.o obj/WareHouse.o
 
-all: clean $(EXECUTABLE)
+# Executable name
+EXECUTABLE = bin/warehouse
 
-$(EXECUTABLE): $(OBJ_FILES)
-	$(CXX) $(CXXFLAGS) -o $(BINDIR)/$@ $^
+# Targets
+all: $(EXECUTABLE)
 
-$(BINDIR)/%.o: $(SRCDIR)/%.cpp
-	$(CXX) $(CXXFLAGS) $(INCLUDEDIR) -c -o $@ $<
+$(EXECUTABLE): $(OBJECTS)
+    $(CC) $(CFLAGS) -o $@ $^
+
+obj/main.o: src/main.cpp
+    $(CC) $(CFLAGS) $(INC) -c -o $@ $<
+
+obj/WareHouse.o: src/WareHouse.cpp
+    $(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
 clean:
-	rm -f $(BINDIR)/*.o $(BINDIR)/$(EXECUTABLE)
+    rm -f $(OBJECTS) $(EXECUTABLE)
