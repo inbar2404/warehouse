@@ -6,7 +6,7 @@ using namespace std;
 SimulateStep::SimulateStep(int numOfSteps) : numOfSteps(numOfSteps) {};
     
 void SimulateStep::act(WareHouse &wareHouse) {
-    // TODO: Figure out if I can do that more efficiat
+    // TODO: Figure out if I can do that more efficiat + more important - make sure its work well
     // Execute step as the defined number of steps
     for (int currentStep = 0; currentStep < numOfSteps; ++currentStep) {
         // We first handle orders in process, then the pendings (otherwise peding will pass 2 steps at once) 
@@ -17,7 +17,9 @@ void SimulateStep::act(WareHouse &wareHouse) {
             driver.acceptOrder(*order);
             order->setDriverId(driver.getId());
             order->setStatus(OrderStatus::DELIVERING);
-            // TODO: Move orders' inProcess list (wareHouse parameter) - make sure that's correct
+            // In order to move order between lists, the action is actually a combination of remove and then add again
+            wareHouse.removeOrder(order);
+            wareHouse.addOrder(order);
         } 
         
         vector<Order*> pendingOrders = wareHouse.getPendingOrders();
@@ -27,14 +29,23 @@ void SimulateStep::act(WareHouse &wareHouse) {
             collector.acceptOrder(*order);
             order->setCollectorId(collector.getId()); 
             order->setStatus(OrderStatus::COLLECTING);
-            // TODO: Move orders' inProcess list (wareHouse parameter)
+            // In order to move order between lists, the action is actually a combination of remove and then add again
+            wareHouse.removeOrder(order);
+            wareHouse.addOrder(order);
         }
         
         vector<Volunteer*> volunteersInAction = wareHouse.getvolunteersInAction();
         for (Volunteer* &volunteer : volunteersInAction)
         {
             volunteer->step();
-            // TODO: If volunteer finish his process -> move to complete (also for collector? understand and update first comment)
+            // In case a volunteer finish working on an order - move to new list
+            if (volunteer->getActiveOrderId() == NO_ORDER)
+            {
+                Order order = wareHouse.getOrder(volunteer->getCompletedOrderId());
+                // In order to move order between lists, the action is actually a combination of remove and then add again
+                wareHouse.removeOrder(&order);
+                wareHouse.addOrder(&order);
+            }
         }
 
         // Delete volunteers that reach the max amount of orders

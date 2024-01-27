@@ -114,6 +114,12 @@ vector<Volunteer*>& WareHouse::getvolunteersInAction() const {
     return requetedVolunteers;
 };
 
+
+// TODO: Implement
+void WareHouse::removeOrder(Order* order) const {
+
+};
+
 // TODO: Implement
 void WareHouse::removeLimitedVolunteersReachingMax() const {};
 
