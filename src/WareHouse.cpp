@@ -255,66 +255,58 @@ void WareHouse::start()
          ss >> actionName;
 
          // TODO: Make sure all actions are here
-    //     if (actionName == "step")
-    //     {
-    //         int number_of_steps;
-    //         ss >> number_of_steps;
-    //         SimulateStep *step = new SimulateStep(number_of_steps);
-    //         step->act(*this);
-    //     }
-    //     else if (actionName == "order")
-    //     {
-    //         // TODO
-    //     }
-
-    //     else if (actionName == "customer")
-    //     {
-    //         // TODO
-    //     }
-
-    //     else if (actionName == "orderStatus")
-    //     {
-    //         // TODO
-    //     }
-
-    //     else if (actionName == "customerStatus")
-    //     {
-    //         // TODO
-    //     }
-
-    //     else if (actionName == "volunteerStatus")
-    //     {
-    //         // TODO
-    //     }
-
+        if (actionName == "step")
+        {
+            int number_of_steps;
+            ss >> number_of_steps;
+            SimulateStep *step = new SimulateStep(number_of_steps);
+            step->act(*this);
+        }
+        else if (actionName == "order")
+        {
+            // TODO
+        }
+        else if (actionName == "customer")
+        {
+            // TODO
+        }
+        else if (actionName == "orderStatus")
+        {
+            // TODO
+        }
+        else if (actionName == "customerStatus")
+        {
+            // TODO
+        }
+        else if (actionName == "volunteerStatus")
+        {
+            // TODO
+        }
     //     else if (actionName == "log")
     //     {
     //         // PrintActionsLog *log = new PrintActionsLog();
     //         // log->act(*this);
     //     }
-
-        if (actionName == "close")
+        else if (actionName == "close")
         {
             Close *close = new Close();
             close->act(*this);
         }
-
     //     else if (actionName == "backup")
     //     {
     //         // BackupWareHouse* backup = new BackupWareHouse();
     //         // backup->act(*this);
     //     }
-
     //     else if (actionName == "restore")
     //     {
     //         // RestoreWareHouse* restore = new RestoreWareHouse();
     //         // restore->act(*this);
     //     }
 
-    //     else
-    //     {
-    //         std::cout << "action doesn't exist" << std::endl;
-    //     }
+        else
+        {
+            std::cout << "action doesn't exist" << std::endl;
+        }
     }
 };
 
