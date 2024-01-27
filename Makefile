@@ -35,7 +35,9 @@ all: $(EXECUTABLE)
 $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(CFLAGS) -o $@ $^
 
+# Create subdirectories for object files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	$(shell mkdir -p $(@D))
 	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
 clean:

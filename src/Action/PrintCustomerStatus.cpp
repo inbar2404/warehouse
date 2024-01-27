@@ -1,17 +1,15 @@
 #include "../../include/Action.h" 
 
-PrintCustomerStatus::PrintCustomerStatus(string customerName, string customerType, int distance, int maxOrders)
-    : BaseAction() {};
+PrintCustomerStatus::PrintCustomerStatus(int customerId) : customerId(customerId){};
 
-PrintCustomerStatus *clone() const {
-// override(?)
+PrintCustomerStatus *PrintCustomerStatus::clone() const{
     return new PrintCustomerStatus(*this);
 };
 
-void PrintCustomerStatus::act(WareHouse &wareHouse) override () {
+void PrintCustomerStatus::act(WareHouse &wareHouse) {
 
 };
 
-string PrintCustomerStatus::toString() const override () {
+string PrintCustomerStatus::toString() const {
 
 };

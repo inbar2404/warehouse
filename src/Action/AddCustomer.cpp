@@ -1,20 +1,23 @@
 #include "../../include/Action.h" 
+#include "../../include/Customer.h" 
+#include <iostream>
 
-AddCustomer::AddCustomer(string customerName, string customerType, int distance, int maxOrders)
-    : BaseAction() {};
+AddCustomer::AddCustomer(std::string customerName, std::string customerType, int distance, int maxOrders)
+    : BaseAction(), customerName(customerName), distance(distance), maxOrders(maxOrders), customerType(customerType=="soldier"? CustomerType::Soldier : CustomerType::Civilian) {};
 
-AddCustomer *clone() const {
-// override(?)
+AddCustomer* AddCustomer::clone() const {
     return new AddCustomer(*this);
 };
 
-void AddCustomer::act(WareHouse &wareHouse) override () {
-    cin >>  customer <customer_name> <customer_type> <customer_distance> <max_orders>;
-    Customer NewCustomer = Customer(customerCounter,this->customerName, this->customerType, this->distance, this->maxOrders);
-    customerCounter ++;
-    Customers.push_back(NewCustomer);
-};
+// TODO: IMPLEMENT
+// void AddCustomer::act(WareHouse &wareHouse) {
+//     Customer newCustomer = Customer(customerCounter, customerName, customerType, distance, maxOrders);
+//     customerCounter++;
+//     wareHouse.addCustomer(newCustomer);
+// }
 
-string AddCustomer::toString() const override () {
-
-};
+// TODO: IMPLEMENT
+// std::string AddCustomer::toString() const {
+//     // Provide implementation for toString if needed
+//     return "";
+// }

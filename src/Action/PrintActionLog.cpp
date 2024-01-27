@@ -1,17 +1,15 @@
 #include "../../include/Action.h" 
 
-PrintActionsLog::PrintActionsLog(string customerName, string customerType, int distance, int maxOrders)
-    : BaseAction() {};
+PrintActionsLog::PrintActionsLog(){};
 
-PrintActionsLog *clone() const {
-// override(?)
+PrintActionsLog* PrintActionsLog:: clone() const{
     return new PrintActionsLog(*this);
 };
 
-void PrintActionsLog::act(WareHouse &wareHouse) override () {
+void PrintActionsLog::act(WareHouse &wareHouse) {
 
 };
 
-string PrintActionsLog::toString() const override () {
+string PrintActionsLog::toString() const {
 
 };

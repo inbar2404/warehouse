@@ -1,6 +1,7 @@
 #include "../../include/Action.h" 
 
-AddOrder::AddOrder(int id): BaseAction() {};
+AddOrder::AddOrder(int id):
+customerId(id){};
 
 AddOrder* AddOrder::clone() const {
     // override(?)
@@ -8,11 +9,11 @@ AddOrder* AddOrder::clone() const {
 };
 
 
-void AddOrder::act(WareHouse &wareHouse) override () {
+void AddOrder::act(WareHouse &wareHouse) {
     
-}
+};
 
-string AddOrder::toString() const override() {
+string AddOrder::toString() const {
 
 };
 

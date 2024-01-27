@@ -1,17 +1,15 @@
 #include "../../include/Action.h" 
 
-BackupWareHouse::BackupWareHouse(string customerName, string customerType, int distance, int maxOrders)
-    : BaseAction() {};
+BackupWareHouse:: BackupWareHouse(){};
 
-BackupWareHouse *clone() const {
-// override(?)
+BackupWareHouse* BackupWareHouse::clone() const{
     return new BackupWareHouse(*this);
 };
 
-void BackupWareHouse::act(WareHouse &wareHouse) override () {
+void BackupWareHouse::act(WareHouse &wareHouse) {
 
 };
 
-string BackupWareHouse::toString() const override () {
+string BackupWareHouse::toString() const {
 
 };
