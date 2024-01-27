@@ -20,8 +20,8 @@ $(shell mkdir -p $(BIN_DIR))
 SOURCES = $(wildcard $(SRC_DIR)/*.cpp) \
           $(wildcard $(SRC_DIR)/Customer/*.cpp) \
           $(wildcard $(SRC_DIR)/Volunteer/*.cpp) \
-		  $(wildcard $(SRC_DIR)/Order/*.cpp) \ 
-		  $(wildcard $(SRC_DIR)/Action/*.cpp)
+          $(wildcard $(SRC_DIR)/Action/*.cpp) \
+          $(wildcard $(SRC_DIR)/Order/*.cpp)
 
 # List of object files
 OBJECTS = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SOURCES))
