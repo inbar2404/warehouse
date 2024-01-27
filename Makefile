@@ -1,7 +1,7 @@
-# TODO: Check this file
+# TODO: Take a look in the file
 CC = g++
 CFLAGS = -g -Wall -Weffc++ -std=c++11
-INC = -Iinclude -Iinclude/Customer -Iinclude/Order -Iinclude/Volunteer
+INC = -Iinclude
 
 # Directories
 SRC_DIR = src
@@ -13,7 +13,7 @@ $(shell mkdir -p $(OBJ_DIR))
 $(shell mkdir -p $(BIN_DIR))
 
 # List of source files
-SOURCES = $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/Customer/*.cpp) $(wildcard $(SRC_DIR)/Order/*.cpp) $(wildcard $(SRC_DIR)/Volunteer/*.cpp)
+SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
 
 # List of object files
 OBJECTS = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SOURCES))

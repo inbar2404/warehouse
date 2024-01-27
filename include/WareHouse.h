@@ -10,6 +10,7 @@ using namespace std;
 
 class BaseAction;
 class Volunteer;
+class Order;
 
 // Warehouse responsible for Volunteers, Customers Actions, and Orders.
 
