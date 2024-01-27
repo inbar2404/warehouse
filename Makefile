@@ -1,5 +1,10 @@
+# Compiler
 CC = g++
+
+# Compiler flags
 CFLAGS = -g -Wall -Weffc++ -std=c++11
+
+# Include directory
 INC = -Iinclude
 
 # Directories
@@ -12,10 +17,14 @@ $(shell mkdir -p $(OBJ_DIR))
 $(shell mkdir -p $(BIN_DIR))
 
 # List of source files
-SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
+SOURCES = $(wildcard $(SRC_DIR)/*.cpp) \
+          $(wildcard $(SRC_DIR)/Customer/*.cpp) \
+          $(wildcard $(SRC_DIR)/Volunteer/*.cpp) \
+		  $(wildcard $(SRC_DIR)/Order/*.cpp) \ 
+		  $(wildcard $(SRC_DIR)/Action/*.cpp)
 
 # List of object files
-OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SOURCES))
+OBJECTS = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SOURCES))
 
 # Executable name
 EXECUTABLE = $(BIN_DIR)/warehouse
@@ -26,10 +35,7 @@ all: $(EXECUTABLE)
 $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(CFLAGS) -o $@ $^
 
-$(OBJ_DIR)/main.o: $(SRC_DIR)/main.cpp
-	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
-
-$(OBJ_DIR)/WareHouse.o: $(SRC_DIR)/WareHouse.cpp include/WareHouse.h
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
 clean:
