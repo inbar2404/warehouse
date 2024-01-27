@@ -1,11 +1,7 @@
-# Compiler
+# TODO: Check this file
 CC = g++
-
-# Compiler flags
 CFLAGS = -g -Wall -Weffc++ -std=c++11
-
-# Include directory
-INC = -Iinclude
+INC = -Iinclude -Iinclude/Customer -Iinclude/Order -Iinclude/Volunteer
 
 # Directories
 SRC_DIR = src
@@ -17,11 +13,7 @@ $(shell mkdir -p $(OBJ_DIR))
 $(shell mkdir -p $(BIN_DIR))
 
 # List of source files
-SOURCES = $(wildcard $(SRC_DIR)/*.cpp) \
-          $(wildcard $(SRC_DIR)/Customer/*.cpp) \
-          $(wildcard $(SRC_DIR)/Volunteer/*.cpp) \
-          $(wildcard $(SRC_DIR)/Action/*.cpp) \
-          $(wildcard $(SRC_DIR)/Order/*.cpp)
+SOURCES = $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/Customer/*.cpp) $(wildcard $(SRC_DIR)/Order/*.cpp) $(wildcard $(SRC_DIR)/Volunteer/*.cpp)
 
 # List of object files
 OBJECTS = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SOURCES))
@@ -35,9 +27,7 @@ all: $(EXECUTABLE)
 $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(CFLAGS) -o $@ $^
 
-# Create subdirectories for object files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	$(shell mkdir -p $(@D))
 	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
 clean:

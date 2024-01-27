@@ -227,9 +227,10 @@ WareHouse::~WareHouse() {
         delete action;
     }
 
-    delete defaultCustomer;
-    delete defaultVolunteer;
-    delete defaultOrder;
+    // TODO: Fix after everything compile
+    // delete defaultCustomer;
+    // delete defaultVolunteer;
+    // delete defaultOrder;
 
     pendingOrders.clear();
     inProcessOrders.clear();
@@ -239,8 +240,84 @@ WareHouse::~WareHouse() {
     actionsLog.clear();
 };
 
-// TODO: Implement
-void WareHouse::start() {};
+// TODO: Check this function better
+void WareHouse::start()
+{
+    open();
+    std::cout << "Warehouse is open!" << std::endl;
+
+    while (isOpen)
+    {
+        string actionName;
+        string input;
+
+        std::getline(std::cin, input);
+        std::stringstream ss(input);
+        ss >> actionName;
+
+        // TODO: Make sure all actions are here
+        if (actionName == "step")
+        {
+            int number_of_steps;
+            ss >> number_of_steps;
+            SimulateStep *step = new SimulateStep(number_of_steps);
+            step->act(*this);
+        }
+        else if (actionName == "order")
+        {
+            // TODO
+        }
+
+        else if (actionName == "customer")
+        {
+            // TODO
+        }
+
+        else if (actionName == "orderStatus")
+        {
+            // TODO
+        }
+
+        else if (actionName == "customerStatus")
+        {
+            // TODO
+        }
+
+        else if (actionName == "volunteerStatus")
+        {
+            // TODO
+        }
+
+        else if (actionName == "log")
+        {
+            // PrintActionsLog *log = new PrintActionsLog();
+            // log->act(*this);
+        }
+
+        else if (actionName == "close")
+        {
+            // Close *close = new Close();
+            // close->act(*this);
+        }
+
+        else if (actionName == "backup")
+        {
+            // BackupWareHouse* backup = new BackupWareHouse();
+            // backup->act(*this);
+        }
+
+        else if (actionName == "restore")
+        {
+            // RestoreWareHouse* restore = new RestoreWareHouse();
+            // restore->act(*this);
+        }
+
+        else
+        {
+            std::cout << "action doesn't exist" << std::endl;
+        }
+    }
+};
 
 void WareHouse::addOrder(Order* order) {
     // Check the order status and add the order to the correct vector
