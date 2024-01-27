@@ -17,14 +17,15 @@ int Customer::getCustomerDistance() const {
 
 int Customer::getMaxOrders() const {
     return maxOrders;
-}
-
-int Customer::getNumOrders() const {
-    return ordersId.size()
 };
 
+// ROTEM
+// int Customer::getNumOrders() const {
+//     return ordersId.size()
+// };
+
 bool Customer::canMakeOrder() const {
-    if (this.maxOrders > this.ordersId.size()){
+    if (maxOrders > ordersId.size()){
         return true;
     }
     return false;
@@ -34,10 +35,11 @@ const vector<int> &Customer :: getOrdersIds() const {
     return ordersId;
 };
 
-int Customer::addOrder(int orderId) {
-    if (){
-        Order(orderId,this.id,this.locationDistance);
-        return orderId;
-    }
-    return -1;
-};
+// ROTEM
+// int Customer::addOrder(int orderId) {
+//     if (){
+//         Order(orderId, id, locationDistance);
+//         return orderId;
+//     }
+//     return -1;
+// };
