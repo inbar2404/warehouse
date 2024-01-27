@@ -16,6 +16,14 @@ class WareHouse {
 
     public:
         WareHouse(const string &configFilePath);
+        
+        // Rule of 5 functions
+        WareHouse(const WareHouse &other);
+        WareHouse(WareHouse&& other);
+        WareHouse &operator=(const WareHouse &other);
+        WareHouse &operator=(WareHouse&& other);
+        ~WareHouse();
+
         void start();
         void addOrder(Order* order);
         void addAction(BaseAction* action);

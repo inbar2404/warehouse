@@ -4,10 +4,24 @@ using namespace std;
 #include <algorithm> // for std::remove
 
 
-// TODO: Dont forget to find out what is the rule of 5 and do rellvant implemantations
 WareHouse::WareHouse(const string &configFilePath) {
     // TODO: Read data from the config file and init objects by the given data
 };
+
+// TODO: Implement
+WareHouse::WareHouse(const WareHouse &other) {};
+
+// TODO: Implement
+WareHouse::WareHouse(WareHouse&& other) {};
+        
+// TODO: Implement
+WareHouse& WareHouse::operator=(const WareHouse &other) {};
+
+// TODO: Implement
+WareHouse& WareHouse::operator=(WareHouse&& other) {};
+
+// TODO: Implement
+WareHouse::~WareHouse() {};
 
 // TODO: Implement
 void WareHouse::start() {};
