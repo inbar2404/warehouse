@@ -1,6 +1,8 @@
 #include "../include/WareHouse.h" 
 #include <iostream>
 using namespace std;
+#include <algorithm> // for std::remove
+
 
 // TODO: Dont forget to find out what is the rule of 5 and do rellvant implemantations
 WareHouse::WareHouse(const string &configFilePath) {
@@ -85,6 +87,10 @@ void WareHouse::open() {
     cout << "Warehouse is open!" << endl;
 };
 
+const vector<Volunteer*>& WareHouse::getVolunteers() const {
+    return volunteers;
+};
+
 const vector<Order*>& WareHouse::getPendingOrders() const {
     return pendingOrders;
 };
@@ -114,17 +120,35 @@ vector<Volunteer*>& WareHouse::getvolunteersInAction() const {
     return requetedVolunteers;
 };
 
+// TODO: Think about better implementation for this function 
+void WareHouse::removeLimitedVolunteersReachingMax() {
+    vector<Volunteer*> volunteersToRemove;
+    for (Volunteer* volunteer : volunteers) {
+        if ((typeid(*volunteer) == typeid(LimitedDriverVolunteer) ||
+             typeid(*volunteer) == typeid(LimitedCollectorVolunteer)) &&
+            volunteer->hasOrdersLeft()) {
+            volunteersToRemove.push_back(volunteer);
+        }
+    }
 
-// TODO: Implement
-void WareHouse::removeOrder(Order* order) const {
-
+    for (Volunteer* volunteer : volunteersToRemove) {
+        volunteers.erase(remove(volunteers.begin(), volunteers.end(), volunteer), volunteers.end());
+    }
 };
 
-// TODO: Implement
-void WareHouse::removeLimitedVolunteersReachingMax() const {};
-
-// TODO: Implement
-CollectorVolunteer WareHouse::getAvailableCollector() const {};
-
-// TODO: Implement
-DriverVolunteer WareHouse::getAvailableDriver() const {};
+// TODO: Make this function better
+void WareHouse::removeFromList(Order* order, string listName) {
+    if (listName == "pending")
+    {
+        pendingOrders.erase(
+            std::remove(pendingOrders.begin(), pendingOrders.end(), order),
+            pendingOrders.end()
+        );
+    }
+    if (listName == "inProcess"){
+        inProcessOrders.erase(
+        std::remove(inProcessOrders.begin(), inProcessOrders.end(), order),
+        inProcessOrders.end()
+    );
+    }
+};

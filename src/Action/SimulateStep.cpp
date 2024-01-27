@@ -1,5 +1,6 @@
 #include "../../include/Action.h" 
 #include <vector>
+#include <typeinfo>
 using namespace std;
 
 
@@ -9,28 +10,41 @@ void SimulateStep::act(WareHouse &wareHouse) {
     // TODO: Figure out if I can do that more efficiat + more important - make sure its work well
     // Execute step as the defined number of steps
     for (int currentStep = 0; currentStep < numOfSteps; ++currentStep) {
+        // TODO: Make sure there is no order starvation (more details in the assignment)
         // We first handle orders in process, then the pendings (otherwise peding will pass 2 steps at once) 
         vector<Order*> inProcessOrders = wareHouse.getFinishCollectOrders();
         for (Order* &order : inProcessOrders) 
         {
-            DriverVolunteer driver = wareHouse.getAvailableDriver();
-            driver.acceptOrder(*order);
-            order->setDriverId(driver.getId());
+            // Look for an available driver
+            for(Volunteer* volunteer : wareHouse.getVolunteers()) {
+                if (((typeid(*volunteer) == typeid(LimitedDriverVolunteer)) || 
+                (typeid(*volunteer) == typeid(DriverVolunteer))) && 
+                volunteer->canTakeOrder(*order)) 
+                {
+                    volunteer->acceptOrder(*order);
+                    order->setDriverId(volunteer->getId());
+                }
+            }
             order->setStatus(OrderStatus::DELIVERING);
-            // In order to move order between lists, the action is actually a combination of remove and then add again
-            wareHouse.removeOrder(order);
-            wareHouse.addOrder(order);
+            // TODO: Find out if I should switch to a different list also here
         } 
         
         vector<Order*> pendingOrders = wareHouse.getPendingOrders();
         for (Order* &order : pendingOrders)
         {
-            CollectorVolunteer collector = wareHouse.getAvailableCollector();
-            collector.acceptOrder(*order);
-            order->setCollectorId(collector.getId()); 
+            // Look for an available collector
+            for(Volunteer* volunteer : wareHouse.getVolunteers()) {
+                if (((typeid(*volunteer) == typeid(LimitedCollectorVolunteer)) || 
+                (typeid(*volunteer) == typeid(CollectorVolunteer))) && 
+                volunteer->canTakeOrder(*order)) 
+                {
+                    volunteer->acceptOrder(*order);
+                    order->setCollectorId(volunteer->getId());
+                }
+            }
             order->setStatus(OrderStatus::COLLECTING);
             // In order to move order between lists, the action is actually a combination of remove and then add again
-            wareHouse.removeOrder(order);
+            wareHouse.removeFromList(order, "pending");
             wareHouse.addOrder(order);
         }
         
@@ -43,7 +57,7 @@ void SimulateStep::act(WareHouse &wareHouse) {
             {
                 Order order = wareHouse.getOrder(volunteer->getCompletedOrderId());
                 // In order to move order between lists, the action is actually a combination of remove and then add again
-                wareHouse.removeOrder(&order);
+                wareHouse.removeFromList(&order, "inProcess");
                 wareHouse.addOrder(&order);
             }
         }
