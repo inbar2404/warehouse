@@ -43,6 +43,7 @@ class WareHouse {
         void parseVolunteer(stringstream& ss);
         void parseConfigFile(ifstream& configFile);
         void parseCustomer(stringstream& ss);
+        int getnewid(string counterType); //return the relevant id by counter
 
     private:
         bool isOpen;
@@ -54,6 +55,7 @@ class WareHouse {
         vector<Customer*> customers;
         int customerCounter; //For assigning unique customer IDs
         int volunteerCounter; //For assigning unique volunteer IDs
+        int orderCounter;
         Customer *defaultCustomer; // default null customer
         Volunteer *defaultVolunteer; // default null volunteer
         Order *defaultOrder; // default null order

@@ -453,3 +453,23 @@ void WareHouse::removeFromList(Order* order, string listName) {
     );
     }
 };
+
+int &getnewid(string counterType) {
+    // int id;
+    // if (counterType == "customer"){
+    //     id = customerCounter;
+    //     customerCounter ++;
+    // }
+    // else if (counterType == "volunteer")
+    // {
+    //     id = volunteerCounter;
+    //     volunteerCounter ++;
+    // }
+    // else
+    // {
+    //     id = orderCounter;
+    //     orderCounter ++;
+    // }
+    // return id;
+};
+
