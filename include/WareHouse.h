@@ -40,6 +40,9 @@ class WareHouse {
         vector<Order*> getFinishCollectOrders() const; // Return volunteers from type collector that finis all steps
         void removeLimitedVolunteersReachingMax(); // Remove if reaching max and has no active action
         void removeFromList(Order* order, string listName);
+        void parseVolunteer(stringstream& ss);
+        void parseConfigFile(ifstream& configFile);
+        void parseCustomer(stringstream& ss);
 
     private:
         bool isOpen;

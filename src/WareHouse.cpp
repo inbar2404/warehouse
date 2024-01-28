@@ -7,15 +7,25 @@ using namespace std;
 #include <stdexcept> // For std::invalid_argument
 
 
-// TODO: Refactor required
 WareHouse::WareHouse(const string &configFilePath) {
     ifstream configFile(configFilePath);
 
-    // Check if file open as expected    
+    // Check if file open as expected
     if (!configFile.is_open()) {
-        throw std::invalid_argument("Unable to open the configuration file");
+        throw std::invalid_argument("Configuration file was not found");
     }
 
+    // Init counters
+    volunteerCounter = 0;
+    customerCounter = 0;
+
+    parseConfigFile(configFile);
+
+    configFile.close();
+}
+
+// TODO: If I have enough time - rename variables and move to a diffrent file (same for 2 next methods)
+void WareHouse::parseConfigFile(ifstream& configFile) {
     string line;
     while (getline(configFile, line)) {
         // Skip empty lines and comments
@@ -29,59 +39,64 @@ WareHouse::WareHouse(const string &configFilePath) {
         ss >> command;
 
         if (command == "customer") {
-            // Parse customer details
-            string customerName, customerTypeStr;
-            int distance, maxOrders;
-
-            ss >> customerName >> customerTypeStr >> distance >> maxOrders;
-
-            // Convert customerTypeStr to CustomerType enum
-            CustomerType customerType;
-            if (customerTypeStr == "soldier") {
-                customerType = CustomerType::Soldier;
-                customers.push_back(new SoldierCustomer(customerCounter, customerName, distance, maxOrders));
-            } else if (customerTypeStr == "civilian") {
-                customerType = CustomerType::Civilian;
-                customers.push_back(new CivilianCustomer(customerCounter, customerName, distance, maxOrders));
-            } else {
-                throw std::invalid_argument("Invalid customer type");
-            }
-            customerCounter ++; // Add one to the customer counter
+            parseCustomer(ss);
         } else if (command == "volunteer") {
-            string volunteerName, volunteerRole;
-            int coolDown, maxDistance, distancePerStep, maxOrders;
-
-            ss >> volunteerName >> volunteerRole >> coolDown;
-
-            if (volunteerRole == "driver" || volunteerRole == "limited_driver") {
-                // For drivers, parse additional parameters
-                ss >> maxDistance >> distancePerStep;
-            }
-
-            // For both collector and driver, parse maxOrders if provided
-            if (!(ss >> maxOrders)) {
-                maxOrders = -1; // Unlimited if not provided
-            }
-
-            if (volunteerRole == "collector") {
-                volunteers.push_back(new CollectorVolunteer(volunteerCounter, volunteerName, coolDown));
-            } else if (volunteerRole == "limited_collector") {
-                volunteers.push_back(new LimitedCollectorVolunteer(volunteerCounter, volunteerName, coolDown, maxOrders));
-            } else if (volunteerRole == "driver") {
-                volunteers.push_back(new DriverVolunteer(volunteerCounter, volunteerName, maxDistance, distancePerStep));
-            } else if (volunteerRole == "limited_driver") {
-                volunteers.push_back(new LimitedDriverVolunteer(volunteerCounter, volunteerName, maxDistance, distancePerStep, maxOrders));
-            } else {
-                throw std::invalid_argument("Invalid volunteer role");
-            }
-            volunteerCounter++;
+            parseVolunteer(ss);
         } else {
-            throw std::invalid_argument("Invalid command in the configuration file");
+            throw std::invalid_argument("Unkown command");
         }
     }
+}
 
-    configFile.close();
-};
+void WareHouse::parseCustomer(stringstream& ss) {
+    string customerName, customerTypeStr;
+    int distance, maxOrders;
+
+    ss >> customerName >> customerTypeStr >> distance >> maxOrders;
+
+    // Convert customerTypeStr to CustomerType enum
+    CustomerType customerType;
+    if (customerTypeStr == "soldier") {
+        customerType = CustomerType::Soldier;
+        customers.push_back(new SoldierCustomer(customerCounter, customerName, distance, maxOrders));
+    } else if (customerTypeStr == "civilian") {
+        customerType = CustomerType::Civilian;
+        customers.push_back(new CivilianCustomer(customerCounter, customerName, distance, maxOrders));
+    } else {
+        throw std::invalid_argument("Invalid customer type");
+    }
+    customerCounter++; // Add one to the customer counter
+}
+
+void WareHouse::parseVolunteer(stringstream& ss) {
+    string volunteerName, volunteerRole;
+    int coolDown, maxDistance, distancePerStep, maxOrders;
+
+    ss >> volunteerName >> volunteerRole >> coolDown;
+
+    if (volunteerRole == "driver" || volunteerRole == "limited_driver") {
+        // For drivers, parse additional parameters
+        ss >> maxDistance >> distancePerStep;
+    }
+
+    // For both collector and driver, parse maxOrders if provided
+    if (!(ss >> maxOrders)) {
+        maxOrders = -1; // Unlimited if not provided
+    }
+
+    if (volunteerRole == "collector") {
+        volunteers.push_back(new CollectorVolunteer(volunteerCounter, volunteerName, coolDown));
+    } else if (volunteerRole == "limited_collector") {
+        volunteers.push_back(new LimitedCollectorVolunteer(volunteerCounter, volunteerName, coolDown, maxOrders));
+    } else if (volunteerRole == "driver") {
+        volunteers.push_back(new DriverVolunteer(volunteerCounter, volunteerName, maxDistance, distancePerStep));
+    } else if (volunteerRole == "limited_driver") {
+        volunteers.push_back(new LimitedDriverVolunteer(volunteerCounter, volunteerName, maxDistance, distancePerStep, maxOrders));
+    } else {
+        throw std::invalid_argument("Invalid volunteer role");
+    }
+    volunteerCounter++; // Add one to the volunteer counter
+}
 
 WareHouse::WareHouse(const WareHouse &other)
     : isOpen(other.isOpen), customerCounter(other.customerCounter),
