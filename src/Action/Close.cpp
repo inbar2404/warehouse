@@ -2,7 +2,7 @@
 #include <sstream>
 #include <iostream>
 
-// TODO: Check this file
+// ROTEM
 Close::Close() {}
 
 void Close::act(WareHouse &wareHouse)

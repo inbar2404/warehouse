@@ -9,14 +9,14 @@ AddCustomer* AddCustomer::clone() const {
     return new AddCustomer(*this);
 };
 
-// TODO: IMPLEMENT
+// ROTEM
 void AddCustomer::act(WareHouse &wareHouse) {
     // Customer newCustomer = Customer(customerCounter, customerName, customerType, distance, maxOrders);
     // customerCounter++;
     // wareHouse.addCustomer(newCustomer);
 };
 
-// TODO: IMPLEMENT
+// ROTEM
 std::string AddCustomer::toString() const {
     // Provide implementation for toString if needed
     return "";

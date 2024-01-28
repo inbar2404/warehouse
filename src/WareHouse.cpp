@@ -254,7 +254,6 @@ WareHouse::~WareHouse() {
     actionsLog.clear();
 };
 
-// TODO: Check this function better
 void WareHouse::start()
 {
     open();
@@ -269,7 +268,6 @@ void WareHouse::start()
          std::stringstream ss(input);
          ss >> actionName;
 
-         // TODO: Make sure all actions are here
         if (actionName == "step")
         {
             int number_of_steps;
@@ -297,27 +295,29 @@ void WareHouse::start()
         {
             // TODO
         }
-    //     else if (actionName == "log")
-    //     {
-    //         // PrintActionsLog *log = new PrintActionsLog();
-    //         // log->act(*this);
-    //     }
+        else if (actionName == "log")
+        {
+            // TODO
+            // PrintActionsLog *log = new PrintActionsLog();
+            // log->act(*this);
+        }
         else if (actionName == "close")
         {
             Close *close = new Close();
             close->act(*this);
         }
-    //     else if (actionName == "backup")
-    //     {
-    //         // BackupWareHouse* backup = new BackupWareHouse();
-    //         // backup->act(*this);
-    //     }
-    //     else if (actionName == "restore")
-    //     {
-    //         // RestoreWareHouse* restore = new RestoreWareHouse();
-    //         // restore->act(*this);
-    //     }
-
+        else if (actionName == "backup")
+        {
+            // TODO
+            // BackupWareHouse* backup = new BackupWareHouse();
+            // backup->act(*this);
+        }
+        else if (actionName == "restore")
+        {
+            // TODO
+            // RestoreWareHouse* restore = new RestoreWareHouse();
+            // restore->act(*this);
+        }
         else
         {
             std::cout << "action doesn't exist" << std::endl;
@@ -438,7 +438,6 @@ void WareHouse::removeLimitedVolunteersReachingMax() {
     }
 };
 
-// TODO: Make this function better
 void WareHouse::removeFromList(Order* order, string listName) {
     if (listName == "pending")
     {

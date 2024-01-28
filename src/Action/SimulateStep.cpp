@@ -7,7 +7,6 @@ using namespace std;
 SimulateStep::SimulateStep(int numOfSteps) : numOfSteps(numOfSteps) {};
     
 void SimulateStep::act(WareHouse &wareHouse) {
-    // TODO: Figure out if I can do that more efficiat + more important - make sure its work well
     // Execute step as the defined number of steps
     for (int currentStep = 0; currentStep < numOfSteps; ++currentStep) {
         // TODO: Make sure there is no order starvation (more details in the assignment)
