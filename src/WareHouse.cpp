@@ -459,22 +459,29 @@ void WareHouse::removeFromList(Order* order, string listName) {
     }
 };
 
-// int& wareHouse::getnewid(string counterType) const {
-//     // int id;
-//     // if (counterType == "customer"){
-//     //     id = customerCounter;
-//     //     customerCounter ++;
-//     // }
-//     // else if (counterType == "volunteer")
-//     // {
-//     //     id = volunteerCounter;
-//     //     volunteerCounter ++;
-//     // }
-//     // else
-//     // {
-//     //     id = orderCounter;
-//     //     orderCounter ++;
-//     // }
-//     // return id;
+// int WareHouse::getnewid(string counterType) const {
+//     int id;
+//     if (counterType == "customer"){
+//         id = customerCounter;
+//         customerCounter = customerCounter +1;
+//     }
+//     else if (counterType == "volunteer")
+//     {
+//         id = volunteerCounter;
+//         volunteerCounter ++;
+//     }
+//     else
+//     {
+//         id = orderCounter;
+//         orderCounter ++;
+//     }
+//     return id;
 // };
+
+bool WareHouse::isCustomerExsist(int customerId) const{
+    if (customerId < this->customerCounter){
+        return true;
+    }
+    return false;
+};
 

@@ -43,7 +43,8 @@ class WareHouse {
         void parseVolunteer(stringstream& ss);
         void parseConfigFile(ifstream& configFile);
         void parseCustomer(stringstream& ss);
-        int getnewid(string counterType); //return the relevant id by counter
+        // int getnewid(string counterType) const; //return the relevant id by counter
+        bool isCustomerExsist(int customerId) const;
 
     private:
         bool isOpen;
