@@ -18,6 +18,7 @@ WareHouse::WareHouse(const string &configFilePath) {
     // Init counters
     volunteerCounter = 0;
     customerCounter = 0;
+    orderCounter = 0;
 
     parseConfigFile(configFile);
 
@@ -100,7 +101,7 @@ void WareHouse::parseVolunteer(stringstream& ss) {
 
 WareHouse::WareHouse(const WareHouse &other)
     : isOpen(other.isOpen), customerCounter(other.customerCounter),
-      volunteerCounter(other.volunteerCounter), defaultCustomer(nullptr),
+      volunteerCounter(other.volunteerCounter),orderCounter(other.orderCounter), defaultCustomer(nullptr),
       defaultVolunteer(nullptr), defaultOrder(nullptr) {
 
     for (const Customer* customer : other.customers) {
@@ -161,6 +162,7 @@ WareHouse::WareHouse(WareHouse&& other) {
     isOpen = other.isOpen;
     customerCounter = other.customerCounter;
     volunteerCounter = other.volunteerCounter;
+    orderCounter = other.orderCounter;
 
     other.pendingOrders.clear();
     other.inProcessOrders.clear();
@@ -186,6 +188,7 @@ WareHouse& WareHouse::operator=(const WareHouse &other) {
         isOpen = other.isOpen;
         customerCounter = other.customerCounter;
         volunteerCounter = other.volunteerCounter;
+        orderCounter = other.orderCounter;
     }
 
     return *this;
@@ -212,10 +215,12 @@ WareHouse& WareHouse::operator=(WareHouse&& other) {
         isOpen = other.isOpen;
         customerCounter = other.customerCounter;
         volunteerCounter = other.volunteerCounter;
+        orderCounter = other.orderCounter;
 
         other.isOpen = false;
         other.customerCounter = 0;
         other.volunteerCounter = 0;
+        other.orderCounter = 0;
     }
 
     return *this;
@@ -454,22 +459,22 @@ void WareHouse::removeFromList(Order* order, string listName) {
     }
 };
 
-int &getnewid(string counterType) {
-    // int id;
-    // if (counterType == "customer"){
-    //     id = customerCounter;
-    //     customerCounter ++;
-    // }
-    // else if (counterType == "volunteer")
-    // {
-    //     id = volunteerCounter;
-    //     volunteerCounter ++;
-    // }
-    // else
-    // {
-    //     id = orderCounter;
-    //     orderCounter ++;
-    // }
-    // return id;
-};
+// int& wareHouse::getnewid(string counterType) const {
+//     // int id;
+//     // if (counterType == "customer"){
+//     //     id = customerCounter;
+//     //     customerCounter ++;
+//     // }
+//     // else if (counterType == "volunteer")
+//     // {
+//     //     id = volunteerCounter;
+//     //     volunteerCounter ++;
+//     // }
+//     // else
+//     // {
+//     //     id = orderCounter;
+//     //     orderCounter ++;
+//     // }
+//     // return id;
+// };
 

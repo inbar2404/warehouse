@@ -40,9 +40,35 @@ OrderStatus Order::getStatus() const {
     return status;
 };
 
-// ROTEM
+string Order::StatusStr() const
+{
+    string StrStatus = "";
+    if(status == OrderStatus::PENDING){
+        StrStatus = "Pending";
+    }
+    else if(status == OrderStatus::COLLECTING){
+        StrStatus = "Collecting";
+    }
+    else if(status == OrderStatus::DELIVERING){
+        StrStatus = "Delivering";
+    }
+    else if(status == OrderStatus::COMPLETED){
+        StrStatus = "Completed";
+    }
+    return StrStatus;
+};
+
 const string Order::toString() const {
-    return "";
+    string S = StatusStr();
+    string collectorIdStr = std::to_string(collectorId);
+    string driverIdStr = std::to_string(driverId);
+    if (collectorId==NO_VOLUNTEER){
+        collectorIdStr = "None";
+    }
+    if (driverId==NO_VOLUNTEER){
+        driverIdStr = "None";
+    }
+    return  "Order: " + std::to_string(id) + " " + S + " " + std::to_string(customerId) + " " + collectorIdStr + " " + driverIdStr;
 };
 
 Order* Order::clone() const {

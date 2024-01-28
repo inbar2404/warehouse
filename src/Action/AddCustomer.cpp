@@ -11,8 +11,8 @@ AddCustomer* AddCustomer::clone() const {
 
 // ROTEM
 void AddCustomer::act(WareHouse &wareHouse) {
-    // int counter = wareHouse.customerCounter;
-    // Customer newCustomer = Customer(counter, customerName, customerType, distance, maxOrders);
+    // int counter = wareHouse.getnewid("customer");
+    // Customer newCustomer = new Customer(counter, customerName, customerType, distance, maxOrders);
     // customerCounter++;
     // wareHouse.addCustomer(newCustomer);
 };
