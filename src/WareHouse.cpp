@@ -16,7 +16,6 @@ WareHouse::WareHouse(const string &configFilePath) {
     }
 
     // Init counters
-    // TODO: Check if it should starts from 0 or 1 - look in the instructions
     volunteerCounter = 0;
     customerCounter = 0;
     orderCounter = 0;
@@ -70,7 +69,7 @@ void WareHouse::parseCustomer(stringstream& ss) {
     customerCounter++; // Add one to the customer counter
 }
 
-// TODO: Should I handle cases that I recive unvalid input? (for example regullar collector get maxOrders)
+// TODO: Check: Should I handle cases that I recive unvalid input? (for example regullar collector get maxOrders)
 void WareHouse::parseVolunteer(stringstream& ss) {
     string volunteerName, volunteerRole;
     int coolDown, maxDistance, distancePerStep, maxOrders;
@@ -95,6 +94,7 @@ void WareHouse::parseVolunteer(stringstream& ss) {
     volunteerCounter++; // Add one to the volunteer counter
 }
 
+// TODO: Check that the functions belong to the rule of 5 works well (find a way to do that) 
 WareHouse::WareHouse(const WareHouse &other)
     : isOpen(other.isOpen), customerCounter(other.customerCounter),
       volunteerCounter(other.volunteerCounter), defaultCustomer(nullptr),
@@ -137,7 +137,7 @@ WareHouse::WareHouse(const WareHouse &other)
     }
 };
 
-// TODO: Check this method with another resource
+// TODO: Compare this method with another resource
 WareHouse::WareHouse(WareHouse&& other) {
     pendingOrders = std::move(other.pendingOrders);
     inProcessOrders = std::move(other.inProcessOrders);
@@ -238,10 +238,9 @@ WareHouse::~WareHouse() {
         delete action;
     }
 
-    // TODO: Fix after everything compile
-    // delete defaultCustomer;
-    // delete defaultVolunteer;
-    // delete defaultOrder;
+    delete defaultCustomer;
+    delete defaultVolunteer;
+    delete defaultOrder;
 
     pendingOrders.clear();
     inProcessOrders.clear();
@@ -251,7 +250,6 @@ WareHouse::~WareHouse() {
     actionsLog.clear();
 };
 
-// TODO: Find out if I need to add space line between actions' print
 void WareHouse::start()
 {
     open();
@@ -436,7 +434,7 @@ vector<Order*> WareHouse::getFinishCollectOrders() const {
     return requetedOrders;
 };
 
-// TODO: Think about better implementation for this function 
+// TODO: Check edge cases that it is not delete someone before time
 void WareHouse::removeLimitedVolunteersReachingMax() {
     vector<Volunteer*> volunteersToRemove;
     for (Volunteer* volunteer : volunteers) {
@@ -488,7 +486,7 @@ int WareHouse::getNewId(string counterType) {
         id = volunteerCounter;
         volunteerCounter++;
     }
-    else // TODO: ROTEM - Handle case diffrent when order and when something else then the above
+    else if(counterType == "order")
     {
         id = orderCounter;
         orderCounter++;
@@ -496,21 +494,6 @@ int WareHouse::getNewId(string counterType) {
     return id;
 };
 
-// TODO: ROTEM - I think it can be deleted
-// bool WareHouse::isCustomerExist(int customerId) const{
-//     if (customerId < this->customerCounter){
-//         return true;
-//     }
-//     return false;
-// };
-
-// TODO: ROTEM - SAME
-// bool WareHouse::isVolunteerExist(int volunteerId) const{
-//     if (volunteerId < this->volunteerCounter){
-//         return true;
-//     }
-//     return false;
-// };
 
 // ROTEM
 // void WareHouse::printAction() const{

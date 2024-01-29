@@ -33,7 +33,5 @@ void LimitedDriverVolunteer::acceptOrder(const Order &order) {
 };
 
 string LimitedDriverVolunteer::toString() const {
-    // Using the string from the base class
-    string baseString = DriverVolunteer::toString();
-    return baseString + " " + to_string(maxOrders);
+    return DriverVolunteer::toString() + "\nordersLeft: " + to_string(ordersLeft);
 };

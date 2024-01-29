@@ -44,14 +44,11 @@ class WareHouse {
         void parseVolunteer(stringstream& ss);
         void parseConfigFile(ifstream& configFile);
         void parseCustomer(stringstream& ss);
-        //bool isCustomerExist(int customerId) const;
-        // bool isVolunteerExist(int volunteerId) const;
-        int getNewId(string counterType); //return the relevant id by counter
+        int getNewId(string counterType); // Return the relevant id by counter
         // void printAction() const;
-        // TODO: Check the default I put here are ok
-        Customer *defaultCustomer; // default null customer
-        Volunteer *defaultVolunteer; // default null volunteer
-        Order *defaultOrder; // default null order
+        Customer *defaultCustomer; // Default null customer
+        Volunteer *defaultVolunteer; // Default null volunteer
+        Order *defaultOrder; // Default null order
 
     private:
         bool isOpen;
@@ -61,7 +58,7 @@ class WareHouse {
         vector<Order*> inProcessOrders;
         vector<Order*> completedOrders;
         vector<Customer*> customers;
-        int customerCounter; //For assigning unique customer IDs
-        int volunteerCounter; //For assigning unique volunteer IDs
-        int orderCounter; //For assigning unique volunteer IDs
+        int customerCounter; // For assigning unique customer IDs
+        int volunteerCounter; // For assigning unique volunteer IDs
+        int orderCounter; // For assigning unique volunteer IDs
 };

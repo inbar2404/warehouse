@@ -48,5 +48,10 @@ void DriverVolunteer::step() {
 };
 
 string DriverVolunteer::toString() const {
-    return "volunteer " + getName() + " driver " + to_string(maxDistance) + " " + to_string(distancePerStep);
+    string busyStatus = "False";
+    if(isBusy()){
+        busyStatus = "True";
+    }
+    return "VolunteerID: " + std::to_string(getId()) + "\nisBusy: " + busyStatus + "\nOrderId: " 
+    + std::to_string(activeOrderId) + "\ndistanceLeft: " + std::to_string(getDistanceLeft());
 };

@@ -8,9 +8,9 @@ void Close::act(WareHouse &wareHouse)
 {
     std::stringstream str;
     std::cout << str.str();
-    //close the warehouse and exit main loop
-    wareHouse.close();
-    //this->setStatus(ActionStatus::COMPLETED); // ROTEM
+    wareHouse.close(); //close the warehouse and exit main loop
+    complete();
+    // ROTEM: Should you add action?
 }
 
 Close *Close::clone() const
@@ -20,5 +20,6 @@ Close *Close::clone() const
 
 string Close::toString() const
 {
+    // ROTEM: I think you should print all orders' logs (look at the running example) -> ant to call it from the act?
     return "close COMPLETED";
 }

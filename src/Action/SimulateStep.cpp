@@ -10,6 +10,7 @@ void SimulateStep::act(WareHouse &wareHouse) {
     // Execute step as the defined number of steps
     for (int currentStep = 0; currentStep < numOfSteps; ++currentStep) {
         // TODO: Make sure there is no order starvation (more details in the assignment)
+        // TODO: Check an example when the order matter and try to check if it work as expected
         // We first handle orders in process, then the pendings (otherwise peding will pass 2 steps at once) 
         vector<Order*> inProcessOrders = wareHouse.getFinishCollectOrders();
         for (Order* &order : inProcessOrders) 
@@ -25,8 +26,8 @@ void SimulateStep::act(WareHouse &wareHouse) {
                     break;
                 }
             }
+            // TODO: Check: Is it work in a case no driver is free? Should I return him to pending in this state?
             order->setStatus(OrderStatus::DELIVERING);
-            // TODO: Find out if I should switch to a different list also here
         } 
         
         vector<Order*> pendingOrders = wareHouse.getPendingOrders();
@@ -52,8 +53,7 @@ void SimulateStep::act(WareHouse &wareHouse) {
         vector<Volunteer*> volunteersInAction;
         for (Volunteer* volunteer : wareHouse.getVolunteers())
         {
-            // TODO: Find out if thats the accurate required check -> I think it should be with isBusy (check examples in gitHub)
-            if (volunteer->getActiveOrderId() != NO_ORDER && volunteer->getActiveOrderId() != volunteer->getCompletedOrderId()){
+            if (volunteer->isBusy()){
                 volunteersInAction.push_back(volunteer);
             }
         }

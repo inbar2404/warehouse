@@ -1,6 +1,6 @@
-# TODO: Check this file
+# TODO: refactor this file?
 # Compiler
-CC = g++
+COM = g++
 # Compiler flags
 CFLAGS = -g -Wall -Weffc++ -std=c++11
 # Include directory
