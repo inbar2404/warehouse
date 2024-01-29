@@ -19,3 +19,8 @@ void BaseAction::error(string errorMsg) {
 string BaseAction::getErrorMsg() const {
     return errorMsg;
 };
+
+// ActionStatus BaseAction::setStatus(ActionStatus newstatus)
+// {
+//     this->status = newstatus;
+// };

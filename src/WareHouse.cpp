@@ -18,7 +18,7 @@ WareHouse::WareHouse(const string &configFilePath) {
     // Init counters
     volunteerCounter = 0;
     customerCounter = 0;
-    OrderCounter = 0;
+    //OrderCounter = 0;
 
     parseConfigFile(configFile);
 
@@ -454,3 +454,43 @@ void WareHouse::removeFromList(Order* order, string listName) {
     );
     }
 };
+
+// int& WareHouse::getnewid(string counterType) const {
+//     int id;
+//     if (counterType == "customer"){
+//         id = this.customerCounter;
+//         this.customerCounter = this.customerCounter +1;
+//     }
+//     else if (counterType == "volunteer")
+//     {
+//         id = volunteerCounter;
+//         volunteerCounter ++;
+//     }
+//     else
+//     {
+//         id = orderCounter;
+//         orderCounter ++;
+//     }
+//     return id;
+// };
+
+// bool WareHouse::isCustomerExist(int customerId) const{
+//     if (customerId < this->customerCounter){
+//         return true;
+//     }
+//     return false;
+// };
+
+// bool WareHouse::isVolunteerExist(int volunteerId) const{
+//     if (volunteerId < this->volunteerCounter){
+//         return true;
+//     }
+//     return false;
+// };
+
+// ROTEM
+// void WareHouse::printAction() const{
+//     for (){
+
+//     }
+// };

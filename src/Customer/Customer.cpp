@@ -42,3 +42,7 @@ const vector<int> &Customer :: getOrdersIds() const {
 //     }
 //     return -1;
 // };
+
+// int Customer::getOrdersLeft() const{
+//     return maxOrders - ordersId.size();
+// };
