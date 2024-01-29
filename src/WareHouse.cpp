@@ -18,6 +18,7 @@ WareHouse::WareHouse(const string &configFilePath) {
     // Init counters
     volunteerCounter = 0;
     customerCounter = 0;
+    OrderCounter = 0;
 
     parseConfigFile(configFile);
 
@@ -100,7 +101,7 @@ void WareHouse::parseVolunteer(stringstream& ss) {
 
 WareHouse::WareHouse(const WareHouse &other)
     : isOpen(other.isOpen), customerCounter(other.customerCounter),
-      volunteerCounter(other.volunteerCounter), defaultCustomer(nullptr),
+      volunteerCounter(other.volunteerCounter), OrderCounter(other.OrderCounter), defaultCustomer(nullptr),
       defaultVolunteer(nullptr), defaultOrder(nullptr) {
 
     for (const Customer* customer : other.customers) {
@@ -161,6 +162,7 @@ WareHouse::WareHouse(WareHouse&& other) {
     isOpen = other.isOpen;
     customerCounter = other.customerCounter;
     volunteerCounter = other.volunteerCounter;
+    OrderCounter = other.OrderCounter;
 
     other.pendingOrders.clear();
     other.inProcessOrders.clear();
@@ -186,6 +188,7 @@ WareHouse& WareHouse::operator=(const WareHouse &other) {
         isOpen = other.isOpen;
         customerCounter = other.customerCounter;
         volunteerCounter = other.volunteerCounter;
+        OrderCounter = other.OrderCounter;
     }
 
     return *this;
@@ -212,10 +215,12 @@ WareHouse& WareHouse::operator=(WareHouse&& other) {
         isOpen = other.isOpen;
         customerCounter = other.customerCounter;
         volunteerCounter = other.volunteerCounter;
+        OrderCounter = other.OrderCounter;
 
         other.isOpen = false;
         other.customerCounter = 0;
         other.volunteerCounter = 0;
+        other.OrderCounter = 0;
     }
 
     return *this;
@@ -453,3 +458,17 @@ void WareHouse::removeFromList(Order* order, string listName) {
     );
     }
 };
+
+bool WareHouse::isCustomerExist(int customerId) const {
+    if(customerId < customerCounter){
+        return true;
+    }
+    return false;
+};
+
+int WareHouse::newOrderId() const {
+    int id = OrderCounter;
+    OrderCounter = OrderCounter +1;
+    return id;
+
+}

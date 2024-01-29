@@ -19,5 +19,5 @@ void AddCustomer::act(WareHouse &wareHouse) {
 // ROTEM
 std::string AddCustomer::toString() const {
     // Provide implementation for toString if needed
-    return "";
+    return "customer: " ;
 };
