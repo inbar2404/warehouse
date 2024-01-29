@@ -45,6 +45,7 @@ class WareHouse {
         void parseCustomer(stringstream& ss);
         bool isCustomerExist(int customerId) const;
         int newOrderId() const;
+        // int getnewid(string counterType) const; //return the relevant id by counter
 
     private:
         bool isOpen;
