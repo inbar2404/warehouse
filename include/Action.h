@@ -102,7 +102,7 @@ class PrintVolunteerStatus : public BaseAction {
         PrintVolunteerStatus *clone() const override;
         string toString() const override;
     private:
-        const int VolunteerId;
+        const int volunteerId;
 };
 
 

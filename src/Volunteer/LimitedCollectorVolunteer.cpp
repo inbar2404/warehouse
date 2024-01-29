@@ -33,7 +33,5 @@ int LimitedCollectorVolunteer::getNumOrdersLeft() const {
 };
 
 string LimitedCollectorVolunteer::toString() const {
-    // Using the string from the base class
-    string baseString = CollectorVolunteer::toString();
-    return baseString + " " + to_string(maxOrders);
+    return CollectorVolunteer::toString() + "\nordersLeft: " + to_string(ordersLeft);
 };

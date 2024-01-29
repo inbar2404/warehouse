@@ -9,9 +9,9 @@ CollectorVolunteer* CollectorVolunteer::clone() const {
 };
 
 void CollectorVolunteer::step() {
-    decreaseCoolDown();
     // In case order is finished - update the completeOrderId parameter
-    if (timeLeft == 0){
+    if (decreaseCoolDown())
+    {
         completedOrderId = activeOrderId;
         activeOrderId = NO_ORDER;
     }
@@ -46,5 +46,10 @@ void CollectorVolunteer::acceptOrder(const Order &order) {
 };
 
 string CollectorVolunteer::toString() const {
-    return "volunteer " + getName() + " collector, Time Left: " + std::to_string(getTimeLeft());
+    string busyStatus = "False";
+    if(isBusy()){
+        busyStatus = "True";
+    }
+    return "VolunteerID: " + std::to_string(getId()) + "\nisBusy: " + busyStatus + "\nOrderId: " 
+    + std::to_string(activeOrderId) + "\ntimeLeft: " + std::to_string(getTimeLeft());
 };

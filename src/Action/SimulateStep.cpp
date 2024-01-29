@@ -22,6 +22,7 @@ void SimulateStep::act(WareHouse &wareHouse) {
                 {
                     volunteer->acceptOrder(*order);
                     order->setDriverId(volunteer->getId());
+                    break;
                 }
             }
             order->setStatus(OrderStatus::DELIVERING);
@@ -39,6 +40,7 @@ void SimulateStep::act(WareHouse &wareHouse) {
                 {
                     volunteer->acceptOrder(*order);
                     order->setCollectorId(volunteer->getId());
+                    break;
                 }
             }
             order->setStatus(OrderStatus::COLLECTING);
@@ -62,10 +64,15 @@ void SimulateStep::act(WareHouse &wareHouse) {
             // In case a volunteer finish working on an order - move to new list
             if (volunteer->getActiveOrderId() == NO_ORDER)
             {
-                Order order = wareHouse.getOrder(volunteer->getCompletedOrderId());
+                Order* order = wareHouse.getOrderPointer(volunteer->getCompletedOrderId());
                 // In order to move order between lists, the action is actually a combination of remove and then add again
-                wareHouse.removeFromList(&order, "inProcess");
-                wareHouse.addOrder(&order);
+                wareHouse.removeFromList(order, "inProcess");
+                wareHouse.addOrder(order);
+                // Update order status
+                if(order->getStatus()==OrderStatus::DELIVERING)
+                {
+                    order->setStatus(OrderStatus::COMPLETED);
+                }
             }
         }
 

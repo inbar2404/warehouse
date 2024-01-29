@@ -26,7 +26,7 @@ AddOrder* AddOrder::clone() const {
 
 void AddOrder::act(WareHouse &wareHouse) {
     Customer *customer = &wareHouse.getCustomer(customerId);
-    if (customer==wareHouse.defaultCustomer) //  Handle a case customer was not found 
+    if (customer==wareHouse.defaultCustomer || !customer->canMakeOrder()) //  Handle a case customer was not found 
     {
         error("Cannot place this order");
         std::cout << "Error: " + getErrorMsg() << endl;
@@ -34,12 +34,6 @@ void AddOrder::act(WareHouse &wareHouse) {
     }
     else
     {
-        if (!customer->canMakeOrder())
-        {
-           error("Cannot place this order");
-           std::cout << "Error: " + getErrorMsg() << endl;
-           //this->setStatus(ActionStatus::ERROR); // ROTEM
-        }
         int id = wareHouse.getNewId("order");
         Order *newOrder = new Order(id, customerId, customer->getCustomerDistance());
         customer->addOrder(id);

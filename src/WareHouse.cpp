@@ -70,29 +70,24 @@ void WareHouse::parseCustomer(stringstream& ss) {
     customerCounter++; // Add one to the customer counter
 }
 
+// TODO: Should I handle cases that I recive unvalid input? (for example regullar collector get maxOrders)
 void WareHouse::parseVolunteer(stringstream& ss) {
     string volunteerName, volunteerRole;
     int coolDown, maxDistance, distancePerStep, maxOrders;
 
-    ss >> volunteerName >> volunteerRole >> coolDown;
-
-    if (volunteerRole == "driver" || volunteerRole == "limited_driver") {
-        // For drivers, parse additional parameters
-        ss >> maxDistance >> distancePerStep;
-    }
-
-    // For both collector and driver, parse maxOrders if provided
-    if (!(ss >> maxOrders)) {
-        maxOrders = -1; // Unlimited if not provided
-    }
+    ss >> volunteerName >> volunteerRole;
 
     if (volunteerRole == "collector") {
+        ss >> coolDown;
         volunteers.push_back(new CollectorVolunteer(volunteerCounter, volunteerName, coolDown));
     } else if (volunteerRole == "limited_collector") {
+        ss >> coolDown >> maxOrders;
         volunteers.push_back(new LimitedCollectorVolunteer(volunteerCounter, volunteerName, coolDown, maxOrders));
     } else if (volunteerRole == "driver") {
+        ss >> maxDistance >> distancePerStep;
         volunteers.push_back(new DriverVolunteer(volunteerCounter, volunteerName, maxDistance, distancePerStep));
     } else if (volunteerRole == "limited_driver") {
+        ss >> maxDistance >> distancePerStep >> maxOrders;
         volunteers.push_back(new LimitedDriverVolunteer(volunteerCounter, volunteerName, maxDistance, distancePerStep, maxOrders));
     } else {
         throw std::invalid_argument("Invalid volunteer role");
@@ -256,6 +251,7 @@ WareHouse::~WareHouse() {
     actionsLog.clear();
 };
 
+// TODO: Find out if I need to add space line between actions' print
 void WareHouse::start()
 {
     open();
@@ -272,18 +268,16 @@ void WareHouse::start()
 
         if (actionName == "step")
         {
-            int number_of_steps;
-            ss >> number_of_steps;
-            SimulateStep *step = new SimulateStep(number_of_steps);
+            int numOfSteps;
+            ss >> numOfSteps;
+            SimulateStep *step = new SimulateStep(numOfSteps);
             step->act(*this);
         }
         else if (actionName == "order")
         {
-            // TODO: ROTEM -> check because I just copy from github
-            int customer_id;
-            ss >> customer_id;
-            // std::cout << "entered order " <<  customer_id << std::endl;
-            AddOrder *addOrder = new AddOrder(customer_id);
+            int customerID;
+            ss >> customerID;
+            AddOrder *addOrder = new AddOrder(customerID);
             addOrder->act(*this);
         }
         else if (actionName == "customer")
@@ -292,10 +286,9 @@ void WareHouse::start()
         }
         else if (actionName == "orderStatus")
         {
-            // TODO: ROTEM -> check because I just copy from github
-            int order_id;
-            ss >> order_id;
-            PrintOrderStatus *printOrder = new PrintOrderStatus(order_id);
+            int orderID;
+            ss >> orderID;
+            PrintOrderStatus *printOrder = new PrintOrderStatus(orderID);
             printOrder->act(*this);
         }
         else if (actionName == "customerStatus")
@@ -304,7 +297,10 @@ void WareHouse::start()
         }
         else if (actionName == "volunteerStatus")
         {
-            // TODO: ROTEM
+            int volunteerID;
+            ss >> volunteerID;
+            PrintVolunteerStatus *printvolunteer = new PrintVolunteerStatus(volunteerID);
+            printvolunteer->act(*this);
         }
         else if (actionName == "log")
         {
@@ -380,22 +376,29 @@ Volunteer& WareHouse::getVolunteer(int volunteerId) const {
     return *defaultVolunteer;
 };
 
-Order& WareHouse::getOrder(int orderId) const {
+Order* WareHouse::getOrderPointer(int orderId) const {
     // Merge all types of orders into one vector
     vector<Order*> orders; 
     orders.insert(orders.end(), pendingOrders.begin(), pendingOrders.end());
     orders.insert(orders.end(), inProcessOrders.begin(), inProcessOrders.end());
     orders.insert(orders.end(), completedOrders.begin(), completedOrders.end());
 
-    for (Order* &order : orders)
-    {
+    for (Order* &order : orders) {
         if (order->getId() == orderId) {
-            return *order;
+            return order;
         }
     }
-    
-    // If order not found, return a default order.
-    return *defaultOrder;
+
+    // If order not found, return nullptr.
+    return nullptr;
+};
+
+Order& WareHouse::getOrder(int orderId) const {
+    Order* order = getOrderPointer(orderId);
+    if (order != nullptr){
+        return *order;
+    }    
+    return *defaultOrder;   // If order not found, return a default order.
 };
 
 const vector<BaseAction*>& WareHouse::getActions() const {
@@ -439,12 +442,13 @@ void WareHouse::removeLimitedVolunteersReachingMax() {
     for (Volunteer* volunteer : volunteers) {
         if ((typeid(*volunteer) == typeid(LimitedDriverVolunteer) ||
              typeid(*volunteer) == typeid(LimitedCollectorVolunteer)) &&
-            volunteer->hasOrdersLeft()) {
+            (!(volunteer->hasOrdersLeft()))) {
             volunteersToRemove.push_back(volunteer);
         }
     }
 
     for (Volunteer* volunteer : volunteersToRemove) {
+        // TODO: Check if the remove works well here
         volunteers.erase(remove(volunteers.begin(), volunteers.end(), volunteer), volunteers.end());
     }
 };
@@ -453,15 +457,23 @@ void WareHouse::removeFromList(Order* order, string listName) {
     if (listName == "pending")
     {
         pendingOrders.erase(
-            std::remove(pendingOrders.begin(), pendingOrders.end(), order),
+            std::remove_if(
+                pendingOrders.begin(),
+                pendingOrders.end(),
+                [order](const Order* o) { return o == order; }
+            ),
             pendingOrders.end()
         );
     }
     if (listName == "inProcess"){
         inProcessOrders.erase(
-        std::remove(inProcessOrders.begin(), inProcessOrders.end(), order),
-        inProcessOrders.end()
-    );
+            std::remove_if(
+                inProcessOrders.begin(),
+                inProcessOrders.end(),
+                [order](const Order* o) { return o == order; }
+            ),
+            inProcessOrders.end()
+        );
     }
 };
 

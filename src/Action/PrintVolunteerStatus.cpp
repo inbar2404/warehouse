@@ -1,33 +1,39 @@
 #include "../../include/Action.h" 
 #include <iostream>
 
-// PrintVolunteerStatus::PrintVolunteerStatus(int id) : VolunteerId(id){};
+PrintVolunteerStatus::PrintVolunteerStatus(int id) : volunteerId(id){};
 
-// PrintVolunteerStatus *PrintVolunteerStatus::clone() const{
-//     return new PrintVolunteerStatus(*this);
-// };
+PrintVolunteerStatus *PrintVolunteerStatus::clone() const{
+    return new PrintVolunteerStatus(*this);
+};
 
-// void PrintVolunteerStatus::act(WareHouse &wareHouse) {
-//     if(!wareHouse.isVolunteerExist(VolunteerId)){
-//         error("Volunteer doesn't exist");
-//         std::cout << "Error: " + getErrorMsg() << endl;
-//         this->setStatus(ActionStatus::ERROR);
-//     }
-//     else{
-//         //ROTEM
-//         //std::cout << "VolunteerId: " + to_string(VolunteerId) << endl;
-//         // Volunteer V = WareHouse->getVolunteer(VolunteerId);
-//         // std::cout << V.toString() << std::endl;
-//     }
-//     wareHouse.addAction(this);
-//     this->setStatus(ActionStatus::COMPLETED);
-// };
+void PrintVolunteerStatus::act(WareHouse &wareHouse) {
+    Volunteer *volunteer = &wareHouse.getVolunteer(volunteerId);
+    if(volunteer==wareHouse.defaultVolunteer) // Handle a case voluteer was not found
+    {
+        error("Volunteer doesn't exist");
+        std::cout << "Error: " + getErrorMsg() << endl;
+        //this->setStatus(ActionStatus::ERROR); // ROTEM
+    }
+    else
+    {
+        string volunteerDescription = volunteer->toString();
+        // In case "toString" method did not mentioned "ordersLeft" parameter, note it has no limit
+        if (volunteerDescription.find("ordersLeft") == std::string::npos) 
+        {
+            volunteerDescription += "\nordersLeft: No Limit";
+        } 
+        std::cout << volunteerDescription << std::endl;
+        //this->setStatus(ActionStatus::COMPLETED); //ROTEM
+    }
+    wareHouse.addAction(this);
+};
 
-// string PrintVolunteerStatus::toString() const {
-//     ActionStatus actionStatus = getStatus();
-//     if (actionStatus == ActionStatus::COMPLETED) {
-//         return "volunteerStatus " + std::to_string(VolunteerId) + " COMPLETED";
-//     } else {
-//         return "volunteerStatus " + std::to_string(VolunteerId) + " ERROR";
-//     }
-// };
+string PrintVolunteerStatus::toString() const {
+    ActionStatus actionStatus = getStatus();
+    if (actionStatus == ActionStatus::COMPLETED) {
+        return "volunteerStatus " + std::to_string(volunteerId) + " COMPLETED";
+    } else {
+        return "volunteerStatus " + std::to_string(volunteerId) + " ERROR";
+    }
+};

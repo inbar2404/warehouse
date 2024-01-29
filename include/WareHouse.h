@@ -32,6 +32,7 @@ class WareHouse {
         Customer &getCustomer(int customerId) const;
         Volunteer &getVolunteer(int volunteerId) const;
         Order &getOrder(int orderId) const;
+        Order* getOrderPointer(int orderId) const; // Return the pointer of an order
         const vector<BaseAction*> &getActions() const;
         void close();
         void open();
