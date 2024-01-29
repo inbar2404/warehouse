@@ -3,7 +3,7 @@
 
 
 Order::Order(int id, int customerId, int distance) 
- : id(id), customerId(customerId), distance(distance) {};
+ : id(id), customerId(customerId), distance(distance), status(OrderStatus::PENDING), collectorId(NO_VOLUNTEER), driverId(NO_VOLUNTEER) {};
 
 int Order::getId() const{
     return id;
@@ -41,42 +41,43 @@ OrderStatus Order::getStatus() const {
     return status;
 };
 
-// string Order::StatusStr() const
-// {
-//     string StrStatus = "";
-//     if(status == OrderStatus::PENDING){
-//         StrStatus = "Pending";
-//     }
-//     else if(status == OrderStatus::COLLECTING){
-//         StrStatus = "Collecting";
-//     }
-//     else if(status == OrderStatus::DELIVERING){
-//         StrStatus = "Delivering";
-//     }
-//     else if(status == OrderStatus::COMPLETED){
-//         StrStatus = "Completed";
-//     }
-//     return StrStatus;
-// };
+string Order::getStatusName() const
+{
+    string name = "";
+    if(status == OrderStatus::PENDING){
+        name = "Pending";
+    }
+    else if(status == OrderStatus::COLLECTING){
+        name = "Collecting";
+    }
+    else if(status == OrderStatus::DELIVERING){
+        name = "Delivering";
+    }
+    else if(status == OrderStatus::COMPLETED){
+        name = "Completed";
+    }
+    return name;
+};
 
-// const string Order::toString() const {
-//     string Status = StatusStr();
-//     string collectorIdStr = std::to_string(collectorId);
-//     string driverIdStr = std::to_string(driverId);
-//     if (collectorId==NO_VOLUNTEER){
-//         collectorIdStr = "None";
-//     }
-//     if (driverId==NO_VOLUNTEER){
-//         driverIdStr = "None";
-//     }
-//     // std::stringstream OrderStr;
-//     // OrderStr << "OrderId: " << id << std::endl;
-//     // OrderStr << "OrderStatus: " << Status << std::endl;
-//     // OrderStr << "CustomerID: " << customerId << std::endl;
-//     // OrderStr << "Collector: " << collectorIdStr << std::endl;
-//     // OrderStr << "Driver: " << driverIdStr ;
-//     // return OrderStr.str();
-// };
+const string Order::toString() const {
+    string description = "";
+    description += "OrderId: " + std::to_string(id);
+    description += "\nOrderStatus: " + getStatusName(); 
+    description += "\nCustomerID: " + std::to_string(customerId);
+    if (collectorId==NO_VOLUNTEER){
+        description += "\nCollector: None";
+    }
+    else{
+        description += "\nCollector: " + std::to_string(collectorId);
+    }
+    if (driverId==NO_VOLUNTEER){
+        description += "\nDriver: None";
+    }
+    else{
+        description += "\nDriver: " + std::to_string(driverId);
+    }
+    return description;
+};
 
 Order* Order::clone() const {
     return new Order(*this);

@@ -8,44 +8,45 @@ AddOrder* AddOrder::clone() const {
     return new AddOrder(*this);
 };
 
-//void AddOrder::act(WareHouse &wareHouse) {
-    // if((!wareHouse.isCustomerExist(customerId)) || !wareHouse.getCustomer(customerId).canMakeOrder()){
-    //     error("Cannot place this order");
-    //     std::cout << "Error: " + getErrorMsg() << endl;
-    // }
-    // else{
+// void AddOrder::act(WareHouse &wareHouse) {
+//     if((!wareHouse.isCustomerExist(customerId)) || !wareHouse.getCustomer(customerId).canMakeOrder()){
+//         error("Cannot place this order");
+//         std::cout << "Error: " + getErrorMsg() << endl;
+//     }
+//     else{
 
-    //     int orderId = wareHouse.newOrderId();
-    //     int distance = wareHouse.getCustomer(customerId).getCustomerDistance();
-    //     Order* newOrder = new Order(orderId, customerId, distance);
-    //     wareHouse.getCustomer(customerId).AddOrder(orderId);
-    //     wareHouse.AddOrder(newOrder);
-    // }
-    // wareHouse.addAction(this);
-//};
+//         int orderId = wareHouse.newOrderId();
+//         int distance = wareHouse.getCustomer(customerId).getCustomerDistance();
+//         Order* newOrder = new Order(orderId, customerId, distance);
+//         wareHouse.getCustomer(customerId).AddOrder(orderId);
+//         wareHouse.AddOrder(newOrder);
+//     }
+//     wareHouse.addAction(this);
+// };
 
 void AddOrder::act(WareHouse &wareHouse) {
-    // if (!wareHouse.isCustomerExist(customerId)){
-    //     error("Cannot place this order");
-    //     std::cout << "Error: " + getErrorMsg() << endl;
-    //     this->setStatus(ActionStatus::ERROR);
-    // }
-    // else
-    // {
-    //     Customer *C = &wareHouse.getCustomer(customerId);
-    //     if (!C->canMakeOrder())
-    //     {
-    //        error("Cannot place this order");
-    //        std::cout << "Error: " + getErrorMsg() << endl;
-    //        this->setStatus(ActionStatus::ERROR);
-    //     }m
-    //     int id = wareHouse.getnewid("order");
-    //     Order *newOrder = new Order(id, customerId, C->getCustomerDistance());
-    //     C->AddOrder(id);
-    //     wareHouse.AddOrder(newOrder);
-    //     wareHouse.addAction(this);
-    //     this->setStatus(ActionStatus::COMPLETED);
-    // }
+    Customer *customer = &wareHouse.getCustomer(customerId);
+    if (customer==wareHouse.defaultCustomer) //  Handle a case customer was not found 
+    {
+        error("Cannot place this order");
+        std::cout << "Error: " + getErrorMsg() << endl;
+        // this->setStatus(ActionStatus::ERROR); // ROTEM
+    }
+    else
+    {
+        if (!customer->canMakeOrder())
+        {
+           error("Cannot place this order");
+           std::cout << "Error: " + getErrorMsg() << endl;
+           //this->setStatus(ActionStatus::ERROR); // ROTEM
+        }
+        int id = wareHouse.getNewId("order");
+        Order *newOrder = new Order(id, customerId, customer->getCustomerDistance());
+        customer->addOrder(id);
+        wareHouse.addOrder(newOrder);
+        wareHouse.addAction(this);
+        // this->setStatus(ActionStatus::COMPLETED); // ROTEM
+    }
 };
 
 string AddOrder::toString() const {

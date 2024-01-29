@@ -16,9 +16,10 @@ WareHouse::WareHouse(const string &configFilePath) {
     }
 
     // Init counters
+    // TODO: Check if it should starts from 0 or 1 - look in the instructions
     volunteerCounter = 0;
     customerCounter = 0;
-    //OrderCounter = 0;
+    orderCounter = 0;
 
     parseConfigFile(configFile);
 
@@ -278,27 +279,36 @@ void WareHouse::start()
         }
         else if (actionName == "order")
         {
-            // TODO
+            // TODO: ROTEM -> check because I just copy from github
+            int customer_id;
+            ss >> customer_id;
+            // std::cout << "entered order " <<  customer_id << std::endl;
+            AddOrder *addOrder = new AddOrder(customer_id);
+            addOrder->act(*this);
         }
         else if (actionName == "customer")
         {
-            // TODO
+            // TODO: ROTEM
         }
         else if (actionName == "orderStatus")
         {
-            // TODO
+            // TODO: ROTEM -> check because I just copy from github
+            int order_id;
+            ss >> order_id;
+            PrintOrderStatus *printOrder = new PrintOrderStatus(order_id);
+            printOrder->act(*this);
         }
         else if (actionName == "customerStatus")
         {
-            // TODO
+            // TODO: ROTEM
         }
         else if (actionName == "volunteerStatus")
         {
-            // TODO
+            // TODO: ROTEM
         }
         else if (actionName == "log")
         {
-            // TODO
+            // TODO: ROTEM
             // PrintActionsLog *log = new PrintActionsLog();
             // log->act(*this);
         }
@@ -309,13 +319,13 @@ void WareHouse::start()
         }
         else if (actionName == "backup")
         {
-            // TODO
+            // TODO: ROTEM
             // BackupWareHouse* backup = new BackupWareHouse();
             // backup->act(*this);
         }
         else if (actionName == "restore")
         {
-            // TODO
+            // TODO: ROTEM
             // RestoreWareHouse* restore = new RestoreWareHouse();
             // restore->act(*this);
         }
@@ -455,25 +465,26 @@ void WareHouse::removeFromList(Order* order, string listName) {
     }
 };
 
-// int& WareHouse::getnewid(string counterType) const {
-//     int id;
-//     if (counterType == "customer"){
-//         id = this.customerCounter;
-//         this.customerCounter = this.customerCounter +1;
-//     }
-//     else if (counterType == "volunteer")
-//     {
-//         id = volunteerCounter;
-//         volunteerCounter ++;
-//     }
-//     else
-//     {
-//         id = orderCounter;
-//         orderCounter ++;
-//     }
-//     return id;
-// };
+int WareHouse::getNewId(string counterType) {
+    int id;
+    if (counterType == "customer"){
+        id = customerCounter;
+        customerCounter++;
+    }
+    else if (counterType == "volunteer")
+    {
+        id = volunteerCounter;
+        volunteerCounter++;
+    }
+    else // TODO: ROTEM - Handle case diffrent when order and when something else then the above
+    {
+        id = orderCounter;
+        orderCounter++;
+    }
+    return id;
+};
 
+// TODO: ROTEM - I think it can be deleted
 // bool WareHouse::isCustomerExist(int customerId) const{
 //     if (customerId < this->customerCounter){
 //         return true;
@@ -481,6 +492,7 @@ void WareHouse::removeFromList(Order* order, string listName) {
 //     return false;
 // };
 
+// TODO: ROTEM - SAME
 // bool WareHouse::isVolunteerExist(int volunteerId) const{
 //     if (volunteerId < this->volunteerCounter){
 //         return true;

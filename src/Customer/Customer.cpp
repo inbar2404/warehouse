@@ -35,13 +35,14 @@ const vector<int> &Customer :: getOrdersIds() const {
 };
 
 // ROTEM
-// int Customer::addOrder(int orderId) {
-//     if (){
-//         Order(orderId, id, locationDistance);
-//         return orderId;
-//     }
-//     return -1;
-// };
+int Customer::addOrder(int orderId) {
+    if (canMakeOrder()){
+        //Order(orderId, id, locationDistance);
+        ordersId.push_back(orderId);
+        return orderId;
+    }
+    return -1;
+};
 
 // int Customer::getOrdersLeft() const{
 //     return maxOrders - ordersId.size();

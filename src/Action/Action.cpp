@@ -13,7 +13,7 @@ void BaseAction::complete() {
 
 void BaseAction::error(string errorMsg) {
     status = ActionStatus::ERROR;
-    errorMsg = errorMsg;
+    this->errorMsg = errorMsg;
 };
 
 string BaseAction::getErrorMsg() const {
