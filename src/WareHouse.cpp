@@ -315,8 +315,8 @@ void WareHouse::start()
         else if (actionName == "log")
         {
             // TODO: ROTEM
-            // PrintActionsLog *log = new PrintActionsLog();
-            // log->act(*this);
+            PrintActionsLog *log = new PrintActionsLog();
+            log->act(*this);
         }
         else if (actionName == "close")
         {
