@@ -325,13 +325,11 @@ void WareHouse::start()
         }
         else if (actionName == "backup")
         {
-            // TODO: ROTEM
             BackupWareHouse* backup = new BackupWareHouse();
             backup->act(*this);
         }
         else if (actionName == "restore")
         {
-            // TODO: ROTEM
             RestoreWareHouse* restore = new RestoreWareHouse();
             restore->act(*this);
         }

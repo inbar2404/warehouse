@@ -28,7 +28,6 @@ void AddOrder::act(WareHouse &wareHouse) {
     }
 };
 
-// ROTEM
 string AddOrder::toString() const {
     ActionStatus actionStatus = getStatus();
     if (actionStatus == ActionStatus::COMPLETED) {

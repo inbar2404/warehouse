@@ -13,7 +13,7 @@ void PrintVolunteerStatus::act(WareHouse &wareHouse) {
     {
         error("Volunteer doesn't exist");
         std::cout << "Error: " + getErrorMsg() << endl;
-        this->setStatus(ActionStatus::ERROR); // ROTEM
+        this->setStatus(ActionStatus::ERROR);
     }
     else
     {
@@ -24,7 +24,7 @@ void PrintVolunteerStatus::act(WareHouse &wareHouse) {
             volunteerDescription += "\nordersLeft: No Limit";
         } 
         std::cout << volunteerDescription << std::endl;
-        this->setStatus(ActionStatus::COMPLETED); //ROTEM
+        this->setStatus(ActionStatus::COMPLETED);
     }
     wareHouse.addAction(this);
 };

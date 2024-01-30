@@ -14,7 +14,6 @@ void PrintCustomerStatus::act(WareHouse &wareHouse) {
         this->setStatus(ActionStatus::ERROR);
     }
     else{
-        //ROTEM
         std::cout << "CustomerID: " + to_string(customerId) << endl;
         Customer *C = &wareHouse.getCustomer(customerId);
         vector<int> ordersIds = C->getOrdersIds();
