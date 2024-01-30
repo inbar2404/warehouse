@@ -15,7 +15,7 @@ void AddOrder::act(WareHouse &wareHouse) {
     {
         error("Cannot place this order");
         std::cout << "Error: " + getErrorMsg() << endl;
-        // this->setStatus(ActionStatus::ERROR); // ROTEM
+        this->setStatus(ActionStatus::ERROR);
     }
     else
     {
@@ -24,17 +24,17 @@ void AddOrder::act(WareHouse &wareHouse) {
         customer->addOrder(id);
         wareHouse.addOrder(newOrder);
         wareHouse.addAction(this);
-        // this->setStatus(ActionStatus::COMPLETED); // ROTEM
+        this->setStatus(ActionStatus::COMPLETED);
     }
 };
 
 // ROTEM
 string AddOrder::toString() const {
-    // ActionStatus actionStatus = getStatus();
-    // if (actionStatus == ActionStatus::COMPLETED) {
-    //     return "order " + std::to_string(customerId) + " COMPLETED";
-    // } 
-    // else{
-    //     return "order " + std::to_string(customerId) + " ERROR";
-    // }
+    ActionStatus actionStatus = getStatus();
+    if (actionStatus == ActionStatus::COMPLETED) {
+        return "order " + std::to_string(customerId) + " COMPLETED";
+    } 
+    else{
+        return "order " + std::to_string(customerId) + " ERROR";
+    }
 };

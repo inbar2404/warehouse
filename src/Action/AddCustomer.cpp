@@ -9,7 +9,6 @@ AddCustomer* AddCustomer::clone() const {
     return new AddCustomer(*this);
 };
 
-// ROTEM
 void AddCustomer::act(WareHouse &wareHouse) {
     Customer *newCustomer = wareHouse.defaultCustomer;
     int counter = wareHouse.getNewId("customer");
@@ -24,7 +23,6 @@ void AddCustomer::act(WareHouse &wareHouse) {
     this->setStatus(ActionStatus::COMPLETED);
 };
 
-// ROTEM
 std::string AddCustomer::toString() const {
     // // Provide implementation for toString if needed
     if(customerType == CustomerType::Soldier)
