@@ -19,9 +19,9 @@ void PrintOrderStatus::act(WareHouse &wareHouse) {
     else
     {
         cout << order->toString() << endl;
-        wareHouse.addAction(this);
         this->setStatus(ActionStatus::COMPLETED);
     }
+    wareHouse.addAction(this);
 };
 
 string PrintOrderStatus::toString() const {

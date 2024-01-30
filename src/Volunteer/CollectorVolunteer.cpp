@@ -45,6 +45,7 @@ void CollectorVolunteer::acceptOrder(const Order &order) {
     timeLeft = coolDown;
 };
 
+// TODO: check how exactly they want OrderId and timeLeft to apear in case -1 or 0 - same for all others volunteers
 string CollectorVolunteer::toString() const {
     string busyStatus = "False";
     if(isBusy()){

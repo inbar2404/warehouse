@@ -10,21 +10,23 @@ AddCustomer* AddCustomer::clone() const {
 };
 
 void AddCustomer::act(WareHouse &wareHouse) {
-    Customer *newCustomer = wareHouse.defaultCustomer;
     int counter = wareHouse.getNewId("customer");
+    // ROTEM: Find out if we need to handle a case of no solider or civilian mentioned, if we do - then there is a bug
     if (customerType == CustomerType::Civilian){
         CivilianCustomer *newCustomer = new CivilianCustomer(counter, customerName, distance, maxOrders);
+        wareHouse.addCustomer(newCustomer);
     }
     else{
+        // ROTEM: Try to do that with "solider" it doesn't work
         SoldierCustomer *newCustomer = new SoldierCustomer(counter, customerName, distance, maxOrders);
+        wareHouse.addCustomer(newCustomer);
     }
-    wareHouse.addCustomer(newCustomer);
-    wareHouse.addAction(this);
     this->setStatus(ActionStatus::COMPLETED);
+    wareHouse.addAction(this);
 };
 
 std::string AddCustomer::toString() const {
-    // // Provide implementation for toString if needed
+    // Provide implementation for toString if needed
     if(customerType == CustomerType::Soldier)
     {
         return "customer " + customerName +  " soldier " + std::to_string(distance) +" " + std::to_string(maxOrders) + " COMPLETED";

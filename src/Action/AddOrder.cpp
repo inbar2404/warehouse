@@ -23,9 +23,9 @@ void AddOrder::act(WareHouse &wareHouse) {
         Order *newOrder = new Order(id, customerId, customer->getCustomerDistance());
         customer->addOrder(id);
         wareHouse.addOrder(newOrder);
-        wareHouse.addAction(this);
         this->setStatus(ActionStatus::COMPLETED);
     }
+    wareHouse.addAction(this);
 };
 
 string AddOrder::toString() const {

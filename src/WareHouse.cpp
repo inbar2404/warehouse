@@ -124,17 +124,18 @@ WareHouse::WareHouse(const WareHouse &other)
         actionsLog.push_back(action->clone());
     }
 
-    if (other.defaultCustomer) {
-        defaultCustomer = other.defaultCustomer->clone();
-    }
+    // TODO: Find out why is that doing problems (in backup 2 example)
+    // if (other.defaultCustomer) {
+    //     defaultCustomer = other.defaultCustomer->clone();
+    // }
 
-    if (other.defaultVolunteer) {
-        defaultVolunteer = other.defaultVolunteer->clone();
-    }
+    // if (other.defaultVolunteer) {
+    //     defaultVolunteer = other.defaultVolunteer->clone();
+    // }
 
-    if (other.defaultOrder) {
-        defaultOrder = other.defaultOrder->clone();
-    }
+    // if (other.defaultOrder) {
+    //     defaultOrder = other.defaultOrder->clone();
+    // }
 };
 
 // TODO: Compare this method with another resource
@@ -238,9 +239,10 @@ WareHouse::~WareHouse() {
         delete action;
     }
 
-    delete defaultCustomer;
-    delete defaultVolunteer;
-    delete defaultOrder;
+    // TODO: Find out why is doing problem in the close
+    // delete defaultCustomer;
+    // delete defaultVolunteer;
+    // delete defaultOrder;
 
     pendingOrders.clear();
     inProcessOrders.clear();
@@ -320,6 +322,7 @@ void WareHouse::start()
         }
         else if (actionName == "close")
         {
+            // ROTEM: Look in the running example there is a diffrent in the end
             Close *close = new Close();
             close->act(*this);
         }
@@ -509,14 +512,6 @@ void WareHouse::addCustomer(Customer* customer){
         customers.push_back(customer);
     }
 };
-
-bool WareHouse::isCustomerExist(int customerId){
-    if(customerId < customerCounter){
-        return true;
-    }
-    return false;
-};
-
 
 // ROTEM
 // void WareHouse::printAction() const{

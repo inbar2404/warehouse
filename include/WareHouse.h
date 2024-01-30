@@ -46,8 +46,8 @@ class WareHouse {
         void parseCustomer(stringstream& ss);
         int getNewId(string counterType); // Return the relevant id by counter
         void addCustomer(Customer* customer);
-        bool isCustomerExist(int customerId);
         // void printAction() const;
+        // TODO: Move this to private and use getters instead - I think it can solve the other problems
         Customer *defaultCustomer; // Default null customer
         Volunteer *defaultVolunteer; // Default null volunteer
         Order *defaultOrder; // Default null order
