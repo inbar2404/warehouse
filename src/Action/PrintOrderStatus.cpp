@@ -9,19 +9,18 @@ PrintOrderStatus *PrintOrderStatus::clone() const{
 };
 
 void PrintOrderStatus::act(WareHouse &wareHouse) {
-    //ROTEM
     Order *order = &wareHouse.getOrder(orderId);
     if(order == wareHouse.defaultOrder) // Handle a case order not found
     {
         error("Order doesn't exist");
         std::cout << "Error: " + getErrorMsg() << endl;
-        //this->setStatus(ActionStatus::ERROR); // ROTEM
+        this->setStatus(ActionStatus::ERROR);
     }
     else
     {
         cout << order->toString() << endl;
         wareHouse.addAction(this);
-        //this->setStatus(ActionStatus::COMPLETED); //ROTEM
+        this->setStatus(ActionStatus::COMPLETED);
     }
 };
 

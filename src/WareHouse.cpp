@@ -494,6 +494,12 @@ int WareHouse::getNewId(string counterType) {
     return id;
 };
 
+void WareHouse::addCustomer(Customer* customer){
+    if (customer != nullptr){
+        customers.push_back(customer);
+    }
+};
+
 
 // ROTEM
 // void WareHouse::printAction() const{

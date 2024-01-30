@@ -20,7 +20,7 @@ string BaseAction::getErrorMsg() const {
     return errorMsg;
 };
 
-// ActionStatus BaseAction::setStatus(ActionStatus newstatus)
-// {
-//     this->status = newstatus;
-// };
+ActionStatus BaseAction::setStatus(ActionStatus newstatus)
+{
+    this->status = newstatus;
+};

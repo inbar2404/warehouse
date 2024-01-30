@@ -45,6 +45,7 @@ class WareHouse {
         void parseConfigFile(ifstream& configFile);
         void parseCustomer(stringstream& ss);
         int getNewId(string counterType); // Return the relevant id by counter
+        void addCustomer(Customer* customer);
         // void printAction() const;
         Customer *defaultCustomer; // Default null customer
         Volunteer *defaultVolunteer; // Default null volunteer

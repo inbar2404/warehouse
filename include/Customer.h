@@ -20,7 +20,7 @@ class Customer {
         bool canMakeOrder() const; //Returns true if the customer didn't reach max orders
         const vector<int> &getOrdersIds() const;
         int addOrder(int orderId); //return OrderId if order was added successfully, -1 otherwise
-        // int getOrdersLeft() const; //return how much more orders can make
+        int getOrdersLeft() const; //return how much more orders can make
         virtual Customer *clone() const = 0; // Return a copy of the customer
 
         
