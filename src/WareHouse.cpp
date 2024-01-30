@@ -500,6 +500,13 @@ void WareHouse::addCustomer(Customer* customer){
     }
 };
 
+bool WareHouse::isCustomerExist(int customerId){
+    if(customerId < customerCounter){
+        return true;
+    }
+    return false;
+};
+
 
 // ROTEM
 // void WareHouse::printAction() const{
