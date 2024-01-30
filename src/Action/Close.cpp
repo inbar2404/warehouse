@@ -10,7 +10,7 @@ void Close::act(WareHouse &wareHouse)
     std::cout << str.str();
     wareHouse.close(); //close the warehouse and exit main loop
     complete();
-    // ROTEM: Should you add action?
+    wareHouse.addAction(this);
 }
 
 Close *Close::clone() const

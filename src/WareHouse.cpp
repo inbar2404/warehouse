@@ -280,7 +280,16 @@ void WareHouse::start()
         }
         else if (actionName == "customer")
         {
-            // TODO: ROTEM
+            string customerName;
+            ss >> customerName;
+            string CustomerType;
+            ss >> CustomerType;
+            int distance;
+            ss >> distance;
+            int maxOrders;
+            ss >> maxOrders;
+            AddCustomer *addCustomer = new AddCustomer(customerName,CustomerType, distance,maxOrders);
+            addCustomer->act(*this);
         }
         else if (actionName == "orderStatus")
         {
@@ -291,7 +300,10 @@ void WareHouse::start()
         }
         else if (actionName == "customerStatus")
         {
-            // TODO: ROTEM
+            int customerID;
+            ss >> customerID;
+            PrintCustomerStatus *customerstatus = new PrintCustomerStatus(customerID);
+            customerstatus->act(*this);
         }
         else if (actionName == "volunteerStatus")
         {
