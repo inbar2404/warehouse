@@ -49,8 +49,6 @@ class WareHouse {
         Volunteer &getDefaultVolunteer() const;
         Order &getDefaultOrder() const;
         vector<Order*> getVOrders() const; //return a vector of all orders
-        bool iscustomerExist(int customerId) const;
-        bool isVolunteerExist(int volunteerId) const;
         
 
     private:

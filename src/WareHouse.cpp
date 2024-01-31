@@ -475,17 +475,3 @@ vector<Order*> WareHouse::getVOrders() const{
     // OrdersVec.push_back(this->completedOrders);
     return OrdersVec;
 };
-
-bool WareHouse::iscustomerExist(int customerId) const{
-    if(customerId < customerCounter){
-        return true;
-    }
-    return false;
-}
-
-bool WareHouse::isVolunteerExist(int volunteerId) const{
-    if(volunteerId < volunteerCounter){
-        return true;
-    }
-    return false;
-}
