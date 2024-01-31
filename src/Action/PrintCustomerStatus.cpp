@@ -8,23 +8,25 @@ PrintCustomerStatus *PrintCustomerStatus::clone() const{
 };
 
 void PrintCustomerStatus::act(WareHouse &wareHouse) {
-    if(!wareHouse.isCustomerExist(customerId)){
+    Customer *customer = &wareHouse.getCustomer(customerId);
+    if(customer == &wareHouse.getDefaultCustomer()) // Handle a case customer not found 
+    {
         error("Customer doesn't exist");
         std::cout << "Error: " + getErrorMsg() << endl;
         this->setStatus(ActionStatus::ERROR);
     }
     else{
         std::cout << "CustomerID: " + to_string(customerId) << endl;
-        Customer *C = &wareHouse.getCustomer(customerId);
-        vector<int> ordersIds = C->getOrdersIds();
+        // ROTEM: You don't handle a case no ordersIds at all -> it get an exception, fix it
+        vector<int> ordersIds = customer->getOrdersIds();
         for(int id:ordersIds){
-            std::cout << "OrderID: " + to_string(id) << endl ;
+            std::cout << "OrderId: " + to_string(id) << endl ;
             std::cout << "OrderStatus: " + wareHouse.getOrder(id).getStatusName() << endl;
         }
-        std::cout << "numOrdersLeft: "<< C->getOrdersLeft()  << std::endl;
+        std::cout << "numOrdersLeft: "<< customer->getOrdersLeft()  << std::endl;
+        this->setStatus(ActionStatus::COMPLETED);
     }
     wareHouse.addAction(this);
-    this->setStatus(ActionStatus::COMPLETED);
 };
 
 string PrintCustomerStatus::toString() const {

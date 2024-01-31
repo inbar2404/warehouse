@@ -5,6 +5,7 @@ using namespace std;
 #include <fstream>
 #include <sstream>
 #include <stdexcept> // For std::invalid_argument
+#include "Parser.h"
 
 
 WareHouse::WareHouse(const string &configFilePath) {
@@ -20,78 +21,9 @@ WareHouse::WareHouse(const string &configFilePath) {
     customerCounter = 0;
     orderCounter = 0;
 
-    parseConfigFile(configFile);
+    Parser::parseConfigFile(*this, configFile);
 
     configFile.close();
-}
-
-// TODO: If I have enough time - rename variables and move to a diffrent file (same for 2 next methods)
-void WareHouse::parseConfigFile(ifstream& configFile) {
-    string line;
-    while (getline(configFile, line)) {
-        // Skip empty lines and comments
-        if (line.empty() || line[0] == '#') {
-            continue;
-        }
-
-        // Use a stringstream to parse the line
-        stringstream ss(line);
-        string command;
-        ss >> command;
-
-        if (command == "customer") {
-            parseCustomer(ss);
-        } else if (command == "volunteer") {
-            parseVolunteer(ss);
-        } else {
-            throw std::invalid_argument("Unkown command");
-        }
-    }
-}
-
-void WareHouse::parseCustomer(stringstream& ss) {
-    string customerName, customerTypeStr;
-    int distance, maxOrders;
-
-    ss >> customerName >> customerTypeStr >> distance >> maxOrders;
-
-    // Convert customerTypeStr to CustomerType enum
-    CustomerType customerType;
-    if (customerTypeStr == "soldier") {
-        customerType = CustomerType::Soldier;
-        customers.push_back(new SoldierCustomer(customerCounter, customerName, distance, maxOrders));
-    } else if (customerTypeStr == "civilian") {
-        customerType = CustomerType::Civilian;
-        customers.push_back(new CivilianCustomer(customerCounter, customerName, distance, maxOrders));
-    } else {
-        throw std::invalid_argument("Invalid customer type");
-    }
-    customerCounter++; // Add one to the customer counter
-}
-
-// TODO: Check: Should I handle cases that I recive unvalid input? (for example regullar collector get maxOrders)
-void WareHouse::parseVolunteer(stringstream& ss) {
-    string volunteerName, volunteerRole;
-    int coolDown, maxDistance, distancePerStep, maxOrders;
-
-    ss >> volunteerName >> volunteerRole;
-
-    if (volunteerRole == "collector") {
-        ss >> coolDown;
-        volunteers.push_back(new CollectorVolunteer(volunteerCounter, volunteerName, coolDown));
-    } else if (volunteerRole == "limited_collector") {
-        ss >> coolDown >> maxOrders;
-        volunteers.push_back(new LimitedCollectorVolunteer(volunteerCounter, volunteerName, coolDown, maxOrders));
-    } else if (volunteerRole == "driver") {
-        ss >> maxDistance >> distancePerStep;
-        volunteers.push_back(new DriverVolunteer(volunteerCounter, volunteerName, maxDistance, distancePerStep));
-    } else if (volunteerRole == "limited_driver") {
-        ss >> maxDistance >> distancePerStep >> maxOrders;
-        volunteers.push_back(new LimitedDriverVolunteer(volunteerCounter, volunteerName, maxDistance, distancePerStep, maxOrders));
-    } else {
-        throw std::invalid_argument("Invalid volunteer role");
-    }
-    volunteerCounter++; // Add one to the volunteer counter
 }
 
 // TODO: Check that the functions belong to the rule of 5 works well (find a way to do that) 
@@ -124,17 +56,18 @@ WareHouse::WareHouse(const WareHouse &other)
         actionsLog.push_back(action->clone());
     }
 
-    if (other.defaultCustomer) {
-        defaultCustomer = other.defaultCustomer->clone();
-    }
+    // TODO: Find out why is that doing problems (in backup 2 example)
+    // if (other.defaultCustomer) {
+    //     defaultCustomer = other.defaultCustomer->clone();
+    // }
 
-    if (other.defaultVolunteer) {
-        defaultVolunteer = other.defaultVolunteer->clone();
-    }
+    // if (other.defaultVolunteer) {
+    //     defaultVolunteer = other.defaultVolunteer->clone();
+    // }
 
-    if (other.defaultOrder) {
-        defaultOrder = other.defaultOrder->clone();
-    }
+    // if (other.defaultOrder) {
+    //     defaultOrder = other.defaultOrder->clone();
+    // }
 };
 
 // TODO: Compare this method with another resource
@@ -146,13 +79,13 @@ WareHouse::WareHouse(WareHouse&& other) {
     volunteers = std::move(other.volunteers);
     actionsLog = std::move(other.actionsLog);
 
-    defaultCustomer = other.defaultCustomer;
+    defaultCustomer = &other.getDefaultCustomer();
     other.defaultCustomer = nullptr;
 
-    defaultVolunteer = other.defaultVolunteer;
+    defaultVolunteer = &other.getDefaultVolunteer();
     other.defaultVolunteer = nullptr;
 
-    defaultOrder = other.defaultOrder;
+    defaultOrder = &other.getDefaultOrder();
     other.defaultOrder = nullptr;
 
     isOpen = other.isOpen;
@@ -176,9 +109,10 @@ WareHouse& WareHouse::operator=(const WareHouse &other) {
         volunteers = other.volunteers;
         actionsLog = other.actionsLog;
 
-        defaultCustomer = other.defaultCustomer->clone();
-        defaultVolunteer = other.defaultVolunteer->clone();
-        defaultOrder = other.defaultOrder->clone();
+        // TODO: Find out why it is do problem when calling for restore (second call example 2)
+        // defaultCustomer = other.defaultCustomer->clone();
+        // defaultVolunteer = other.defaultVolunteer->clone();
+        // defaultOrder = other.defaultOrder->clone();
 
         isOpen = other.isOpen;
         customerCounter = other.customerCounter;
@@ -197,11 +131,10 @@ WareHouse& WareHouse::operator=(WareHouse&& other) {
         volunteers = std::move(other.volunteers);
         actionsLog = std::move(other.actionsLog);
 
-        defaultCustomer = other.defaultCustomer;
-        defaultVolunteer = other.defaultVolunteer;
-        defaultOrder = other.defaultOrder;
+        defaultCustomer = &other.getDefaultCustomer();
+        defaultVolunteer = &other.getDefaultVolunteer();
+        defaultOrder = &other.getDefaultOrder();
 
-        // TODO: Compare this half function with another resource
         other.defaultCustomer = nullptr;
         other.defaultVolunteer = nullptr;
         other.defaultOrder = nullptr;
@@ -218,6 +151,7 @@ WareHouse& WareHouse::operator=(WareHouse&& other) {
     return *this;
 };
 
+// ROTEM: Find out why is it doing problem when calling to close() in the second example from second file
 WareHouse::~WareHouse() {   
     for (Order* order : pendingOrders) {
         delete order;
@@ -238,9 +172,10 @@ WareHouse::~WareHouse() {
         delete action;
     }
 
-    delete defaultCustomer;
-    delete defaultVolunteer;
-    delete defaultOrder;
+    // TODO: Find out why is doing problem in the close
+    // delete defaultCustomer;
+    // delete defaultVolunteer;
+    // delete defaultOrder;
 
     pendingOrders.clear();
     inProcessOrders.clear();
@@ -319,6 +254,7 @@ void WareHouse::start()
         }
         else if (actionName == "close")
         {
+            // ROTEM: Look in the running example there is a diffrent in the end
             Close *close = new Close();
             close->act(*this);
         }
@@ -369,7 +305,7 @@ Customer& WareHouse::getCustomer(int customerId) const {
         }
     }
     // If customer not found, return a default customer.
-    return *defaultCustomer;
+    return getDefaultCustomer();
 };
 
 Volunteer& WareHouse::getVolunteer(int volunteerId) const {
@@ -380,7 +316,7 @@ Volunteer& WareHouse::getVolunteer(int volunteerId) const {
         }
     }
     // If volunteer not found, return a default Volunteer.
-    return *defaultVolunteer;
+    return getDefaultVolunteer();
 };
 
 Order* WareHouse::getOrderPointer(int orderId) const {
@@ -405,7 +341,7 @@ Order& WareHouse::getOrder(int orderId) const {
     if (order != nullptr){
         return *order;
     }    
-    return *defaultOrder;   // If order not found, return a default order.
+    return getDefaultOrder();   // If order not found, return a default order.
 };
 
 const vector<BaseAction*>& WareHouse::getActions() const {
@@ -443,20 +379,25 @@ vector<Order*> WareHouse::getFinishCollectOrders() const {
     return requetedOrders;
 };
 
-// TODO: Check edge cases that it is not delete someone before time
 void WareHouse::removeLimitedVolunteersReachingMax() {
     vector<Volunteer*> volunteersToRemove;
     for (Volunteer* volunteer : volunteers) {
         if ((typeid(*volunteer) == typeid(LimitedDriverVolunteer) ||
              typeid(*volunteer) == typeid(LimitedCollectorVolunteer)) &&
-            (!(volunteer->hasOrdersLeft()))) {
+            (!(volunteer->hasOrdersLeft() || volunteer->isBusy()))) {
             volunteersToRemove.push_back(volunteer);
         }
     }
 
     for (Volunteer* volunteer : volunteersToRemove) {
-        // TODO: Check if the remove works well here
-        volunteers.erase(remove(volunteers.begin(), volunteers.end(), volunteer), volunteers.end());
+        volunteers.erase(
+            std::remove_if(
+                volunteers.begin(),
+                volunteers.end(),
+                [volunteer](const Volunteer* v) { return v == volunteer; }
+            ),
+            volunteers.end()
+        );
     }
 };
 
@@ -509,13 +450,11 @@ void WareHouse::addCustomer(Customer* customer){
     }
 };
 
-bool WareHouse::isCustomerExist(int customerId){
-    if(customerId < customerCounter){
-        return true;
+void WareHouse::addVolunteer(Volunteer* volunteer){
+    if (volunteer != nullptr){
+        volunteers.push_back(volunteer);
     }
-    return false;
 };
-
 
 // ROTEM
 // void WareHouse::printAction() const{
@@ -523,3 +462,15 @@ bool WareHouse::isCustomerExist(int customerId){
 
 //     }
 // };
+
+Customer& WareHouse::getDefaultCustomer() const {
+    return *defaultCustomer;
+};
+
+Volunteer& WareHouse::getDefaultVolunteer() const {
+    return *defaultVolunteer;
+};
+
+Order& WareHouse::getDefaultOrder() const {
+    return *defaultOrder;
+};

@@ -10,7 +10,7 @@ PrintOrderStatus *PrintOrderStatus::clone() const{
 
 void PrintOrderStatus::act(WareHouse &wareHouse) {
     Order *order = &wareHouse.getOrder(orderId);
-    if(order == wareHouse.defaultOrder) // Handle a case order not found
+    if(order == &wareHouse.getDefaultOrder()) // Handle a case order not found
     {
         error("Order doesn't exist");
         std::cout << "Error: " + getErrorMsg() << endl;
@@ -19,9 +19,9 @@ void PrintOrderStatus::act(WareHouse &wareHouse) {
     else
     {
         cout << order->toString() << endl;
-        wareHouse.addAction(this);
         this->setStatus(ActionStatus::COMPLETED);
     }
+    wareHouse.addAction(this);
 };
 
 string PrintOrderStatus::toString() const {

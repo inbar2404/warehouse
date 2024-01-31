@@ -7,9 +7,10 @@ PrintVolunteerStatus *PrintVolunteerStatus::clone() const{
     return new PrintVolunteerStatus(*this);
 };
 
+// ROTEM: In case isBusy is false its print -1 instead of None, same for TimeLeft
 void PrintVolunteerStatus::act(WareHouse &wareHouse) {
     Volunteer *volunteer = &wareHouse.getVolunteer(volunteerId);
-    if(volunteer==wareHouse.defaultVolunteer) // Handle a case voluteer was not found
+    if(volunteer == &wareHouse.getDefaultVolunteer()) // Handle a case voluteer was not found
     {
         error("Volunteer doesn't exist");
         std::cout << "Error: " + getErrorMsg() << endl;

@@ -8,9 +8,9 @@ void Close::act(WareHouse &wareHouse)
 {
     std::stringstream str;
     std::cout << str.str();
-    wareHouse.close(); //close the warehouse and exit main loop
-    complete();
+    wareHouse.close(); // Close the warehouse and exit main loop
     wareHouse.addAction(this);
+    complete();
 }
 
 Close *Close::clone() const

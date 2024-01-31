@@ -41,16 +41,13 @@ class WareHouse {
         vector<Order*> getFinishCollectOrders() const; // Return volunteers from type collector that finis all steps
         void removeLimitedVolunteersReachingMax(); // Remove if reaching max and has no active action
         void removeFromList(Order* order, string listName);
-        void parseVolunteer(stringstream& ss);
-        void parseConfigFile(ifstream& configFile);
-        void parseCustomer(stringstream& ss);
         int getNewId(string counterType); // Return the relevant id by counter
         void addCustomer(Customer* customer);
-        bool isCustomerExist(int customerId);
+        void addVolunteer(Volunteer* volunteer);
         // void printAction() const;
-        Customer *defaultCustomer; // Default null customer
-        Volunteer *defaultVolunteer; // Default null volunteer
-        Order *defaultOrder; // Default null order
+        Customer &getDefaultCustomer() const;
+        Volunteer &getDefaultVolunteer() const;
+        Order &getDefaultOrder() const;
 
     private:
         bool isOpen;
@@ -63,4 +60,8 @@ class WareHouse {
         int customerCounter; // For assigning unique customer IDs
         int volunteerCounter; // For assigning unique volunteer IDs
         int orderCounter; // For assigning unique volunteer IDs
+        Customer *defaultCustomer; // Default null customer
+        Volunteer *defaultVolunteer; // Default null volunteer
+        Order *defaultOrder; // Default null order
+
 };

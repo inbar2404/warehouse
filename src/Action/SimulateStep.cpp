@@ -23,31 +23,32 @@ void SimulateStep::act(WareHouse &wareHouse) {
                 {
                     volunteer->acceptOrder(*order);
                     order->setDriverId(volunteer->getId());
+                    // TODO: Check: Is it work in a case no driver is free? Should I return him to pending in this state?
+                    order->setStatus(OrderStatus::DELIVERING);  
                     break;
                 }
             }
-            // TODO: Check: Is it work in a case no driver is free? Should I return him to pending in this state?
-            order->setStatus(OrderStatus::DELIVERING);
         } 
         
         vector<Order*> pendingOrders = wareHouse.getPendingOrders();
         for (Order* &order : pendingOrders)
         {
             // Look for an available collector
-            for(Volunteer* volunteer : wareHouse.getVolunteers()) {
+            vector<Volunteer*> volunteersVector = wareHouse.getVolunteers();
+            for(Volunteer* volunteer : volunteersVector) {
                 if (((typeid(*volunteer) == typeid(LimitedCollectorVolunteer)) || 
                 (typeid(*volunteer) == typeid(CollectorVolunteer))) && 
                 volunteer->canTakeOrder(*order)) 
                 {
                     volunteer->acceptOrder(*order);
                     order->setCollectorId(volunteer->getId());
+                    order->setStatus(OrderStatus::COLLECTING);
+                    // In order to move order between lists, the action is actually a combination of remove and then add again
+                    wareHouse.removeFromList(order, "pending");
+                    wareHouse.addOrder(order);
                     break;
                 }
             }
-            order->setStatus(OrderStatus::COLLECTING);
-            // In order to move order between lists, the action is actually a combination of remove and then add again
-            wareHouse.removeFromList(order, "pending");
-            wareHouse.addOrder(order);
         }
         
         vector<Volunteer*> volunteersInAction;
@@ -65,24 +66,24 @@ void SimulateStep::act(WareHouse &wareHouse) {
             if (volunteer->getActiveOrderId() == NO_ORDER)
             {
                 Order* order = wareHouse.getOrderPointer(volunteer->getCompletedOrderId());
-                // In order to move order between lists, the action is actually a combination of remove and then add again
                 wareHouse.removeFromList(order, "inProcess");
-                wareHouse.addOrder(order);
                 // Update order status
                 if(order->getStatus()==OrderStatus::DELIVERING)
                 {
                     order->setStatus(OrderStatus::COMPLETED);
                 }
+                wareHouse.addOrder(order);
             }
         }
 
         // Delete volunteers that reach the max amount of orders
         wareHouse.removeLimitedVolunteersReachingMax();
     };
+    wareHouse.addAction(this);
 };
 
 string SimulateStep::toString() const {
-    return "SimulateStep: " + std::to_string(numOfSteps) + " steps";
+    return "simulateStep " + std::to_string(numOfSteps) + " COMPLETED";
 };
 
 SimulateStep* SimulateStep::clone() const {

@@ -14,10 +14,10 @@ void BackupWareHouse::act(WareHouse &wareHouse) {
         backup = nullptr;
     }
     backup = new WareHouse(wareHouse);
-    wareHouse.addAction(this);
     this->setStatus(ActionStatus::COMPLETED);
+    wareHouse.addAction(this);
 };
 
 string BackupWareHouse::toString() const {
-    return "Backup COMPLETED";
+    return "backup COMPLETED";
 };

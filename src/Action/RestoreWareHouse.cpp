@@ -20,10 +20,11 @@ void RestoreWareHouse::act(WareHouse &wareHouse) {
         wareHouse = *backup;
         this->setStatus(ActionStatus::COMPLETED);
     }
+    wareHouse.addAction(this);
 };
 
 string RestoreWareHouse::toString() const {
     if(this->getStatus() == ActionStatus::COMPLETED)
-        return "Backup COMPLETED";
-    else return "Backup ERROR";
+        return "restore COMPLETED";
+    else return "restore ERROR";
 };

@@ -11,7 +11,7 @@ AddOrder* AddOrder::clone() const {
 // ROTEM: Check everthing that needed in this method, is here
 void AddOrder::act(WareHouse &wareHouse) {
     Customer *customer = &wareHouse.getCustomer(customerId);
-    if (customer==wareHouse.defaultCustomer || !customer->canMakeOrder()) //  Handle a case customer was not found 
+    if (customer==&wareHouse.getDefaultCustomer() || !customer->canMakeOrder()) //  Handle a case customer was not found 
     {
         error("Cannot place this order");
         std::cout << "Error: " + getErrorMsg() << endl;
@@ -23,9 +23,9 @@ void AddOrder::act(WareHouse &wareHouse) {
         Order *newOrder = new Order(id, customerId, customer->getCustomerDistance());
         customer->addOrder(id);
         wareHouse.addOrder(newOrder);
-        wareHouse.addAction(this);
         this->setStatus(ActionStatus::COMPLETED);
     }
+    wareHouse.addAction(this);
 };
 
 string AddOrder::toString() const {
