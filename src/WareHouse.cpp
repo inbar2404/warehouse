@@ -254,7 +254,6 @@ void WareHouse::start()
         }
         else if (actionName == "close")
         {
-            // ROTEM: Look in the running example there is a diffrent in the end
             Close *close = new Close();
             close->act(*this);
         }
@@ -456,13 +455,6 @@ void WareHouse::addVolunteer(Volunteer* volunteer){
     }
 };
 
-// ROTEM
-// void WareHouse::printAction() const{
-//     for (){
-
-//     }
-// };
-
 Customer& WareHouse::getDefaultCustomer() const {
     return *defaultCustomer;
 };
@@ -483,3 +475,17 @@ vector<Order*> WareHouse::getVOrders() const{
     // OrdersVec.push_back(this->completedOrders);
     return OrdersVec;
 };
+
+bool WareHouse::iscustomerExist(int customerId) const{
+    if(customerId < customerCounter){
+        return true;
+    }
+    return false;
+}
+
+bool WareHouse::isVolunteerExist(int volunteerId) const{
+    if(volunteerId < volunteerCounter){
+        return true;
+    }
+    return false;
+}

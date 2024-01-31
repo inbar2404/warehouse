@@ -26,7 +26,5 @@ Close *Close::clone() const
 
 string Close::toString() const
 {
-    // ROTEM: I think you should print all orders' logs (look at the running example) -> ant to call it from the act?
-
     return "close COMPLETED";
 }
