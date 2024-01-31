@@ -474,3 +474,12 @@ Volunteer& WareHouse::getDefaultVolunteer() const {
 Order& WareHouse::getDefaultOrder() const {
     return *defaultOrder;
 };
+
+vector<Order*> WareHouse::getVOrders() const{
+    vector<Order*> OrdersVec = this->getPendingOrders();
+    OrdersVec.insert(OrdersVec.end(), this->inProcessOrders.begin(), this->inProcessOrders.end());
+    OrdersVec.insert(OrdersVec.end(), this->completedOrders.begin(), this->completedOrders.end());
+    // OrdersVec.push_back(this->inProcessOrders);
+    // OrdersVec.push_back(this->completedOrders);
+    return OrdersVec;
+};

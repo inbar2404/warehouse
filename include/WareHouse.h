@@ -48,6 +48,7 @@ class WareHouse {
         Customer &getDefaultCustomer() const;
         Volunteer &getDefaultVolunteer() const;
         Order &getDefaultOrder() const;
+        vector<Order*> getVOrders() const; //return a vector of all orders
 
     private:
         bool isOpen;
