@@ -147,13 +147,13 @@ WareHouse::WareHouse(WareHouse&& other) {
     volunteers = std::move(other.volunteers);
     actionsLog = std::move(other.actionsLog);
 
-    defaultCustomer = other.defaultCustomer;
+    defaultCustomer = &other.getDefaultCustomer();
     other.defaultCustomer = nullptr;
 
-    defaultVolunteer = other.defaultVolunteer;
+    defaultVolunteer = &other.getDefaultVolunteer();
     other.defaultVolunteer = nullptr;
 
-    defaultOrder = other.defaultOrder;
+    defaultOrder = &other.getDefaultOrder();
     other.defaultOrder = nullptr;
 
     isOpen = other.isOpen;
@@ -177,9 +177,10 @@ WareHouse& WareHouse::operator=(const WareHouse &other) {
         volunteers = other.volunteers;
         actionsLog = other.actionsLog;
 
-        defaultCustomer = other.defaultCustomer->clone();
-        defaultVolunteer = other.defaultVolunteer->clone();
-        defaultOrder = other.defaultOrder->clone();
+        // TODO: Find out why it is do problem when calling for restore (second call example 2)
+        // defaultCustomer = other.defaultCustomer->clone();
+        // defaultVolunteer = other.defaultVolunteer->clone();
+        // defaultOrder = other.defaultOrder->clone();
 
         isOpen = other.isOpen;
         customerCounter = other.customerCounter;
@@ -198,9 +199,9 @@ WareHouse& WareHouse::operator=(WareHouse&& other) {
         volunteers = std::move(other.volunteers);
         actionsLog = std::move(other.actionsLog);
 
-        defaultCustomer = other.defaultCustomer;
-        defaultVolunteer = other.defaultVolunteer;
-        defaultOrder = other.defaultOrder;
+        defaultCustomer = &other.getDefaultCustomer();
+        defaultVolunteer = &other.getDefaultVolunteer();
+        defaultOrder = &other.getDefaultOrder();
 
         // TODO: Compare this half function with another resource
         other.defaultCustomer = nullptr;
@@ -219,6 +220,7 @@ WareHouse& WareHouse::operator=(WareHouse&& other) {
     return *this;
 };
 
+// ROTEM: Find out why is it doing problem when calling to close() in the second example from second file
 WareHouse::~WareHouse() {   
     for (Order* order : pendingOrders) {
         delete order;
@@ -373,7 +375,7 @@ Customer& WareHouse::getCustomer(int customerId) const {
         }
     }
     // If customer not found, return a default customer.
-    return *defaultCustomer;
+    return getDefaultCustomer();
 };
 
 Volunteer& WareHouse::getVolunteer(int volunteerId) const {
@@ -384,7 +386,7 @@ Volunteer& WareHouse::getVolunteer(int volunteerId) const {
         }
     }
     // If volunteer not found, return a default Volunteer.
-    return *defaultVolunteer;
+    return getDefaultVolunteer();
 };
 
 Order* WareHouse::getOrderPointer(int orderId) const {
@@ -409,7 +411,7 @@ Order& WareHouse::getOrder(int orderId) const {
     if (order != nullptr){
         return *order;
     }    
-    return *defaultOrder;   // If order not found, return a default order.
+    return getDefaultOrder();   // If order not found, return a default order.
 };
 
 const vector<BaseAction*>& WareHouse::getActions() const {
@@ -447,13 +449,12 @@ vector<Order*> WareHouse::getFinishCollectOrders() const {
     return requetedOrders;
 };
 
-// TODO: Check edge cases that it is not delete someone before time
 void WareHouse::removeLimitedVolunteersReachingMax() {
     vector<Volunteer*> volunteersToRemove;
     for (Volunteer* volunteer : volunteers) {
         if ((typeid(*volunteer) == typeid(LimitedDriverVolunteer) ||
              typeid(*volunteer) == typeid(LimitedCollectorVolunteer)) &&
-            (!(volunteer->hasOrdersLeft()))) {
+            (!(volunteer->hasOrdersLeft() || volunteer->isBusy()))) {
             volunteersToRemove.push_back(volunteer);
         }
     }
@@ -519,3 +520,15 @@ void WareHouse::addCustomer(Customer* customer){
 
 //     }
 // };
+
+Customer& WareHouse::getDefaultCustomer() const {
+    return *defaultCustomer;
+};
+
+Volunteer& WareHouse::getDefaultVolunteer() const {
+    return *defaultVolunteer;
+};
+
+Order& WareHouse::getDefaultOrder() const {
+    return *defaultOrder;
+};

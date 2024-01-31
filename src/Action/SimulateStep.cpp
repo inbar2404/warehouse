@@ -34,7 +34,8 @@ void SimulateStep::act(WareHouse &wareHouse) {
         for (Order* &order : pendingOrders)
         {
             // Look for an available collector
-            for(Volunteer* volunteer : wareHouse.getVolunteers()) {
+            vector<Volunteer*> volunteersVector = wareHouse.getVolunteers();
+            for(Volunteer* volunteer : volunteersVector) {
                 if (((typeid(*volunteer) == typeid(LimitedCollectorVolunteer)) || 
                 (typeid(*volunteer) == typeid(CollectorVolunteer))) && 
                 volunteer->canTakeOrder(*order)) 
@@ -65,14 +66,13 @@ void SimulateStep::act(WareHouse &wareHouse) {
             if (volunteer->getActiveOrderId() == NO_ORDER)
             {
                 Order* order = wareHouse.getOrderPointer(volunteer->getCompletedOrderId());
-                // In order to move order between lists, the action is actually a combination of remove and then add again
                 wareHouse.removeFromList(order, "inProcess");
-                wareHouse.addOrder(order);
                 // Update order status
                 if(order->getStatus()==OrderStatus::DELIVERING)
                 {
                     order->setStatus(OrderStatus::COMPLETED);
                 }
+                wareHouse.addOrder(order);
             }
         }
 

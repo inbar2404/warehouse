@@ -9,7 +9,7 @@ PrintCustomerStatus *PrintCustomerStatus::clone() const{
 
 void PrintCustomerStatus::act(WareHouse &wareHouse) {
     Customer *customer = &wareHouse.getCustomer(customerId);
-    if(customer == wareHouse.defaultCustomer) // Handle a case customer not found 
+    if(customer == &wareHouse.getDefaultCustomer()) // Handle a case customer not found 
     {
         error("Customer doesn't exist");
         std::cout << "Error: " + getErrorMsg() << endl;

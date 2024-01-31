@@ -47,10 +47,9 @@ class WareHouse {
         int getNewId(string counterType); // Return the relevant id by counter
         void addCustomer(Customer* customer);
         // void printAction() const;
-        // TODO: Move this to private and use getters instead - I think it can solve the other problems
-        Customer *defaultCustomer; // Default null customer
-        Volunteer *defaultVolunteer; // Default null volunteer
-        Order *defaultOrder; // Default null order
+        Customer &getDefaultCustomer() const;
+        Volunteer &getDefaultVolunteer() const;
+        Order &getDefaultOrder() const;
 
     private:
         bool isOpen;
@@ -63,4 +62,8 @@ class WareHouse {
         int customerCounter; // For assigning unique customer IDs
         int volunteerCounter; // For assigning unique volunteer IDs
         int orderCounter; // For assigning unique volunteer IDs
+        Customer *defaultCustomer; // Default null customer
+        Volunteer *defaultVolunteer; // Default null volunteer
+        Order *defaultOrder; // Default null order
+
 };
