@@ -5,6 +5,7 @@ using namespace std;
 #include <fstream>
 #include <sstream>
 #include <stdexcept> // For std::invalid_argument
+#include "Parser.h"
 
 
 WareHouse::WareHouse(const string &configFilePath) {
@@ -20,78 +21,9 @@ WareHouse::WareHouse(const string &configFilePath) {
     customerCounter = 0;
     orderCounter = 0;
 
-    parseConfigFile(configFile);
+    Parser::parseConfigFile(*this, configFile);
 
     configFile.close();
-}
-
-// TODO: If I have enough time - rename variables and move to a diffrent file (same for 2 next methods)
-void WareHouse::parseConfigFile(ifstream& configFile) {
-    string line;
-    while (getline(configFile, line)) {
-        // Skip empty lines and comments
-        if (line.empty() || line[0] == '#') {
-            continue;
-        }
-
-        // Use a stringstream to parse the line
-        stringstream ss(line);
-        string command;
-        ss >> command;
-
-        if (command == "customer") {
-            parseCustomer(ss);
-        } else if (command == "volunteer") {
-            parseVolunteer(ss);
-        } else {
-            throw std::invalid_argument("Unkown command");
-        }
-    }
-}
-
-void WareHouse::parseCustomer(stringstream& ss) {
-    string customerName, customerTypeStr;
-    int distance, maxOrders;
-
-    ss >> customerName >> customerTypeStr >> distance >> maxOrders;
-
-    // Convert customerTypeStr to CustomerType enum
-    CustomerType customerType;
-    if (customerTypeStr == "soldier") {
-        customerType = CustomerType::Soldier;
-        customers.push_back(new SoldierCustomer(customerCounter, customerName, distance, maxOrders));
-    } else if (customerTypeStr == "civilian") {
-        customerType = CustomerType::Civilian;
-        customers.push_back(new CivilianCustomer(customerCounter, customerName, distance, maxOrders));
-    } else {
-        throw std::invalid_argument("Invalid customer type");
-    }
-    customerCounter++; // Add one to the customer counter
-}
-
-// TODO: Check: Should I handle cases that I recive unvalid input? (for example regullar collector get maxOrders)
-void WareHouse::parseVolunteer(stringstream& ss) {
-    string volunteerName, volunteerRole;
-    int coolDown, maxDistance, distancePerStep, maxOrders;
-
-    ss >> volunteerName >> volunteerRole;
-
-    if (volunteerRole == "collector") {
-        ss >> coolDown;
-        volunteers.push_back(new CollectorVolunteer(volunteerCounter, volunteerName, coolDown));
-    } else if (volunteerRole == "limited_collector") {
-        ss >> coolDown >> maxOrders;
-        volunteers.push_back(new LimitedCollectorVolunteer(volunteerCounter, volunteerName, coolDown, maxOrders));
-    } else if (volunteerRole == "driver") {
-        ss >> maxDistance >> distancePerStep;
-        volunteers.push_back(new DriverVolunteer(volunteerCounter, volunteerName, maxDistance, distancePerStep));
-    } else if (volunteerRole == "limited_driver") {
-        ss >> maxDistance >> distancePerStep >> maxOrders;
-        volunteers.push_back(new LimitedDriverVolunteer(volunteerCounter, volunteerName, maxDistance, distancePerStep, maxOrders));
-    } else {
-        throw std::invalid_argument("Invalid volunteer role");
-    }
-    volunteerCounter++; // Add one to the volunteer counter
 }
 
 // TODO: Check that the functions belong to the rule of 5 works well (find a way to do that) 
@@ -203,7 +135,6 @@ WareHouse& WareHouse::operator=(WareHouse&& other) {
         defaultVolunteer = &other.getDefaultVolunteer();
         defaultOrder = &other.getDefaultOrder();
 
-        // TODO: Compare this half function with another resource
         other.defaultCustomer = nullptr;
         other.defaultVolunteer = nullptr;
         other.defaultOrder = nullptr;
@@ -318,7 +249,6 @@ void WareHouse::start()
         }
         else if (actionName == "log")
         {
-            // TODO: ROTEM
             PrintActionsLog *log = new PrintActionsLog();
             log->act(*this);
         }
@@ -460,8 +390,14 @@ void WareHouse::removeLimitedVolunteersReachingMax() {
     }
 
     for (Volunteer* volunteer : volunteersToRemove) {
-        // TODO: Check if the remove works well here
-        volunteers.erase(remove(volunteers.begin(), volunteers.end(), volunteer), volunteers.end());
+        volunteers.erase(
+            std::remove_if(
+                volunteers.begin(),
+                volunteers.end(),
+                [volunteer](const Volunteer* v) { return v == volunteer; }
+            ),
+            volunteers.end()
+        );
     }
 };
 
@@ -511,6 +447,12 @@ int WareHouse::getNewId(string counterType) {
 void WareHouse::addCustomer(Customer* customer){
     if (customer != nullptr){
         customers.push_back(customer);
+    }
+};
+
+void WareHouse::addVolunteer(Volunteer* volunteer){
+    if (volunteer != nullptr){
+        volunteers.push_back(volunteer);
     }
 };
 

@@ -11,7 +11,6 @@ AddCustomer* AddCustomer::clone() const {
 
 void AddCustomer::act(WareHouse &wareHouse) {
     int counter = wareHouse.getNewId("customer");
-    // ROTEM: Find out if we need to handle a case of no solider or civilian mentioned, if we do - then there is a bug
     if (customerType == CustomerType::Civilian){
         CivilianCustomer *newCustomer = new CivilianCustomer(counter, customerName, distance, maxOrders);
         wareHouse.addCustomer(newCustomer);

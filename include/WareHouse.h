@@ -41,11 +41,9 @@ class WareHouse {
         vector<Order*> getFinishCollectOrders() const; // Return volunteers from type collector that finis all steps
         void removeLimitedVolunteersReachingMax(); // Remove if reaching max and has no active action
         void removeFromList(Order* order, string listName);
-        void parseVolunteer(stringstream& ss);
-        void parseConfigFile(ifstream& configFile);
-        void parseCustomer(stringstream& ss);
         int getNewId(string counterType); // Return the relevant id by counter
         void addCustomer(Customer* customer);
+        void addVolunteer(Volunteer* volunteer);
         // void printAction() const;
         Customer &getDefaultCustomer() const;
         Volunteer &getDefaultVolunteer() const;
