@@ -202,38 +202,30 @@ WareHouse &WareHouse::operator=(WareHouse &&other) noexcept
 // Destructor
 WareHouse::~WareHouse()
 {
-    pendingOrders.clear();
-    inProcessOrders.clear();
-    completedOrders.clear();
-    customers.clear();
-    volunteers.clear();
-    actionsLog.clear();
-
-    // TODO: Find out - can we remove it or it will cause memory leak?
-    // for (Order *order : pendingOrders)
-    // {
-    //     delete order;
-    // }
-    // for (Order *order : inProcessOrders)
-    // {
-    //     delete order;
-    // }
-    // for (Order *order : completedOrders)
-    // {
-    //     delete order;
-    // }
-    // for (Customer *customer : customers)
-    // {
-    //     delete customer;
-    // }
-    // for (Volunteer *volunteer : volunteers)
-    // {
-    //     delete volunteer;
-    // }
-    // for (BaseAction *action : actionsLog)
-    // {
-    //     delete action;
-    // }
+    for (Order *order : pendingOrders)
+    {
+        delete order;
+    }
+    for (Order *order : inProcessOrders)
+    {
+        delete order;
+    }
+    for (Order *order : completedOrders)
+    {
+        delete order;
+    }
+    for (Customer *customer : customers)
+    {
+        delete customer;
+    }
+    for (Volunteer *volunteer : volunteers)
+    {
+        delete volunteer;
+    }
+    for (BaseAction *action : actionsLog)
+    {
+        delete action;
+    }
 
     delete defaultCustomer;
     delete defaultVolunteer;
@@ -588,7 +580,6 @@ Order &WareHouse::getDefaultOrder() const
     return *defaultOrder;
 };
 
-// ROTEM: Look in the instrunctions, it should print evrything by the id not like that, fix it
 vector<Order *> WareHouse::getOrders() const
 {
     vector<Order *> OrdersVec = this->getPendingOrders();

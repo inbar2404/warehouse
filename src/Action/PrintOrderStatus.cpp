@@ -14,12 +14,11 @@ void PrintOrderStatus::act(WareHouse &wareHouse) {
     {
         error("Order doesn't exist");
         std::cout << "Error: " + getErrorMsg() << endl;
-        this->setStatus(ActionStatus::ERROR);
     }
     else
     {
         cout << order->toString() << endl;
-        this->setStatus(ActionStatus::COMPLETED);
+        complete();
     }
     wareHouse.addAction(this);
 };

@@ -8,7 +8,6 @@ AddOrder* AddOrder::clone() const {
     return new AddOrder(*this);
 };
 
-// ROTEM: Check everthing that needed in this method, is here
 void AddOrder::act(WareHouse &wareHouse) {
     Customer *customer = &wareHouse.getCustomer(customerId);
     if (customer==&wareHouse.getDefaultCustomer() || !customer->canMakeOrder()) //  Handle a case customer was not found 

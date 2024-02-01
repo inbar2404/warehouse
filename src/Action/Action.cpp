@@ -24,6 +24,6 @@ string BaseAction::getErrorMsg() const {
 
 ActionStatus BaseAction::setStatus(ActionStatus newstatus)
 {
-    this->status = newstatus;
+    status = newstatus;
     return newstatus;
 };

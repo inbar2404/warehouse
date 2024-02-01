@@ -13,7 +13,6 @@ void PrintCustomerStatus::act(WareHouse &wareHouse) {
     {
         error("Customer doesn't exist");
         std::cout << "Error: " + getErrorMsg() << endl;
-        this->setStatus(ActionStatus::ERROR);
     }
     else{
         std::cout << "CustomerID: " + to_string(customerId) << endl;
@@ -24,7 +23,7 @@ void PrintCustomerStatus::act(WareHouse &wareHouse) {
             std::cout << "OrderStatus: " + wareHouse.getOrder(id).getStatusName() << endl;
         }
         std::cout << "numOrdersLeft: "<< customer->getOrdersLeft()  << std::endl;
-        this->setStatus(ActionStatus::COMPLETED);
+        complete();
     }
     wareHouse.addAction(this);
 };
