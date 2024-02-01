@@ -42,7 +42,7 @@ void Parser::parseCustomer(WareHouse &warehouse, stringstream &ss)
 
     if (customerTypeStr == "soldier")
     {
-        warehouse.addCustomer(new SoldierCustomer(warehouse.getNewId("solider"), customerName, distance, maxOrders));
+        warehouse.addCustomer(new SoldierCustomer(warehouse.getNewId("customer"), customerName, distance, maxOrders));
     }
     else if (customerTypeStr == "civilian")
     {

@@ -21,9 +21,9 @@ class WareHouse {
         
         // Rule of 5 functions
         WareHouse(const WareHouse &other);
-        WareHouse(WareHouse&& other);
+        WareHouse(WareHouse&& other) noexcept;
         WareHouse &operator=(const WareHouse &other);
-        WareHouse &operator=(WareHouse&& other);
+        WareHouse &operator=(WareHouse&& other) noexcept;
         ~WareHouse();
 
         void start();
@@ -48,7 +48,7 @@ class WareHouse {
         Customer &getDefaultCustomer() const;
         Volunteer &getDefaultVolunteer() const;
         Order &getDefaultOrder() const;
-        vector<Order*> getVOrders() const; //return a vector of all orders
+        vector<Order*> getOrders() const; //return a vector of all orders
         
 
     private:

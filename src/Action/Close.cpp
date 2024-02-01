@@ -6,12 +6,13 @@ Close::Close() {}
 
 void Close::act(WareHouse &wareHouse)
 {
-    vector<Order*> orderVec = wareHouse.getVOrders();
+    // Print all orders by their id
+    vector<Order*> orders = wareHouse.getOrders();
     std::stringstream str;
-    for(Order *O : orderVec){
-        str << "OrderID: " << O->getId();
-        str << ", CustomerID: " << O->getCustomerId();
-        str << ", OrderStatus: " << (O->getStatusName()) << std::endl;
+    for(Order *order : orders){
+        str << "OrderID: " << order->getId();
+        str << ", CustomerID: " << order->getCustomerId();
+        str << ", OrderStatus: " << (order->getStatusName()) << std::endl;
     }
     std::cout << str.str();
     wareHouse.close(); // Close the warehouse and exit main loop

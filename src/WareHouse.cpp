@@ -7,6 +7,7 @@ using namespace std;
 #include <sstream>
 #include <stdexcept> // For std::invalid_argument
 
+// Constructor
 WareHouse::WareHouse(const string &configFilePath)
     : isOpen(false), actionsLog(), volunteers(), pendingOrders(), inProcessOrders(), completedOrders(), customers(),
       customerCounter(0), volunteerCounter(0), orderCounter(0), defaultCustomer(nullptr), defaultVolunteer(nullptr), defaultOrder(nullptr)
@@ -31,6 +32,7 @@ WareHouse::WareHouse(const string &configFilePath)
 }
 
 // TODO: Check that the functions belong to the rule of 5 works well (find a way to do that)
+// Copy constructor
 WareHouse::WareHouse(const WareHouse &other)
     : isOpen(other.isOpen), actionsLog(), volunteers(), pendingOrders(),
       inProcessOrders(), completedOrders(), customers(), customerCounter(other.customerCounter),
@@ -68,22 +70,21 @@ WareHouse::WareHouse(const WareHouse &other)
         actionsLog.push_back(action->clone());
     }
 
-    // TODO: Find out why is that doing problems (in backup 2 example)
-    // if (other.defaultCustomer) {
-    //     defaultCustomer = other.defaultCustomer->clone();
-    // }
+    if (other.defaultCustomer) {
+        defaultCustomer = other.getDefaultCustomer().clone();
+    }
 
-    // if (other.defaultVolunteer) {
-    //     defaultVolunteer = other.defaultVolunteer->clone();
-    // }
+    if (other.defaultVolunteer) {
+        defaultVolunteer = other.getDefaultVolunteer().clone();
+    }
 
-    // if (other.defaultOrder) {
-    //     defaultOrder = other.defaultOrder->clone();
-    // }
+    if (other.defaultOrder) {
+        defaultOrder = other.getDefaultOrder().clone();
+    }
 };
 
-// TODO: Compare this method with another resource
-WareHouse::WareHouse(WareHouse &&other)
+// Move constructor
+WareHouse::WareHouse(WareHouse &&other) noexcept
     : isOpen(other.isOpen),
       actionsLog(std::move(other.actionsLog)),
       volunteers(std::move(other.volunteers)),
@@ -118,35 +119,62 @@ WareHouse::WareHouse(WareHouse &&other)
     other.volunteers.clear();
 };
 
-// TODO: Compare with another resource if a delete is required
+// Copy assignment constructor (rule of 5)
 WareHouse &WareHouse::operator=(const WareHouse &other)
 {
     if (this != &other)
     {
-        pendingOrders = other.pendingOrders;
-        inProcessOrders = other.inProcessOrders;
-        completedOrders = other.completedOrders;
-        customers = other.customers;
-        volunteers = other.volunteers;
-        actionsLog = other.actionsLog;
+        pendingOrders.clear();
+        inProcessOrders.clear();
+        completedOrders.clear();
+        customers.clear();
+        volunteers.clear();
+        actionsLog.clear();
 
-        // TODO: Find out why it is do problem when calling for restore (second call example 2)
-        // defaultCustomer = other.defaultCustomer->clone();
-        // defaultVolunteer = other.defaultVolunteer->clone();
-        // defaultOrder = other.defaultOrder->clone();
+        for(BaseAction* action: other.actionsLog)
+        {
+            actionsLog.push_back(action->clone());
+        }
+        for(Volunteer* volunteer: other.volunteers)
+        {
+            volunteers.push_back(volunteer->clone());
+        }
+        for(Order* order: other.pendingOrders)
+        {
+            pendingOrders.push_back(order->clone());
+        }
+        for(Order* order: other.inProcessOrders)
+        {
+            inProcessOrders.push_back(order->clone());
+        }
+        for(Order* order: other.completedOrders)
+        {
+            completedOrders.push_back(order->clone());
+        }
 
-        isOpen = other.isOpen;
-        customerCounter = other.customerCounter;
-        volunteerCounter = other.volunteerCounter;
+        for(Customer* customer: other.customers)
+        {
+            customers.push_back(customer->clone());
+        }
+
+        delete defaultCustomer;
+        delete defaultVolunteer;
+        delete defaultOrder;
+
+        defaultCustomer = (other.defaultCustomer != nullptr) ? other.getDefaultCustomer().clone() : nullptr;
+        defaultVolunteer = (other.defaultVolunteer != nullptr) ? other.getDefaultVolunteer().clone() : nullptr;
+        defaultOrder = (other.defaultOrder != nullptr) ? other.getDefaultOrder().clone() : nullptr;
     }
 
     return *this;
 };
 
-WareHouse &WareHouse::operator=(WareHouse &&other)
+// Move assignment (rule of 5)
+WareHouse &WareHouse::operator=(WareHouse &&other) noexcept
 {
     if (this != &other)
     {
+        // TODO: Make sure that the "std::move" is doing the same function as what the others done - same for the Move Constructor
         pendingOrders = std::move(other.pendingOrders);
         inProcessOrders = std::move(other.inProcessOrders);
         completedOrders = std::move(other.completedOrders);
@@ -165,55 +193,51 @@ WareHouse &WareHouse::operator=(WareHouse &&other)
         isOpen = other.isOpen;
         customerCounter = other.customerCounter;
         volunteerCounter = other.volunteerCounter;
-
-        other.isOpen = false;
-        other.customerCounter = 0;
-        other.volunteerCounter = 0;
-        other.orderCounter = 0;
+        orderCounter = other.orderCounter;
     }
 
     return *this;
 };
 
-// ROTEM: Find out why is it doing problem when calling to close() in the second example from second file
+// Destructor
 WareHouse::~WareHouse()
 {
-    for (Order *order : pendingOrders)
-    {
-        delete order;
-    }
-    for (Order *order : inProcessOrders)
-    {
-        delete order;
-    }
-    for (Order *order : completedOrders)
-    {
-        delete order;
-    }
-    for (Customer *customer : customers)
-    {
-        delete customer;
-    }
-    for (Volunteer *volunteer : volunteers)
-    {
-        delete volunteer;
-    }
-    for (BaseAction *action : actionsLog)
-    {
-        delete action;
-    }
-
-    // TODO: Find out why is doing problem in the close
-    // delete defaultCustomer;
-    // delete defaultVolunteer;
-    // delete defaultOrder;
-
     pendingOrders.clear();
     inProcessOrders.clear();
     completedOrders.clear();
     customers.clear();
     volunteers.clear();
     actionsLog.clear();
+
+    // TODO: Find out - can we remove it or it will cause memory leak?
+    // for (Order *order : pendingOrders)
+    // {
+    //     delete order;
+    // }
+    // for (Order *order : inProcessOrders)
+    // {
+    //     delete order;
+    // }
+    // for (Order *order : completedOrders)
+    // {
+    //     delete order;
+    // }
+    // for (Customer *customer : customers)
+    // {
+    //     delete customer;
+    // }
+    // for (Volunteer *volunteer : volunteers)
+    // {
+    //     delete volunteer;
+    // }
+    // for (BaseAction *action : actionsLog)
+    // {
+    //     delete action;
+    // }
+
+    delete defaultCustomer;
+    delete defaultVolunteer;
+    delete defaultOrder;
 };
 
 void WareHouse::start()
@@ -529,7 +553,8 @@ Order &WareHouse::getDefaultOrder() const
     return *defaultOrder;
 };
 
-vector<Order *> WareHouse::getVOrders() const
+// ROTEM: Look in the instrunctions, it should print evrything by the id not like that, fix it
+vector<Order *> WareHouse::getOrders() const
 {
     vector<Order *> OrdersVec = this->getPendingOrders();
     OrdersVec.insert(OrdersVec.end(), this->inProcessOrders.begin(), this->inProcessOrders.end());
