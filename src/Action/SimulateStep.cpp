@@ -9,13 +9,14 @@ SimulateStep::SimulateStep(int numOfSteps) : numOfSteps(numOfSteps) {};
 void SimulateStep::act(WareHouse &wareHouse) {
     // Execute step as the defined number of steps
     for (int currentStep = 0; currentStep < numOfSteps; ++currentStep) {
-        // TODO: Make sure there is no order starvation (more details in the assignment)
+        // TODO: check: Make sure there is no order starvation (more details in the assignment)
         // TODO: Check an example when the order matter and try to check if it work as expected
         // We first handle orders in process, then the pendings (otherwise peding will pass 2 steps at once) 
         vector<Order*> inProcessOrders = wareHouse.getFinishCollectOrders();
         for (Order* &order : inProcessOrders) 
         {
             // Look for an available driver
+            bool hasFoundDriver = false;
             for(Volunteer* volunteer : wareHouse.getVolunteers()) {
                 if (((typeid(*volunteer) == typeid(LimitedDriverVolunteer)) || 
                 (typeid(*volunteer) == typeid(DriverVolunteer))) && 
@@ -23,10 +24,24 @@ void SimulateStep::act(WareHouse &wareHouse) {
                 {
                     volunteer->acceptOrder(*order);
                     order->setDriverId(volunteer->getId());
-                    // TODO: Check: Is it work in a case no driver is free? Should I return him to pending in this state?
                     order->setStatus(OrderStatus::DELIVERING);  
+                    // In case order was in pending vector we should move it to inprocess vector
+                    if(wareHouse.isOrderInPending(order))
+                    {
+                        // In order to move order between lists, the action is actually a combination of remove and then add again
+                        wareHouse.removeFromList(order, "pending");
+                        wareHouse.addOrder(order);
+                    }
+                    hasFoundDriver = true;
                     break;
                 }
+            }
+
+            // In case order left without a driver -> bring back to pending list (if not already there)
+            if((!wareHouse.isOrderInPending(order)) && !hasFoundDriver)
+            {
+                wareHouse.removeFromList(order, "inProcess");
+                wareHouse.addOrder(order);
             }
         } 
         

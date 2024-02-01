@@ -33,11 +33,12 @@ class WareHouse {
         Volunteer &getVolunteer(int volunteerId) const;
         Order &getOrder(int orderId) const;
         Order* getOrderPointer(int orderId) const; // Return the pointer of an order
+        bool isOrderInPending(Order *targetOrder) const; // Return rather the given object is in the wareHouse pndingOrders vector
         const vector<BaseAction*> &getActions() const;
         void close();
         void open();
         const vector<Volunteer*> &getVolunteers() const;
-        const vector<Order*> &getPendingOrders() const;
+        const vector<Order*> getPendingOrders() const;
         vector<Order*> getFinishCollectOrders() const; // Return volunteers from type collector that finis all steps
         void removeLimitedVolunteersReachingMax(); // Remove if reaching max and has no active action
         void removeFromList(Order* order, string listName);

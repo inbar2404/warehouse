@@ -20,5 +20,5 @@ void PrintActionsLog::act(WareHouse &wareHouse) {
 };
 
 string PrintActionsLog::toString() const {
-    return "Log COMPLETED";
+    return "log COMPLETED";
 };

@@ -410,6 +410,17 @@ Order &WareHouse::getOrder(int orderId) const
     return getDefaultOrder(); // If order not found, return a default order.
 };
 
+bool WareHouse::isOrderInPending(Order *targetOrder) const {
+    for(Order *order : pendingOrders)
+    {
+        if (targetOrder == order)
+        {
+            return true;
+        }
+    }
+    return false; // In case nothing retun so far - order not in the vector
+};
+
 const vector<BaseAction *> &WareHouse::getActions() const
 {
     return actionsLog;
@@ -430,9 +441,18 @@ const vector<Volunteer *> &WareHouse::getVolunteers() const
     return volunteers;
 };
 
-const vector<Order *> &WareHouse::getPendingOrders() const
+const vector<Order*> WareHouse::getPendingOrders() const
 {
-    return pendingOrders;
+    vector<Order*> requetedOrders;
+    // We want to make sure that only orders with status pending will be returned
+    for (Order *order : pendingOrders)
+    {
+        if(order->getStatus() == OrderStatus::PENDING)
+        {
+             requetedOrders.push_back(order);
+        }
+    }
+    return requetedOrders;
 };
 
 vector<Order *> WareHouse::getFinishCollectOrders() const
@@ -443,9 +463,24 @@ vector<Order *> WareHouse::getFinishCollectOrders() const
     {
         int collectorId = order->getCollectorId();
         Volunteer *collector = &getVolunteer(collectorId);
-        if (collector->getCompletedOrderId() == order->getId())
+        // We handle also a case when volunteer already deleted
+        if (collector==defaultVolunteer || collector->getCompletedOrderId() == order->getId())
         {
             requetedOrders.push_back(order);
+        }
+    }
+    // We would like also to check if there are orders in pendingOrders that finish collections
+    for (Order *order : pendingOrders)
+    {
+        if(order->getStatus() == OrderStatus::COLLECTING)
+        {
+            int collectorId = order->getCollectorId();
+            Volunteer *collector = &getVolunteer(collectorId);
+            // We handle also a case when volunteer already deleted
+            if (collector==defaultVolunteer ||collector->getCompletedOrderId() == order->getId())
+            {
+                requetedOrders.push_back(order);
+            }
         }
     }
 
