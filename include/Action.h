@@ -20,6 +20,7 @@ class Customer;
 class BaseAction{
     public:
         BaseAction();
+        virtual ~BaseAction(); // Virtual destructor
         ActionStatus getStatus() const;
         virtual void act(WareHouse& wareHouse)=0;
         virtual string toString() const=0;

@@ -1,7 +1,7 @@
 #include "../../include/Customer.h"  
 
 Customer::Customer(int id, const string &name, int locationDistance, int maxOrders)
- : id(id), name(name), locationDistance(locationDistance), maxOrders(maxOrders) {};
+ : id(id), name(name), locationDistance(locationDistance), maxOrders(maxOrders), ordersId() {};
 
 const string &Customer::getName() const {
     return name;
@@ -23,6 +23,7 @@ int Customer::getNumOrders() const {
     return ordersId.size();
 };
 
+// ROTEM: There was left one warning about it, please fix it
 bool Customer::canMakeOrder() const {
     if (maxOrders > ordersId.size()){
         return true;

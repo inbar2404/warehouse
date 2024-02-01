@@ -1,7 +1,9 @@
 #include "../../include/Action.h" 
 
 
-BaseAction::BaseAction() {};
+BaseAction::BaseAction() : errorMsg(""), status(ActionStatus::COMPLETED) {}
+
+BaseAction::~BaseAction() = default;
 
 ActionStatus BaseAction::getStatus() const {
     return status;
@@ -23,4 +25,5 @@ string BaseAction::getErrorMsg() const {
 ActionStatus BaseAction::setStatus(ActionStatus newstatus)
 {
     this->status = newstatus;
+    return newstatus;
 };
