@@ -47,13 +47,18 @@ void CollectorVolunteer::acceptOrder(const Order &order) {
 
 string CollectorVolunteer::toString() const {
     string busyStatus = "False";
+    string activeOrder = std::to_string(activeOrderId);
+    string timeleft = std::to_string(getTimeLeft());
     if(isBusy()){
         busyStatus = "True";
     }
     if(activeOrderId == NO_ORDER){
-        return "VolunteerID: " + std::to_string(getId()) + "\nisBusy: " + busyStatus + "\nOrderId: " 
-    + "None" + "\ntimeLeft: " + std::to_string(getTimeLeft());
+
+        activeOrder = "None";
+    }
+    if(getTimeLeft() == 0){
+        timeleft = "None";
     }
     return "VolunteerID: " + std::to_string(getId()) + "\nisBusy: " + busyStatus + "\nOrderId: " 
-    + std::to_string(activeOrderId) + "\ntimeLeft: " + std::to_string(getTimeLeft());
+    + activeOrder + "\ntimeLeft: " + timeleft;
 };
