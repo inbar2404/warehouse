@@ -16,7 +16,7 @@ void PrintActionsLog::act(WareHouse &wareHouse) {
     }
     std::cout << str.str() ;
     complete();
-    wareHouse.addAction(this); // ROTEM: check if sould print all actions
+    wareHouse.addAction(this); 
 };
 
 string PrintActionsLog::toString() const {
