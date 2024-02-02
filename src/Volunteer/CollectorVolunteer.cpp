@@ -50,6 +50,10 @@ string CollectorVolunteer::toString() const {
     if(isBusy()){
         busyStatus = "True";
     }
+    if(activeOrderId == NO_ORDER){
+        return "VolunteerID: " + std::to_string(getId()) + "\nisBusy: " + busyStatus + "\nOrderId: " 
+    + "None" + "\ntimeLeft: " + std::to_string(getTimeLeft());
+    }
     return "VolunteerID: " + std::to_string(getId()) + "\nisBusy: " + busyStatus + "\nOrderId: " 
     + std::to_string(activeOrderId) + "\ntimeLeft: " + std::to_string(getTimeLeft());
 };

@@ -52,6 +52,10 @@ string DriverVolunteer::toString() const {
     if(isBusy()){
         busyStatus = "True";
     }
+    if(activeOrderId == NO_ORDER){
+        return "VolunteerID: " + std::to_string(getId()) + "\nisBusy: " + busyStatus + "\nOrderId: " 
+    + "None" + "\ndistanceLeft: " + std::to_string(getDistanceLeft());
+    }
     return "VolunteerID: " + std::to_string(getId()) + "\nisBusy: " + busyStatus + "\nOrderId: " 
     + std::to_string(activeOrderId) + "\ndistanceLeft: " + std::to_string(getDistanceLeft());
 };
