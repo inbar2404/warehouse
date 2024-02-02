@@ -25,7 +25,7 @@ int Customer::getNumOrders() const {
 
 // ROTEM: There was left one warning about it, please fix it
 bool Customer::canMakeOrder() const {
-    if (maxOrders > ordersId.size()){
+    if (getMaxOrders() > getNumOrders()){
         return true;
     }
     return false;
