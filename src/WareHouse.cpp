@@ -112,11 +112,47 @@ WareHouse::WareHouse(WareHouse &&other) noexcept
     customerCounter = other.customerCounter;
     volunteerCounter = other.volunteerCounter;
 
-    other.pendingOrders.clear();
-    other.inProcessOrders.clear();
-    other.completedOrders.clear();
-    other.customers.clear();
-    other.volunteers.clear();
+    for (BaseAction* action : other.actionsLog)
+        {
+            delete action;
+        }
+        other.actionsLog.clear();
+
+        for (Volunteer* volunteer : other.volunteers)
+        {
+            delete volunteer;
+        }
+        other.volunteers.clear();
+
+        for (Order* order : other.pendingOrders)
+        {
+            delete order;
+        }
+        other.pendingOrders.clear();
+
+        for (Order* order : other.inProcessOrders)
+        {
+            delete order;
+        }
+        other.inProcessOrders.clear();
+
+        for (Order* order : other.completedOrders)
+        {
+            delete order;
+        }
+        other.completedOrders.clear();
+
+        for (Customer* customer : other.customers)
+        {
+            delete customer;
+        }
+        other.customers.clear();
+
+    // other.pendingOrders.clear();
+    // other.inProcessOrders.clear();
+    // other.completedOrders.clear();
+    // other.customers.clear();
+    // other.volunteers.clear();
 };
 
 // Copy assignment constructor (rule of 5)
@@ -124,12 +160,47 @@ WareHouse &WareHouse::operator=(const WareHouse &other)
 {
     if (this != &other)
     {
-        pendingOrders.clear();
-        inProcessOrders.clear();
-        completedOrders.clear();
-        customers.clear();
-        volunteers.clear();
+        // pendingOrders.clear();
+        // inProcessOrders.clear();
+        // completedOrders.clear();
+        // customers.clear();
+        // volunteers.clear();
+        // actionsLog.clear();
+        for (BaseAction* action : actionsLog)
+        {
+            delete action;
+        }
         actionsLog.clear();
+
+        for (Volunteer* volunteer : volunteers)
+        {
+            delete volunteer;
+        }
+        volunteers.clear();
+
+        for (Order* order : pendingOrders)
+        {
+            delete order;
+        }
+        pendingOrders.clear();
+
+        for (Order* order : inProcessOrders)
+        {
+            delete order;
+        }
+        inProcessOrders.clear();
+
+        for (Order* order : completedOrders)
+        {
+            delete order;
+        }
+        completedOrders.clear();
+
+        for (Customer* customer : customers)
+        {
+            delete customer;
+        }
+        customers.clear();
 
         for(BaseAction* action: other.actionsLog)
         {

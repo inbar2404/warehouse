@@ -23,7 +23,7 @@
                   "ignoreFailures": true
               }
           ],
-          "miDebuggerPath": "/bin/gdb",
+          "miDebuggerPath": "/usr/bin/gdb",
           "preLaunchTask": "make",
       }
   ],
