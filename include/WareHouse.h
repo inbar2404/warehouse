@@ -45,7 +45,6 @@ class WareHouse {
         int getNewId(string counterType); // Return the relevant id by counter
         void addCustomer(Customer* customer);
         void addVolunteer(Volunteer* volunteer);
-        // void printAction() const;
         Customer &getDefaultCustomer() const;
         Volunteer &getDefaultVolunteer() const;
         Order &getDefaultOrder() const;

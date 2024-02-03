@@ -16,7 +16,6 @@ void PrintCustomerStatus::act(WareHouse &wareHouse) {
     }
     else{
         std::cout << "CustomerID: " + to_string(customerId) << endl;
-        // ROTEM: You don't handle a case no ordersIds at all -> it get an exception, fix it
         vector<int> ordersIds = customer->getOrdersIds();
         for(int id:ordersIds){
             std::cout << "OrderId: " + to_string(id) << endl ;

@@ -9,8 +9,6 @@ SimulateStep::SimulateStep(int numOfSteps) : numOfSteps(numOfSteps) {};
 void SimulateStep::act(WareHouse &wareHouse) {
     // Execute step as the defined number of steps
     for (int currentStep = 0; currentStep < numOfSteps; ++currentStep) {
-        // TODO: check: Make sure there is no order starvation (more details in the assignment)
-        // TODO: Check an example when the order matter and try to check if it work as expected
         // We first handle orders in process, then the pendings (otherwise peding will pass 2 steps at once) 
         vector<Order*> inProcessOrders = wareHouse.getFinishCollectOrders();
         for (Order* &order : inProcessOrders) 

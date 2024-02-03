@@ -31,7 +31,6 @@ WareHouse::WareHouse(const string &configFilePath)
     configFile.close();
 }
 
-// TODO: Check that the functions belong to the rule of 5 works well (find a way to do that)
 // Copy constructor
 WareHouse::WareHouse(const WareHouse &other)
     : isOpen(other.isOpen), actionsLog(), volunteers(), pendingOrders(),
@@ -113,46 +112,40 @@ WareHouse::WareHouse(WareHouse &&other) noexcept
     volunteerCounter = other.volunteerCounter;
 
     for (BaseAction* action : other.actionsLog)
-        {
-            delete action;
-        }
-        other.actionsLog.clear();
+    {
+        delete action;
+    }
+    other.actionsLog.clear();
 
-        for (Volunteer* volunteer : other.volunteers)
-        {
-            delete volunteer;
-        }
-        other.volunteers.clear();
+    for (Volunteer* volunteer : other.volunteers)
+    {
+        delete volunteer;
+    }
+    other.volunteers.clear();
 
-        for (Order* order : other.pendingOrders)
-        {
-            delete order;
-        }
-        other.pendingOrders.clear();
+    for (Order* order : other.pendingOrders)
+    {
+        delete order;
+    }
+    other.pendingOrders.clear();
 
-        for (Order* order : other.inProcessOrders)
-        {
-            delete order;
-        }
-        other.inProcessOrders.clear();
+    for (Order* order : other.inProcessOrders)
+    {
+        delete order;
+    }
+    other.inProcessOrders.clear();
 
-        for (Order* order : other.completedOrders)
-        {
-            delete order;
-        }
-        other.completedOrders.clear();
+    for (Order* order : other.completedOrders)
+    {
+        delete order;
+    }
+    other.completedOrders.clear();
 
-        for (Customer* customer : other.customers)
-        {
-            delete customer;
-        }
-        other.customers.clear();
-
-    // other.pendingOrders.clear();
-    // other.inProcessOrders.clear();
-    // other.completedOrders.clear();
-    // other.customers.clear();
-    // other.volunteers.clear();
+    for (Customer* customer : other.customers)
+    {
+        delete customer;
+    }
+    other.customers.clear();
 };
 
 // Copy assignment constructor (rule of 5)
@@ -160,12 +153,6 @@ WareHouse &WareHouse::operator=(const WareHouse &other)
 {
     if (this != &other)
     {
-        // pendingOrders.clear();
-        // inProcessOrders.clear();
-        // completedOrders.clear();
-        // customers.clear();
-        // volunteers.clear();
-        // actionsLog.clear();
         for (BaseAction* action : actionsLog)
         {
             delete action;
@@ -222,7 +209,6 @@ WareHouse &WareHouse::operator=(const WareHouse &other)
         {
             completedOrders.push_back(order->clone());
         }
-
         for(Customer* customer: other.customers)
         {
             customers.push_back(customer->clone());
@@ -277,26 +263,32 @@ WareHouse::~WareHouse()
     {
         delete order;
     }
+    pendingOrders.clear();
     for (Order *order : inProcessOrders)
     {
         delete order;
     }
+    inProcessOrders.clear();
     for (Order *order : completedOrders)
     {
         delete order;
     }
+    completedOrders.clear();
     for (Customer *customer : customers)
     {
         delete customer;
     }
+    customers.clear();
     for (Volunteer *volunteer : volunteers)
     {
         delete volunteer;
     }
+    volunteers.clear();
     for (BaseAction *action : actionsLog)
     {
         delete action;
     }
+    actionsLog.clear();
 
     delete defaultCustomer;
     delete defaultVolunteer;
@@ -572,6 +564,7 @@ void WareHouse::removeLimitedVolunteersReachingMax()
                 [volunteer](const Volunteer *v)
                 { return v == volunteer; }),
             volunteers.end());
+        delete volunteer;
     }
 };
 

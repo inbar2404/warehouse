@@ -20,7 +20,6 @@ void AddCustomer::act(WareHouse &wareHouse)
     }
     else
     {
-        // ROTEM: Try to do that with "solider" it doesn't work
         SoldierCustomer *newCustomer = new SoldierCustomer(counter, customerName, distance, maxOrders);
         wareHouse.addCustomer(newCustomer);
     }
