@@ -14,7 +14,7 @@ void BackupWareHouse::act(WareHouse &wareHouse) {
         backup = nullptr;
     }
     backup = new WareHouse(wareHouse);
-    this->setStatus(ActionStatus::COMPLETED);
+    complete();
     wareHouse.addAction(this);
 };
 

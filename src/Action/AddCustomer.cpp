@@ -24,7 +24,7 @@ void AddCustomer::act(WareHouse &wareHouse)
         SoldierCustomer *newCustomer = new SoldierCustomer(counter, customerName, distance, maxOrders);
         wareHouse.addCustomer(newCustomer);
     }
-    this->setStatus(ActionStatus::COMPLETED);
+    complete();
     wareHouse.addAction(this);
 };
 

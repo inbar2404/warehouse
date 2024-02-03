@@ -14,7 +14,6 @@ void AddOrder::act(WareHouse &wareHouse) {
     {
         error("Cannot place this order");
         std::cout << "Error: " + getErrorMsg() << endl;
-        this->setStatus(ActionStatus::ERROR);
     }
     else
     {
@@ -22,7 +21,7 @@ void AddOrder::act(WareHouse &wareHouse) {
         Order *newOrder = new Order(id, customerId, customer->getCustomerDistance());
         customer->addOrder(id);
         wareHouse.addOrder(newOrder);
-        this->setStatus(ActionStatus::COMPLETED);
+        complete();
     }
     wareHouse.addAction(this);
 };

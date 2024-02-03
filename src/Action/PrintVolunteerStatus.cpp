@@ -24,7 +24,7 @@ void PrintVolunteerStatus::act(WareHouse &wareHouse) {
             volunteerDescription += "\nordersLeft: No Limit";
         } 
         std::cout << volunteerDescription << std::endl;
-        this->setStatus(ActionStatus::COMPLETED);
+        complete();
     }
     wareHouse.addAction(this);
 };

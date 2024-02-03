@@ -17,7 +17,7 @@ void Close::act(WareHouse &wareHouse)
     std::cout << str.str();
     wareHouse.close(); // Close the warehouse and exit main loop
     wareHouse.addAction(this);
-    this->setStatus(ActionStatus::COMPLETED);
+    complete();
 }
 
 Close *Close::clone() const

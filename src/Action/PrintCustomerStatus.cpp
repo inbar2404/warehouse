@@ -23,7 +23,7 @@ void PrintCustomerStatus::act(WareHouse &wareHouse) {
             std::cout << "OrderStatus: " + wareHouse.getOrder(id).getStatusName() << endl;
         }
         std::cout << "numOrdersLeft: "<< customer->getOrdersLeft()  << std::endl;
-        this->setStatus(ActionStatus::COMPLETED);
+        complete();
     }
     wareHouse.addAction(this);
 };

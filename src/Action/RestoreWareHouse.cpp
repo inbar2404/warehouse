@@ -13,12 +13,11 @@ void RestoreWareHouse::act(WareHouse &wareHouse) {
     {
         error("No backup available");
         std::cout << "Error: " + getErrorMsg() << endl;
-        this->setStatus(ActionStatus::ERROR);
     }
 
     else{
         wareHouse = *backup;
-        this->setStatus(ActionStatus::COMPLETED);
+        complete();
     }
     wareHouse.addAction(this);
 };
