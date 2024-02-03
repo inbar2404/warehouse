@@ -82,7 +82,7 @@ WareHouse::WareHouse(const WareHouse &other)
     }
 };
 
-// Move constructor
+// Move constructor (using std::move for deep copy)
 WareHouse::WareHouse(WareHouse &&other) noexcept
     : isOpen(other.isOpen),
       actionsLog(std::move(other.actionsLog)),
@@ -231,7 +231,44 @@ WareHouse &WareHouse::operator=(WareHouse &&other) noexcept
 {
     if (this != &other)
     {
-        // TODO: Make sure that the "std::move" is doing the same function as what the others done - same for the Move Constructor
+        // Cleaning
+        for (BaseAction* action : actionsLog)
+        {
+            delete action;
+        }
+        actionsLog.clear();
+
+        for (Volunteer* volunteer : volunteers)
+        {
+            delete volunteer;
+        }
+        volunteers.clear();
+
+        for (Order* order : pendingOrders)
+        {
+            delete order;
+        }
+        pendingOrders.clear();
+
+        for (Order* order : inProcessOrders)
+        {
+            delete order;
+        }
+        inProcessOrders.clear();
+
+        for (Order* order : completedOrders)
+        {
+            delete order;
+        }
+        completedOrders.clear();
+
+        for (Customer* customer : customers)
+        {
+            delete customer;
+        }
+        customers.clear();
+
+        // Using std::move for deep copy
         pendingOrders = std::move(other.pendingOrders);
         inProcessOrders = std::move(other.inProcessOrders);
         completedOrders = std::move(other.completedOrders);
@@ -239,13 +276,13 @@ WareHouse &WareHouse::operator=(WareHouse &&other) noexcept
         volunteers = std::move(other.volunteers);
         actionsLog = std::move(other.actionsLog);
 
+        defaultCustomer = nullptr;
+        defaultVolunteer = nullptr;
+        defaultOrder = nullptr;
+
         defaultCustomer = &other.getDefaultCustomer();
         defaultVolunteer = &other.getDefaultVolunteer();
         defaultOrder = &other.getDefaultOrder();
-
-        other.defaultCustomer = nullptr;
-        other.defaultVolunteer = nullptr;
-        other.defaultOrder = nullptr;
 
         isOpen = other.isOpen;
         customerCounter = other.customerCounter;

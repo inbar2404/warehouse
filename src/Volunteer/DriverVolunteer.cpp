@@ -31,7 +31,7 @@ bool DriverVolunteer::hasOrdersLeft() const {
 };
 
 bool DriverVolunteer::canTakeOrder(const Order &order) const {
-    return activeOrderId == NO_ORDER;
+    return !isBusy();
 };
 
 void DriverVolunteer::acceptOrder(const Order &order) {
